@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Ms. pacman vs ghost team by joseatovar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Ms. pacman vs ghost team</h1>
+      <h2 class="project-tagline"></h2>
+      <a href="https://github.com/joseatovar/Ms-Pacman-vs-Ghost" class="btn">View on GitHub</a>
+      <a href="https://github.com/joseatovar/Ms-Pacman-vs-Ghost/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/joseatovar/Ms-Pacman-vs-Ghost/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p>This code is an implementation of "Ms Pac-Man" for the "Ms Pac-Man vs Ghosts Competition".
+This competition is organised by Philipp Rohlfshagen, David Robles and Simon Lucas of the University 
+of Essex.</p>
+
+<p>The code is written by Philipp Rohlfshagen based on earlier implementations of the game by Simon Lucas 
+and David Robles.</p>
+
+<p>Competition website: <a href="http://www.pacman-vs-ghosts.net">www.pacman-vs-ghosts.net</a></p>
+
+<p>Competition organisers: Philipp Rohlfshagen, David Robles and Simon Lucas (University of Essex)</p>
+
+<h1>
+<a id="quick-starter-guide" class="anchor" href="#quick-starter-guide" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><strong>Quick Starter Guide</strong>
+</h1>
+
+<h2>
+<a id="run-software" class="anchor" href="#run-software" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run software</h2>
+
+<ol>
+<li>
+<strong>Download:</strong>
+Download the software and unzip it in a convenient location on your computer.</li>
+<li>
+<strong>Create a Project:</strong>
+Open Eclipse and create a new (empty) Java project.</li>
+<li>
+<strong>Import files:</strong>
+
+<ol>
+<li>Click on File, then Import ... and choose General, then File System.</li>
+<li>In the 'From directory' dialog, choose the folder where you unzipped the software.</li>
+<li>In the 'Into folder' dialog, choose the project you just created.</li>
+</ol>
+</li>
+<li><strong>Click Finished.</strong></li>
+<li><strong>Run the Code</strong></li>
+</ol>
+
+<p>You can execute the code by running the class
+<code>Executor.java</code>
+This class contains a main method with numerous options for execution. Just uncomment the one you wish to run.</p>
+
+<h2>
+<a id="start-coding" class="anchor" href="#start-coding" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Start coding</h2>
+
+<ol>
+<li>
+<p><strong>Inspect the Files</strong> 
+The files you need to edit are: </p>
+
+<ol>
+<li>pacman.entries.pacman.MyPacMan.java </li>
+<li>pacman.entries.ghosts.MyGhosts.java </li>
+</ol>
+
+<p>These files extend <code>Controller.java</code>. You will need to provide code for the <code>getMove(Game game, long timeDue)</code> method. </p>
+</li>
+<li>
+<p><strong>The <code>getMove()</code> Method</strong> </p>
+
+<p>In order to create a controller, you need to provide code for the method:
+<code>getMove(Game game, long timeDue)</code> 
+in MyPacMan.java or MyGhosts.java. These files are already included in the code. </p>
+
+<p>In the case of Ms Pac-Man, this method returns an element of the MOVE enumeration found in Constants.java. The elements are: </p>
+
+<ul>
+<li>
+<code>MOVE.UP</code> </li>
+<li>
+<code>MOVE.RIGHT</code> </li>
+<li>
+<code>MOVE.DOWN</code> </li>
+<li>
+<code>MOVE.LEFT</code> </li>
+<li>
+<code>MOVE.NEUTRAL</code> </li>
+</ul>
+
+<p>In the case of the ghosts, this method returns an <code>EnumMap</code> that maps every element from the enumeration <code>GHOST</code> to <code>MOVE</code>: </p>
+
+<ul>
+<li>
+<code>GHOST.BLINKY</code> </li>
+<li>
+<code>GHOST.PINKY</code> </li>
+<li>
+<code>GHOST.INKY</code> </li>
+<li>
+<code>GHOST.SUE</code> </li>
+</ul>
+
+<p>To calculate a good move, you can query the game object to access information about the game state. The long timeDue indicates the system time the next move is due. You have 40ms per game tick to provide a response. </p>
+</li>
+<li><p><strong>The Game object</strong>
+Every game tick, your controller receives a copy of the current game state via the <code>getMove()</code> method. The game object contains all the information required to make an informed decision. The class Game.java is the only class you need to be concerned with (you may also need to know about Constants.java, which holds all the game's enumerations and constants, and GameView in case you would like to use visual aids. The game is represented as a graph: you move from one node to another throughout the game. Pills and powerpills are located on specific nodes throughout the maze. Nodes are generally referred to by their indices.</p></li>
+<li><p><strong>Putting it together</strong>
+Whenever the <code>getMove(-)</code> method gets called, you receive a new copy of the game and the time the move is due. Query the game state using its many methods to obtain information about the pills, powerpills, positions of Pac-Man and the Ghosts etc. The game also provides numerous additional helper methods to obtains things like shortest paths or moves to take to approach a specific target. </p></li>
+</ol>
+
+<h1>
+<a id="tutorials" class="anchor" href="#tutorials" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tutorials</h1>
+
+<h2>
+<a id="timings" class="anchor" href="#timings" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Timings</h2>
+
+<p>The game is played asynchronously in real time: every discrete game tick, the game uses the moves supplied by the controllers to update the gamestate. Then, the game waits for 40ms for new actions to come in, after which the game updates again. At each game tick, the controllers have 40 ms to respond. The controllers are given a copy of the current game and the time the move is due. Each controller can then query the game using its many methods to compute an appropriate response. It is the responsibility of the controller to respond in a timely manner (this is one of the challenges of the competition). </p>
+
+<p>If a controller returns a move on time, the game will use that move to advance the game. If the move happens to be illegal, the game tries to replay the previous move or chooses a new legal move randomly. If a controller does not replay on time, the game tries to play the previous move or, if that is not possible, chooses a legal move randomly. </p>
+
+<p>The controller will receive a new copy of the game state for the remaining time of that game tick to compute a new move. In other words, if a controller takes 60ms to respond, it will have roughly (2x40)-60=20ms in the next game tick. If a controller does not reply over several game ticks, the game keeps replaying previous actions.</p>
+
+<h2>
+<a id="software" class="anchor" href="#software" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Software</h2>
+
+<p>The <code>Executor</code> runs a game by instantiating two controllers (one for Ms. Pac-Man, one for the Ghosts) and creating a new game
+object. It then supplies each controller with a copy of the game object and then waits for 40ms for each controllers to compute their
+action. After the time is up, the actions computed by the controllers are used to advance the game state. This is continued until the
+end of the game (or the limit has been reached).</p>
+
+<p>Each controller extends the abstract class Controller. The only method that needs implementation is </p>
+
+<p><code>getMove(Game game, long timeDue)</code> </p>
+
+<p>The game object is a copy of the current game state and timeDue signals the point in time the game advances; a controller should
+return an action before the time is up. Your code must be in either</p>
+
+<p>pacman.entries.pacman.MyPacMan.java 
+  pacman.entries.ghosts.MyGhosts.java</p>
+
+<p>providing an implementation of the <code>getMove(-)</code> method. These files are already included in the software.</p>
+
+<p>The controllers can access all the information about the game by using the many methods provided in Game. In fact, game is almost the only class you need to worry about. The only other two classes are </p>
+
+<ul>
+<li>
+<strong>Constants.java</strong>: this class contains the constants of the game and its enumerations.</li>
+<li>
+<strong>GameView.java</strong>: it is possible to use certain visual features to help you develop your controllers. </li>
+</ul>
+
+<p>The moves of the game are implemented as an enumeration. The options are: </p>
+
+<ul>
+<li>
+<code>MOVE.UP</code> </li>
+<li>
+<code>MOVE.RIGHT</code> </li>
+<li>
+<code>MOVE.DOWN</code> </li>
+<li>
+<code>MOVE.LEFT</code> </li>
+<li>
+<code>MOVE.NEUTRAL</code> </li>
+</ul>
+
+<p>Ms. Pac-Man controllers need to return one of these moves at every time step. Ms Pac-Man returns a single MOVE every time
+step. If the controller returns null or an illegal move (e.g., trying to go up even though there is a wall), the game engine will try to play the last move if possible or else choose a legal move randomly. </p>
+
+<p>The ghosts controller needs to return one move for each of the 4 ghosts. The ghosts are encoded using another enumeration called
+GHOST:</p>
+
+<ul>
+<li>
+<code>GHOST.BLINKY</code> </li>
+<li>
+<code>GHOST.PINKY</code> </li>
+<li>
+<code>GHOST.INKY</code> </li>
+<li>
+<code>GHOST.SUE</code> </li>
+</ul>
+
+<p>The reply from a ghosts controller is an EnumMap that maps from each type of ghost to a move. For instance, the following shows
+how to return a left move for Blinky: </p>
+
+<p><code>EnumMap&lt;GHOST, MOVE&gt; myMoves = new EnumMap&lt;GHOST, MOVE&gt;(GHOST.class)</code> </p>
+
+<p><code>myMoves.put(GHOST.BLINKY, MOVE.LEFT);</code> </p>
+
+<p>A ghost controller can return moves for 0 or more ghosts. Any missing moves will be substituted by the game engine (including the
+case where the controller returns null). </p>
+
+<p>Once the time is up, the game will advance using the moves computed by the controllers. If no move was returned, the game engine
+tries to repeat the previous move played or chooses a legal move uniformly at random. If a controller returns a move after the time
+limit is up, the controller will be given the remaining time in the current time step to compute a new move. </p>
+
+<p>To make an informed decision, the controllers may query the game state to obtains all relevant information. This is done via the
+many methods provided (see tutorial on Game.java). The game consists of 4 mazes that are encountered in succession. Each
+maze is modelled as a graph: Ms Pac-Man and each of the ghosts move from node to node along this graph. Pills and powerpills
+are also located on nodes. Each node has a set of neighbours that may be reached: in a corridor, for instance, a node has two
+neighbours, at junctions 3 or 4 neighbours. The only exception to this is the lair (where the ghosts start and return to once eaten)
+which does not have any neighbours at all.</p>
+
+<p>One of the most useful information is the distance between any two nodes in the maze. For reasons of efficiency, the shortest path
+distances from any node to any other node have been precomputed (using Dijstra) and are loaded from file when the game starts.
+The shortest path distances may be used for Ms Pac-Man to determine the distance between selected nodes. However, since
+ghosts are not allowed to reverse, distances may be longer (as a ghost may be forced to take a longer route to avoid reversal).
+There are two ways to get the shortest path distance for a ghost: </p>
+
+<ul>
+<li>
+<strong>Approximate</strong>: uses the shortest path distances to greedily construct the path the ghost would have to take. This accounts for
+the fact that reversals are not allowed but may sometimes lead to an incorrect path (we found the error to be very minor).</li>
+<li>
+<strong>Exact</strong>: this uses A* to compute the actual shortest path. This is more costly than the approximate version but still efficient. The admissable heuristic used is the actual shortest path distances so very few nodes get expanded on average. </li>
+</ul>
+
+<p>Below is a list of all the classes: </p>
+
+<ul>
+<li>
+<strong>Game.java</strong>: the game engine and all the methods required to access the game state.</li>
+<li>
+<strong>Pacman.java</strong>: datastructure used by the game to hold the information about Ms Pac-Man</li>
+<li>
+<strong>Ghost.java</strong>: datastructure used by the game to hold the information about the ghosts</li>
+<li>
+<strong>Maze.java</strong>: each level is an instance of a maze, a fixed and immutable data structure that stores the location of all the nodes
+in the graph that makes up each level</li>
+<li>
+<strong>Node.java</strong>: a node in the graph</li>
+<li>
+<strong>AStar.java</strong>: a class to compute shortest paths for the ghosts from any node to any other using A* and the pre-computed
+shortest path distances</li>
+<li>
+<strong>Constants.java</strong>: includes the enumerations and constants of the game.</li>
+<li>
+<strong>GameView.java</strong>: this draws the game to the screen. There are some features here you may use to highlight nodes, paths,
+etc. Have a look here for more information.</li>
+<li>
+<strong>GameView.java</strong>: this draws the game to the screen. There are some features here you may use to highlight nodes, paths,
+etc. Have a look here for more information.</li>
+<li>
+<strong>Controller.java</strong>: the superclass every controller must implement. Provides the threading and an empty getMove(-) method the
+controllers must implement.</li>
+<li>
+<strong>HumanController.java</strong>: a simple class to allow humans to play the game using the arrow keys of the keyboard.</li>
+<li>
+<strong>KeyBoardInput.java</strong>: a simple helper class to capture keyboard events for the human controller.</li>
+<li>
+<strong>Executor.java</strong>: the class used to run the games in various different modes (more information below).</li>
+</ul>
+
+<p>The other files contains in pacman.controllers.examples are example controllers that serve as examples and which you may use to test and evaluate your own code.</p>
+
+<p>The class Executor contains a main method and a choice of static methods which contain the different modes of operation. You can execute the game in 3 ways: </p>
+
+<ul>
+<li>
+<strong>synchronous</strong>: the game waits until both controllers have computed an action. This can be very fast if both controller reply
+quickly or take a very long time if the controllers require a long time to compute the next move to make.</li>
+<li>
+<strong>asynchronous</strong>: this is the mode used for the comeptition. The game gives each controller 40ms of system time to compute a
+move. After the time is up, the game advances. If a controller is unable to supply an action in time, the controller's previous
+action is repeated (if possible) or a legal action is chosen uniformly at random.</li>
+<li>
+<strong>asynchronous (time optimised)</strong>: this mode is identical to the one above but if both controllers reply before the time limit is up, the game advances immediately. </li>
+</ul>
+
+<h2>
+<a id="visuals" class="anchor" href="#visuals" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Visuals</h2>
+
+<p>The methods for adding visuals to the game view are all static member of <code>GameView</code>. All the methods required to add visuals are static so can be called without having to have an instance of <code>GameView</code>. You can do
+two things: </p>
+
+<ul>
+<li>add highlights to nodes (takes the game object, the colour to be used and the node indices to be highlighted). </li>
+<li>add lines from any node to any other node (takes the game object, a colour and either a single pair of indices or an array of matched indices) </li>
+</ul>
+
+<p>Any highlights added to the game view are active for a single game tick only so you need to add them at every game tick (in your
+getMove(-) method). </p>
+
+<p>Below is an example that highlights the path from the current location of Ms Pac-Man to the nearest power pill:</p>
+
+<p><code>GameView.addPoints(game,Color.CYAN,game.getShortestPath(game.getPacmanCurrentNodeIndex(),nearestActivePowerPillIndex))</code></p>
+
+<p>where nearestActivePowerPillIndex is the index of the nearest power pill that has not yet been eaten. </p>
+
+<p>The code snippet below draws a line from the current position of Ms Pac-Man to all remaining power pills: </p>
+
+<pre><code>int[] activePowerPills=game.getActivePowerPillsIndices();
+
+for(int i=0;i&lt;activePowerPills.length;i++)
+  GameView.addLines(game,Color.CYAN,game.getPacmanCurrentNodeIndex(),activePowerPills[i]);
+</code></pre>
+
+<h1>
+<a id="rules-of-the-game" class="anchor" href="#rules-of-the-game" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Rules of the game</h1>
+
+<h2>
+<a id="general-rules" class="anchor" href="#general-rules" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>General rules</h2>
+
+<p>The game consists of four mazes (A, B, C and D), which are played in order; when maze D is cleared (i.e., all pills have been eaten by Ms Pac-Man), the game continues with maze A and so on until the game is over. Each maze contains a different layout with pills and power pills placed at specific locations. Ms Pac-Man starts the game with three lives; an additional life is awarded at 10,000 points. </p>
+
+<p>The goal of Ms Pac-Man is to obtain the highest possible score by eating all the pills and power pills in the maze (and thus advancing to the next stage). Each pill eaten scores 10 points, each power pill is worth 50 points. Ms Pac-Man's quest is opposed by the four ghosts: Blinky (red), Pinky (pink), Inky (green) and Sue (brown). At the start of each level, the ghosts start in the lair in the middle of the maze and, after some idle time, enter the maze in their pursuit of Ms Pac-Man. Their goal is to eat Ms Pac-Man and each time this happens, a life is lost and Ms Pac-Man and the ghosts return to their initial positions; the time spent by the ghosts in the lair decreases as the player progresses to higher levels. </p>
+
+<p>There are four power pills in each of the four mazes, which, when eaten, reverse the direction of the ghosts and turn them blue; they may now be eaten for extra points. The score for eating each ghost in succession immediately after a power pill has been consumed starts at 200 points and doubles each time, for a total of 200+400+800+1600=3000 additional points. Any ghost that has been eaten re-appears in the lair and emerges soon after, once again chasing Ms Pac-Man. If a second power pill is consumed while some ghosts remain edible, the ghost score is reset to 200; if the level is cleared while the ghosts remain edible, play continuous immediately to the next level. </p>
+
+<p>The more advanced the level, the shorter the ghost edible times become, making the levels progressively more difficult; at an advanced stage, the ghosts do not turn blue at all (however, they still change direction). When the edible period runs out, the ghosts start flashing blue and white. The player (or agent) needs to be careful at this stage to avoid losing lives. When all the pills and power pills have been cleared, the game moves on to the next maze. </p>
+
+<h2>
+<a id="goals" class="anchor" href="#goals" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Goals</h2>
+
+<p>The goal of a Ms Pac-Man controller is to maximise the score of the game. In the competition, it is the average score against multiple ghost teams that counts and the winning controller is the one which obtains the highest total average score. </p>
+
+<p>The goal of a ghost-team controller is to minimise the average score obtained agains t it by the different Ms Pac-Man controllers. The winning ghost team will be team with the lowest average score against it. </p>
+
+<h2>
+<a id="deviations-from-the-original" class="anchor" href="#deviations-from-the-original" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Deviations from the Original</h2>
+
+<p>A few changes were made to simplify the game. </p>
+
+<ol>
+<li>The speed of Ms Pac-Man and the ghosts are always identical, except when ghosts are edible (in which case the ghosts reduce their speed by half). </li>
+<li>Bonus fruits are omitted. </li>
+<li>Each maze is played once before moving on to the next one (in the original, each maze was played twice in succession). </li>
+</ol>
+
+<h2>
+<a id="ghost-team-specific-rules" class="anchor" href="#ghost-team-specific-rules" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ghost-Team-Specific Rules</h2>
+
+<p>There are no restrictions regarding the actions of Ms Pac-Man: movement in any direction not blocked by a wall is allowed at all times. For the ghost team, on the other hand, three restrictions apply: </p>
+
+<ol>
+<li>Ghosts may not reverse direction. Subsequently, a ghost may only choose its direction at a junction, choosing any of the paths available except the one the ghost used to approach the junction. </li>
+<li>Occasionally there is a global reversal event when all the ghosts suddenly change direction. This may happen in any game tick with a small probability of 0.0015. </li>
+<li>To prevent the ghosts from spoiling the game by constantly blocking the power pills (in which case the game would result in a stalemate), each level finishes after 3000 time steps; half the score of all remaining pills are awarded to Ms Pac-Man. </li>
+</ol>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/joseatovar/Ms-Pacman-vs-Ghost">Ms. pacman vs ghost team</a> is maintained by <a href="https://github.com/joseatovar">joseatovar</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
