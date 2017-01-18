@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>pacman.entries</OriginalElement>
+  <nodes>
+    <node x="330.58333333333337" y="237.0">pacman.game.internal.PacMan</node>
+    <node x="121.84848484848487" y="613.0">pacman.Executor</node>
+    <node x="460.3484848484849" y="524.0">pacman.entries.pacman.MyPacMan</node>
+    <node x="206.58333333333337" y="237.0">pacman.game.internal.PathsCache</node>
+    <node x="385.88854895104896" y="435.0">pacman.controllers.Controller</node>
+    <node x="577.3484848484849" y="524.0">pacman.entries.ghosts.MyGhosts</node>
+    <node x="183.34848484848487" y="524.0">pacman.controllers.examples.StarterGhosts</node>
+    <node x="17.08333333333337" y="158.0">pacman.game.internal.AStar</node>
+    <node x="196.31381118881114" y="356.0">pacman.game.Game</node>
+    <node x="320.3484848484849" y="524.0">pacman.controllers.examples.StarterPacMan</node>
+    <node x="4.250000000000028" y="79.0">pacman.game.internal.E</node>
+    <node x="117.58333333333337" y="237.0">pacman.game.internal.Ghost</node>
+    <node x="195.08333333333337" y="158.0">pacman.game.internal.DNode</node>
+    <node x="185.58333333333337" y="79.0">pacman.game.internal.JunctionData</node>
+    <node x="691.3484848484849" y="524.0">pacman.controllers.HumanController</node>
+    <node x="735.3484848484849" y="435.0">pacman.controllers.KeyBoardInput</node>
+    <node x="13.250000000000028" y="0.0">pacman.game.internal.N</node>
+    <node x="0.0" y="687.0">pacman.game.Constants</node>
+    <node x="290.08333333333337" y="158.0">pacman.game.internal.Junction</node>
+    <node x="102.08333333333337" y="158.0">pacman.game.internal.Node</node>
+    <node x="66.34848484848487" y="435.0">pacman.game.GameView</node>
+    <node x="33.58333333333337" y="237.0">pacman.game.internal.Maze</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="pacman.game.internal.AStar" target="pacman.game.internal.E">
+      <point x="-21.66666666666667" y="-14.5" />
+      <point x="27.916666666666686" y="133.0" />
+      <point x="23.75000000000003" y="133.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="pacman.game.Game" target="pacman.game.internal.PacMan">
+      <point x="24.363636363636374" y="-14.5" />
+      <point x="254.17744755244752" y="326.0" />
+      <point x="350.33333333333337" y="326.0" />
+      <point x="-19.75" y="14.5" />
+    </edge>
+    <edge source="pacman.Executor" target="pacman.controllers.examples.StarterPacMan">
+      <point x="32.625" y="-14.5" />
+      <point x="197.97348484848487" y="593.0" />
+      <point x="380.3484848484849" y="593.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="pacman.game.internal.E" target="pacman.game.internal.N">
+      <point x="-9.75" y="-14.5" />
+      <point x="14.000000000000028" y="59.0" />
+      <point x="18.50000000000003" y="59.0" />
+      <point x="-15.75" y="14.5" />
+    </edge>
+    <edge source="pacman.game.internal.AStar" target="pacman.game.internal.N">
+      <point x="0.0" y="-14.5" />
+      <point x="49.58333333333337" y="133.0" />
+      <point x="53.75000000000003" y="133.0" />
+      <point x="53.75000000000003" y="59.0" />
+      <point x="39.50000000000003" y="59.0" />
+      <point x="5.25" y="14.5" />
+    </edge>
+    <edge source="pacman.Executor" target="pacman.game.Game">
+      <point x="-10.875" y="-14.5" />
+      <point x="154.47348484848487" y="573.0" />
+      <point x="172.84848484848487" y="573.0" />
+      <point x="172.84848484848487" y="415.0" />
+      <point x="229.81381118881114" y="415.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="pacman.game.internal.Maze" target="pacman.game.internal.Node">
+      <point x="8.0" y="-14.5" />
+      <point x="73.58333333333337" y="207.0" />
+      <point x="118.33333333333337" y="207.0" />
+      <point x="-16.25" y="14.5" />
+    </edge>
+    <edge source="pacman.game.internal.Maze" target="pacman.game.internal.AStar">
+      <point x="-8.0" y="-14.5" />
+      <point x="57.58333333333337" y="217.0" />
+      <point x="65.83333333333337" y="217.0" />
+      <point x="16.25" y="14.5" />
+    </edge>
+    <edge source="pacman.Executor" target="pacman.controllers.examples.StarterGhosts">
+      <point x="10.875" y="-14.5" />
+      <point x="176.22348484848487" y="583.0" />
+      <point x="241.84848484848487" y="583.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="pacman.game.internal.N" target="pacman.game.internal.E">
+      <point x="-5.25" y="14.5" />
+      <point x="29.00000000000003" y="59.0" />
+      <point x="33.50000000000003" y="59.0" />
+      <point x="9.75" y="-14.5" />
+    </edge>
+    <edge source="pacman.game.internal.DNode" target="pacman.game.internal.JunctionData">
+      <point x="18.75" y="-14.5" />
+      <point x="251.33333333333337" y="133.0" />
+      <point x="270.33333333333337" y="133.0" />
+      <point x="28.25" y="14.5" />
+    </edge>
+    <edge source="pacman.game.Game" target="pacman.game.internal.PathsCache">
+      <point x="6.090909090909122" y="-14.5" />
+      <point x="235.90472027972027" y="296.0" />
+      <point x="245.58333333333337" y="296.0" />
+      <point x="-13.0" y="14.5" />
+    </edge>
+    <edge source="pacman.controllers.HumanController" target="pacman.controllers.Controller">
+      <point x="-35.0" y="-14.5" />
+      <point x="726.3484848484849" y="484.0" />
+      <point x="471.3885489510491" y="484.0" />
+      <point x="38.000000000000114" y="14.5" />
+    </edge>
+    <edge source="pacman.entries.ghosts.MyGhosts" target="pacman.controllers.Controller">
+      <point x="0.0" y="-14.5" />
+      <point x="624.3484848484849" y="494.0" />
+      <point x="452.3885489510491" y="494.0" />
+      <point x="19.000000000000114" y="14.5" />
+    </edge>
+    <edge source="pacman.game.internal.PathsCache" target="pacman.game.internal.DNode">
+      <point x="-13.0" y="-14.5" />
+      <point x="245.58333333333337" y="217.0" />
+      <point x="251.33333333333337" y="217.0" />
+      <point x="18.75" y="14.5" />
+    </edge>
+    <edge source="pacman.game.internal.PathsCache" target="pacman.game.internal.Junction">
+      <point x="13.0" y="-14.5" />
+      <point x="271.58333333333337" y="207.0" />
+      <point x="311.08333333333337" y="207.0" />
+      <point x="-21.0" y="14.5" />
+    </edge>
+    <edge source="pacman.game.GameView" target="pacman.game.Game">
+      <point x="0.0" y="-14.5" />
+      <point x="114.34848484848487" y="405.0" />
+      <point x="207.48047785547777" y="405.0" />
+      <point x="-22.33333333333337" y="14.5" />
+    </edge>
+    <edge source="pacman.game.Game" target="pacman.game.internal.Maze">
+      <point x="-18.272727272727252" y="-14.5" />
+      <point x="211.5410839160839" y="316.0" />
+      <point x="86.91666666666669" y="316.0" />
+      <point x="21.333333333333314" y="14.5" />
+    </edge>
+    <edge source="pacman.controllers.Controller" target="pacman.game.Game">
+      <point x="1.1368683772161603E-13" y="-14.5" />
+      <point x="433.3885489510491" y="415.0" />
+      <point x="252.14714452214452" y="415.0" />
+      <point x="22.33333333333337" y="14.5" />
+    </edge>
+    <edge source="pacman.controllers.examples.StarterPacMan" target="pacman.controllers.Controller">
+      <point x="0.0" y="-14.5" />
+      <point x="380.3484848484849" y="504.0" />
+      <point x="414.38854895104896" y="504.0" />
+      <point x="-19.0" y="14.5" />
+    </edge>
+    <edge source="pacman.entries.pacman.MyPacMan" target="pacman.controllers.Controller">
+      <point x="0.0" y="-14.5" />
+      <point x="508.8484848484849" y="504.0" />
+      <point x="433.38854895104896" y="504.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="pacman.controllers.HumanController" target="pacman.controllers.KeyBoardInput">
+      <point x="35.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="pacman.game.internal.PathsCache" target="pacman.game.Game">
+      <point x="13.0" y="14.5" />
+      <point x="271.58333333333337" y="306.0" />
+      <point x="241.99562937062927" y="306.0" />
+      <point x="12.18181818181813" y="-14.5" />
+    </edge>
+    <edge source="pacman.controllers.examples.StarterGhosts" target="pacman.controllers.Controller">
+      <point x="0.0" y="-14.5" />
+      <point x="241.84848484848487" y="494.0" />
+      <point x="395.38854895104896" y="494.0" />
+      <point x="-38.0" y="14.5" />
+    </edge>
+    <edge source="pacman.game.Game" target="pacman.game.internal.Ghost">
+      <point x="-6.090909090909122" y="-14.5" />
+      <point x="223.72290209790202" y="296.0" />
+      <point x="169.33333333333337" y="296.0" />
+      <point x="17.25" y="14.5" />
+    </edge>
+    <edge source="pacman.Executor" target="pacman.game.GameView">
+      <point x="-32.625" y="-14.5" />
+      <point x="132.72348484848487" y="593.0" />
+      <point x="114.34848484848487" y="593.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6445255474452555" x="408.87995469988675" y="385.8097395243488" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
