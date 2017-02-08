@@ -1,79 +1,161 @@
 package pacman.Dijkstra;
 
-import pacman.game.internal.Node;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import static pacman.game.Constants.pathMazes;
 
 /**
+ * Dijkstra's Algorithm class
+ *
  * Created by Ben on 2/4/17.
  */
 public class Dijkstra {
 
-    public void dijkstraAlgorithm( /* Accept the graph being used, start, and end node */) {
-        // read file into a list of nodes
-        // We can look at new Game(0) to see how this is done. But we will
-        // convert them into our own Vertex class so it has a previous and distance value.
+    /**
+     * Takes a maze, start node and end node, and creates an output file with the distance from
+     * the start and end node. Uses dijkstra algorithm.
+     *
+     * @param fileName the filename of the maze being used.
+     * @param start the index of the start node.
+     * @param end the index of the end node.
+     */
+    public void dijkstraAlgorithm(String fileName, int start, int end) {
+        System.out.println("Dijkstra on file " + fileName + ".txt. Start: " + start + ". End: "
+            + end);
+        Boolean found = false;
+        // Create a set
+        // Chose a sorted set so we always have shortest at front
+        List<Vertex> Q = new ArrayList<>();
+        loadVertices(fileName, Q);
 
-        // create node set Q
-        Set<Node> Q = new HashSet<>(); // We don't necessarily need to use node here
-        // we need an object with the following fields:
-        // OUR_NODE_OBJECT
-        //      previous
-        //      distance
-        //      List<OUR_NODE_OBJECT> neighbors
+        // Set distance of start node to 0
+        for(Vertex v : Q) {
+            if(v.getIndex() == start) {
+                v.setDistance(0);
+            }
+        }
 
+        while (!Q.isEmpty()) {
+            Collections.sort(Q, VertexDistanceComparator);
 
+            // Take node u in Q with least distance
+            Vertex u = Q.get(0);
 
-        // for each node:
-        // set dist[v] to infinity
-        // set prev[v] to undefined
-        // add node to Q
+            // Remove u from Q since it's best path has been found
+            Q.remove(u);
 
-        // set distance of start node to 0
+            // If u is the end node then terminate algorithm
+            if(u.getIndex() == end) {
+                // Output the results
+                endVertexFound(u);
+                found = true;
+                break;
+            }
 
-        // While Q is not empty
-        // take node u in Q with min dist[u]  (start is used first)
-        // remove u from Q
-        // if u is the end node then terminate algorithm
-        //
             // for each neighbor (v) of u
-            // dist[v] = min of (dist[v] and dist[u] + length from u to v)
-            // NOTE: we use a distance of 1 between neighbors (length u to v = 1)
+            int[] neighbors = u.getNeighbors();
 
-        // As long has end has been removed from Q then we found an answer:
-        // return distance of end node and its prev node
+            for(Vertex v : Q) {
+                for (int index = 0; index < neighbors.length; index++) {
+                    if(v.getIndex() == neighbors[index]) {
+                        // If a better distance is found, update distance and previous node.
+                        if(v.getDistance() > u.getDistance() + 1) {
+                            v.setDistance(u.getDistance() + 1);
+                            v.setPrevious(u);
+                        }
+                    }
+                }
+            }
+        }
 
-        // NOTE:
-        // Correct, there is no readme in data/distances. But you can find some explanation in
-        // the comments right above Maze.java -> private void loadDistances(String fileName). You
-        // can also refer to Game.java -> public int getShortestPathDistance(int fromNodeIndex,
-        // int toNodeIndex) for how the pre-loaded distances get used. You can assume each node
-        // is 1 unit from any neighbor.
+        if(!found) {
+            System.out.println("The end vertex was not found.");
+        }
+    }
 
 
+    /* Private functions */
+    /**
+     * Loads all the nodes from files into a set of vertices.
+     * @param fileName to read
+     * @param Q set to insert vertices to
+     */
+    private void loadVertices(String fileName, List<Vertex> Q)
+    {
+        try
+        {
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream
+                (pathMazes+System.getProperty("file.separator")+fileName+".txt")));
+
+            /* Don't need to use preamble line */
+            String preableLine = br.readLine();
+
+            String input = br.readLine();
+
+            while(input!=null)
+            {
+                String[] values = input.split("\t");
+
+                int index = Integer.parseInt(values[0]);
+
+                int[] neighbors = new int[]{Integer.parseInt(values[3]), Integer.parseInt
+                    (values[4]),
+                    Integer.parseInt(values[5]),Integer.parseInt(values[6])};
+
+                // Initialize vertices with an index and neighbors
+                // Leave distance as max value and previous vertex as null
+                Vertex vertex = new Vertex(index, neighbors);
+
+                Q.add(vertex);
+
+                input = br.readLine();
+            }
+        }
+        catch(Exception errorSent)
+        {
+            errorSent.printStackTrace();
+        }
+    }
+
+    /**
+     * Outputs the results upon success.
+     *
+     * @param end vertex
+     */
+    private void endVertexFound(Vertex end) {
         // write output:
         // To get path and distances
         // while prev[u] is defined:
         //  insert u at beginning of a path list.
         //  u = prev[u]
         // insert u at beginning of a path list. (last one isn't found in loop)
-
+        System.out.println("End vertex found! Distance: " + end.getDistance());
     }
 
-    /* Private functions */
 
+    /* Vertex class to be used to store data for the nodes. */
     private class Vertex {
+        private int index;
         private Vertex previous;
         private int distance;
-        private List<Vertex> neighbors;
+        private int[] neighbors;
 
-        protected Vertex() {
+        private Vertex(int index, int[] neighbors) {
+            this.index = index;
             this.previous = null;
             this.distance = Integer.MAX_VALUE;
-            this.neighbors = new ArrayList<>();
+            this.neighbors = neighbors;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
         }
 
         public Vertex getPrevious() {
@@ -92,12 +174,38 @@ public class Dijkstra {
             this.distance = distance;
         }
 
-        public List<Vertex> getNeighbors() {
+        public int[] getNeighbors() {
             return neighbors;
         }
 
-        public void setNeighbors(List<Vertex> neighbors) {
+        public void setNeighbors(int[] neighbors) {
             this.neighbors = neighbors;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            try {
+                Vertex v = (Vertex) obj;
+                return (v.getIndex() == this.getIndex());
+            }
+            catch (Exception e) {
+                return false;
+            }
+        }
     }
+
+    private static Comparator<Vertex> VertexDistanceComparator = new Comparator<Vertex>() {
+
+        public int compare(Vertex fruit1, Vertex fruit2) {
+            if(fruit1.getDistance() > fruit2.getDistance()) {
+                return 1;
+            } else if(fruit1.getDistance() < fruit2.getDistance()){
+                return -1;
+            } else if(fruit1.getIndex() > fruit2.getIndex()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    };
 }
