@@ -12,7 +12,6 @@ import java.util.Set;
  */
 public class Dijkstra {
 
-
     public void dijkstraAlgorithm( /* Accept the graph being used, start, and end node */) {
         // read file into a list of nodes
         // We can look at new Game(0) to see how this is done. But we will
@@ -101,5 +100,4 @@ public class Dijkstra {
             this.neighbors = neighbors;
         }
     }
-
 }
