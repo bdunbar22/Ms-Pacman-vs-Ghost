@@ -44,7 +44,7 @@ public class Dijkstra {
             // Take node u in Q with least distance
             Vertex u = Q.get(0);
 
-            // Remove u from Q since it's best path has been found
+            // Remove u from Q since it's best path has been found （visited）
             Q.remove(u);
 
             // If u is the end node then terminate algorithm
