@@ -26,6 +26,29 @@ public class Dijkstra {
 
         //NOTE: maybe we can just go from node 1 to the last node, then node 2 to the last node,
         // then node 3 to last, etc.
+
+
+        //NOTE on output file
+        // RETRIEVE distance from 1D array
+//        /**
+//	 * Returns the PATH distance from any node to any other node.
+//	 *
+//	 * @param fromNodeIndex the from node index
+//	 * @param toNodeIndex the to node index
+//	 * @return the shortest path distance
+//	 */
+//        public int getShortestPathDistance(int fromNodeIndex,int toNodeIndex)
+//        {
+//            if(fromNodeIndex==toNodeIndex)
+//                return 0;
+//            else if(fromNodeIndex<toNodeIndex)
+//                return currentMaze.shortestPathDistances[((toNodeIndex*(toNodeIndex+1))/2) + fromNodeIndex];
+//            else
+//                return currentMaze.shortestPathDistances[((fromNodeIndex*(fromNodeIndex+1))/2)+toNodeIndex];
+//        }
+
+        //1 D array length
+//        this.shortestPathDistances=new int[((graph.length*(graph.length-1))/2)+graph.length];
     }
 
     /**

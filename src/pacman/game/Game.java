@@ -1268,7 +1268,7 @@ public final class Game
 		if(fromNodeIndex==toNodeIndex)
 			return 0;		
 		else if(fromNodeIndex<toNodeIndex)
-			return currentMaze.shortestPathDistances[((toNodeIndex*(toNodeIndex+1))/2)+fromNodeIndex];
+			return currentMaze.shortestPathDistances[((toNodeIndex*(toNodeIndex+1))/2) + fromNodeIndex];
 		else
 			return currentMaze.shortestPathDistances[((fromNodeIndex*(fromNodeIndex+1))/2)+toNodeIndex];
 	}
