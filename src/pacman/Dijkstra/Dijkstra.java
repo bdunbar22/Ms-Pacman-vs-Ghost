@@ -15,6 +15,20 @@ import static pacman.game.Constants.pathMazes;
 public class Dijkstra {
 
     /**
+     * Take a maze and then compute the distance from every node to every other node.
+     * @param fileName maze to compute dijkstra on.
+     */
+    public void dijkstraOnMaze(String fileName) {
+        // For each node
+            // For every other node
+                //dijkstra algorithm
+                //NOTE: change dijkstra algorithm to take a list of nodes.
+
+        //NOTE: maybe we can just go from node 1 to the last node, then node 2 to the last node,
+        // then node 3 to last, etc.
+    }
+
+    /**
      * Takes a maze, start node and end node, and creates an output file with the distance from
      * the start and end node. Uses dijkstra algorithm.
      *
