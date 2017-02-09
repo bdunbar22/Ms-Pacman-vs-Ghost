@@ -15,15 +15,15 @@ import pacman.game.internal.Node;
  */
 public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 {
-	private final static int PILL_PROXIMITY = 12;		//if Ms Pac-Man is this near a power pill, run
+	private final static int PILL_PROXIMITY = 15;		//if Ms Pac-Man is this near a power pill, run
 
 	private EnumMap<GHOST, MOVE> myMoves=new EnumMap<GHOST, MOVE>(GHOST.class);
 	
 	public EnumMap<GHOST, MOVE> getMove(Game game, long timeDue)
 	{
 		myMoves.clear();
-		int pacManCurrentNodeIndex = game.getPacmanCurrentNodeIndex();
-		int ghostCurrentNodeIndex;
+		int pacManNodeIndex = game.getPacmanCurrentNodeIndex();
+		int ghostNodeIndex;
 
 		for(GHOST ghost : GHOST.values())	//for each ghost
 		{
@@ -37,10 +37,10 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 				else
 				{
 						// attack Ms. Pacman with self written code.
-						ghostCurrentNodeIndex = game.getGhostCurrentNodeIndex(ghost);
+						ghostNodeIndex = game.getGhostCurrentNodeIndex(ghost);
 
-						MOVE move = getNextMoveAStar(game.getCurrentMaze().graph, pacManCurrentNodeIndex,
-							ghostCurrentNodeIndex);
+						MOVE move = getNextMoveAStar(game.getCurrentMaze().graph, pacManNodeIndex, ghostNodeIndex);
+
 						myMoves.put(ghost, move);
 				}
 			}
@@ -49,13 +49,23 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 		return myMoves;
 	}
 
-	public MOVE getNextMoveAStar(Node[] graph, int pacManCurrentNodeIndex, int
-		ghostCurrentNodeIndex) {
+	/**
+	 * Run A* algorithm on the list of nodes to get short path from the ghost to the pacman.
+	 * Return the direction the ghost has to go to start down the path.
+	 *
+	 * @param graph list of nodes
+	 * @param pacManNodeIndex pacman location
+	 * @param ghostNodeIndex ghost location
+	 * @return direction to travel
+	 */
+	public MOVE getNextMoveAStar(Node[] graph, int pacManNodeIndex, int ghostNodeIndex) {
 
 
 
 		return MOVE.NEUTRAL;
 	}
+
+
 
 	//This helper function checks if Ms Pac-Man is close to an available power pill
 	private boolean closeToPower(Game game)

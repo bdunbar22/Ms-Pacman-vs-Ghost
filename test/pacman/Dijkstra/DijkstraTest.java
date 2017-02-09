@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Test the functionality of the Player
+ * Unit and functionality testing for Dijkstra code.
  *
  * Created by Ben on 2/1/16.
  */

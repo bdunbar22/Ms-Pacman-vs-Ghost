@@ -20,34 +20,44 @@ public class Dijkstra {
      */
     public void dijkstraOnMaze(String fileName) {
         // Create output file
+        List<Vertex> nodes = new ArrayList<>();
+        loadVertices(fileName, nodes);
 
-        // For i to n
-            // for j to i
-                // dijkstra algorithm
-                // write to output file
+        int[] distances = new int[((nodes.size()*(nodes.size()-1))/2)+nodes.size()];
+        // Set all distances to -1 to start
+        for(int i = 0; i < distances.length; i++) {
+            distances[i] = -1;
+        }
 
+        int distance;
+        int index;
 
-        //NOTE on output file
-        // RETRIEVE distance from 1D array
-//        /**
-//	 * Returns the PATH distance from any node to any other node.
-//	 *
-//	 * @param fromNodeIndex the from node index
-//	 * @param toNodeIndex the to node index
-//	 * @return the shortest path distance
-//	 */
-//        public int getShortestPathDistance(int fromNodeIndex,int toNodeIndex)
-//        {
-//            if(fromNodeIndex==toNodeIndex)
-//                return 0;
-//            else if(fromNodeIndex<toNodeIndex)
-//                return currentMaze.shortestPathDistances[((toNodeIndex*(toNodeIndex+1))/2) + fromNodeIndex];
-//            else
-//                return currentMaze.shortestPathDistances[((fromNodeIndex*(fromNodeIndex+1))/2)+toNodeIndex];
-//        }
+        for(Vertex fromNode : nodes) {
+            for(Vertex toNode : nodes) {
+                if(fromNode.getIndex() <= toNode.getDistance()) {
+                    index = ((toNode.getIndex() * (toNode.getIndex() +1))/2) + fromNode.getIndex();
+                    distance = distances[index];
 
-        //1 D array length
-//        this.shortestPathDistances=new int[((graph.length*(graph.length-1))/2)+graph.length];
+                    // If the distance hasn't been found, run dijkstra
+                    if(distance == -1) {
+                        distances[index] = dijkstraAlgorithm(fileName, fromNode.getIndex(),
+                            toNode.getIndex());
+                    }
+                } else {
+                    index = (( fromNode.getIndex() * (fromNode.getIndex() + 1))/2) + toNode.getIndex();
+                    distance = distances[index];
+
+                    // If the distance hasn't been found, run dijkstra
+                    if(distance == -1) {
+                        distances[index] = dijkstraAlgorithm(fileName, fromNode.getIndex(),
+                            toNode.getIndex());
+                    }
+                }
+            }
+        }
+
+        // Create 1D output file, with the values in distances separated by new lines.
+
     }
 
     /**
@@ -58,10 +68,10 @@ public class Dijkstra {
      * @param start the index of the start node.
      * @param end the index of the end node.
      */
-    public void dijkstraAlgorithm(String fileName, int start, int end) {
+    public int dijkstraAlgorithm(String fileName, int start, int end) {
         System.out.println("Dijkstra on file " + fileName + ".txt. Start: " + start + ". End: "
             + end);
-        Boolean found = false;
+
         // Create a set
         // Chose a sorted set so we always have shortest at front
         List<Vertex> Q = new ArrayList<>();
@@ -86,9 +96,7 @@ public class Dijkstra {
             // If u is the end node then terminate algorithm
             if(u.getIndex() == end) {
                 // Output the results
-                endVertexFound(u);
-                found = true;
-                break;
+                return u.getDistance();
             }
 
             // for each neighbor (v) of u
@@ -107,9 +115,8 @@ public class Dijkstra {
             }
         }
 
-        if(!found) {
-            System.out.println("The end vertex was not found.");
-        }
+        // If no path is found, return -1 to indicate no route.
+        return -1;
     }
 
 
