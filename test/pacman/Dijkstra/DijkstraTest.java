@@ -43,3 +43,27 @@ public class DijkstraTest {
         test.dijkstraAlgorithm("b", 3, 6);
     }
 }
+
+    /**
+     * Test Maze C.
+     * The output distance from node 1 to the last node should be the
+     * same as given in the static distance a file.
+     */
+    @Test
+    public void testMazeC() {
+        Dijkstra test = new Dijkstra();
+        test.dijkstraAlgorithm("c", 3, 6);
+    }
+}
+
+/**
+ * Test Maze D.
+ * The output distance from node 1 to the last node should be the
+ * same as given in the static distance a file.
+ */
+@Test
+public void testMazeD() {
+        Dijkstra test = new Dijkstra();
+        test.dijkstraAlgorithm("d", 3, 6);
+        }
+}
