@@ -1,8 +1,6 @@
-package pacman.Dijkstra;
+package pacman.pathFinding;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Unit and functionality testing for Dijkstra code.

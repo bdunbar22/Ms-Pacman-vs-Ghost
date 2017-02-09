@@ -61,9 +61,76 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 	public MOVE getNextMoveAStar(Node[] graph, int pacManNodeIndex, int ghostNodeIndex) {
 
 
+		/*
+			inputs
+			map
+			start and goal locations
+
+			Internal Data
+
+			fringe - a list of map locations to be evaluated, in ascending order of estimated distance
+			closedList - a list of map locations that have been fully evaluated
+
+
+			Data Structure
+
+			RouteNode, contains
+
+			a map location
+			pointer to this node's parent node
+			d, the actual distance traveled to reach this node
+			dPlusL2, which is d + linear distance to goal
+
+
+			Search()
+
+			Put start node onto fringe
+			endNode = findRoute()
+
+
+			findRoute()
+
+			if fringe is empty
+			// No route exists between start and goal.
+			return 0
+			else
+			node = remove first fringe node (it will have the shortest estimated distance to the goal)
+			if node's location is the goal
+			return RouteNode data for current location
+			else
+			if node's location is not on the closedList
+			add node to closedList
+			addChildrenToFringe(node)
+			return findRoute()
+
+
+			addChildrenToFringe(parentNode)
+
+			for all children of parentNode
+			if child's location is not on closedList
+			childNode = new RoutNode()
+			childNode.parent = parentNode
+			childNode.d = parent.d + linearDistance(parent, child)
+			L2 = linearDistance(childNode, goal)
+			childNode.dPlusL2 = childNode.d + L2
+			Add childNode to fringe, maintaining ascending dPlusL2 order
+		 */
 
 		return MOVE.NEUTRAL;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

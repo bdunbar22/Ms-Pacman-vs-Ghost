@@ -1,10 +1,11 @@
-package pacman.Dijkstra;
+package pacman.pathFinding;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
+import static pacman.game.Constants.INTERVAL_WAIT;
 import static pacman.game.Constants.pathMazes;
 
 /**
@@ -40,7 +41,7 @@ public class Dijkstra {
 
                     // If the distance hasn't been found, run dijkstra
                     if(distance == -1) {
-                        distances[index] = dijkstraAlgorithm(fileName, fromNode.getIndex(),
+                        distances[index] = dijkstraAlgorithm(nodes, fromNode.getIndex(),
                             toNode.getIndex());
                     }
                 } else {
@@ -49,7 +50,7 @@ public class Dijkstra {
 
                     // If the distance hasn't been found, run dijkstra
                     if(distance == -1) {
-                        distances[index] = dijkstraAlgorithm(fileName, fromNode.getIndex(),
+                        distances[index] = dijkstraAlgorithm(nodes, fromNode.getIndex(),
                             toNode.getIndex());
                     }
                 }
@@ -64,18 +65,15 @@ public class Dijkstra {
      * Takes a maze, start node and end node, and creates an output file with the distance from
      * the start and end node. Uses dijkstra algorithm.
      *
-     * @param fileName the filename of the maze being used.
+     * @param nodes the list of nodes from a file.
      * @param start the index of the start node.
      * @param end the index of the end node.
      */
-    public int dijkstraAlgorithm(String fileName, int start, int end) {
-        System.out.println("Dijkstra on file " + fileName + ".txt. Start: " + start + ". End: "
-            + end);
-
+    public int dijkstraAlgorithm(List<Vertex> nodes, int start, int end) {
         // Create a set
         // Chose a sorted set so we always have shortest at front
         List<Vertex> Q = new ArrayList<>();
-        loadVertices(fileName, Q);
+        Q.addAll(nodes);
 
         // Set distance of start node to 0
         for(Vertex v : Q) {
@@ -85,7 +83,7 @@ public class Dijkstra {
         }
 
         while (!Q.isEmpty()) {
-            Collections.sort(Q, VertexDistanceComparator);
+            Collections.sort(Q, Vertex.VertexDistanceComparator);
 
             // Take node u in Q with least distance
             Vertex u = Q.get(0);
@@ -119,8 +117,6 @@ public class Dijkstra {
         return -1;
     }
 
-
-    /* Private functions */
     /**
      * Loads all the nodes from files into a set of vertices.
      * @param fileName to read
@@ -143,6 +139,8 @@ public class Dijkstra {
                 String[] values = input.split("\t");
 
                 int index = Integer.parseInt(values[0]);
+                int x = Integer.parseInt(values[1]);
+                int y = Integer.parseInt(values[2]);
 
                 int[] neighbors = new int[]{Integer.parseInt(values[3]), Integer.parseInt
                     (values[4]),
@@ -150,7 +148,7 @@ public class Dijkstra {
 
                 // Initialize vertices with an index and neighbors
                 // Leave distance as max value and previous vertex as null
-                Vertex vertex = new Vertex(index, neighbors);
+                Vertex vertex = new Vertex(index, x, y, neighbors);
 
                 Q.add(vertex);
 
@@ -162,93 +160,4 @@ public class Dijkstra {
             errorSent.printStackTrace();
         }
     }
-
-    /**
-     * Outputs the results upon success.
-     *
-     * @param end vertex
-     */
-    private void endVertexFound(Vertex end) {
-        // write output:
-        // To get path and distances
-        // while prev[u] is defined:
-        //  insert u at beginning of a path list.
-        //  u = prev[u]
-        // insert u at beginning of a path list. (last one isn't found in loop)
-        System.out.println("End vertex found! Distance: " + end.getDistance());
-    }
-
-
-    /* Vertex class to be used to store data for the nodes. */
-    private class Vertex {
-        private int index;
-        private Vertex previous;
-        private int distance;
-        private int[] neighbors;
-
-        private Vertex(int index, int[] neighbors) {
-            this.index = index;
-            this.previous = null;
-            this.distance = Integer.MAX_VALUE;
-            this.neighbors = neighbors;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public Vertex getPrevious() {
-            return previous;
-        }
-
-        public void setPrevious(Vertex previous) {
-            this.previous = previous;
-        }
-
-        public int getDistance() {
-            return distance;
-        }
-
-        public void setDistance(int distance) {
-            this.distance = distance;
-        }
-
-        public int[] getNeighbors() {
-            return neighbors;
-        }
-
-        public void setNeighbors(int[] neighbors) {
-            this.neighbors = neighbors;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            try {
-                Vertex v = (Vertex) obj;
-                return (v.getIndex() == this.getIndex());
-            }
-            catch (Exception e) {
-                return false;
-            }
-        }
-    }
-
-    private static Comparator<Vertex> VertexDistanceComparator = new Comparator<Vertex>() {
-
-        public int compare(Vertex fruit1, Vertex fruit2) {
-            if(fruit1.getDistance() > fruit2.getDistance()) {
-                return 1;
-            } else if(fruit1.getDistance() < fruit2.getDistance()){
-                return -1;
-            } else if(fruit1.getIndex() > fruit2.getIndex()) {
-                return 1;
-            } else {
-                return -1;
-            }
-        }
-    };
 }
