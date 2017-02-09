@@ -88,8 +88,8 @@ public class Executor
 	}
 
 		public void dijkstraCalculation() {
-			Dijkstra test = new Dijkstra();
-			test.dijkstraAlgorithm("a", 3, 1000);
+			Dijkstra dijkstraCalculator = new Dijkstra();
+			dijkstraCalculator.dijkstraAlgorithm("a", 3, 1000);
 		}
 	
     /**
