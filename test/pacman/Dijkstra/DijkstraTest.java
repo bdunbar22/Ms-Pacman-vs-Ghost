@@ -35,7 +35,7 @@ public class DijkstraTest {
     /**
      * Test Maze B.
      * The output distance from node 1 to the last node should be the
-     * same as given in the static distance a file.
+     * same as given in the static distance b file.
      */
     @Test
     public void testMazeB() {
@@ -47,7 +47,7 @@ public class DijkstraTest {
     /**
      * Test Maze C.
      * The output distance from node 1 to the last node should be the
-     * same as given in the static distance a file.
+     * same as given in the static distance c file.
      */
     @Test
     public void testMazeC() {
@@ -59,7 +59,7 @@ public class DijkstraTest {
 /**
  * Test Maze D.
  * The output distance from node 1 to the last node should be the
- * same as given in the static distance a file.
+ * same as given in the static distance d file.
  */
 @Test
 public void testMazeD() {
