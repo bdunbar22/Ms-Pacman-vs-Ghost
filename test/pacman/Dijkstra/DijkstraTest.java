@@ -29,7 +29,7 @@ public class DijkstraTest {
     @Test
     public void testMazeA() {
         Dijkstra test = new Dijkstra();
-        test.dijkstraAlgorithm("a", 3, 6);
+        test.dijkstraAlgorithm("a", 0, 1292);
     }
 
     /**
@@ -40,7 +40,7 @@ public class DijkstraTest {
     @Test
     public void testMazeB() {
         Dijkstra test = new Dijkstra();
-        test.dijkstraAlgorithm("b", 3, 6);
+        test.dijkstraAlgorithm("b", 0, 1318);
     }
 }
 
@@ -52,7 +52,7 @@ public class DijkstraTest {
     @Test
     public void testMazeC() {
         Dijkstra test = new Dijkstra();
-        test.dijkstraAlgorithm("c", 3, 6);
+        test.dijkstraAlgorithm("c", 0, 1379);
     }
 }
 
@@ -64,6 +64,6 @@ public class DijkstraTest {
 @Test
 public void testMazeD() {
         Dijkstra test = new Dijkstra();
-        test.dijkstraAlgorithm("d", 3, 6);
+        test.dijkstraAlgorithm("d", 0, 1308);
         }
 }
