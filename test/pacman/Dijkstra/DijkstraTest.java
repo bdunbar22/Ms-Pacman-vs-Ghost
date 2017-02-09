@@ -29,7 +29,11 @@ public class DijkstraTest {
     @Test
     public void testMazeA() {
         Dijkstra test = new Dijkstra();
-        test.dijkstraAlgorithm("a", 0, 1292);
+        test.dijkstraOnMaze("a");
+
+        // Compare output file made to original output file
+        // Read both files into a list of ints
+        // compare the lists
     }
 
     /**
@@ -41,8 +45,9 @@ public class DijkstraTest {
     public void testMazeB() {
         Dijkstra test = new Dijkstra();
         test.dijkstraAlgorithm("b", 0, 1318);
+
+        // Compare output file made to original output file
     }
-}
 
     /**
      * Test Maze C.
@@ -54,16 +59,17 @@ public class DijkstraTest {
         Dijkstra test = new Dijkstra();
         test.dijkstraAlgorithm("c", 0, 1379);
     }
-}
 
-/**
- * Test Maze D.
- * The output distance from node 1 to the last node should be the
- * same as given in the static distance d file.
- */
-@Test
-public void testMazeD() {
+    /**
+     * Test Maze D.
+     * The output distance from node 1 to the last node should be the
+     * same as given in the static distance d file.
+     */
+    @Test
+    public void testMazeD() {
         Dijkstra test = new Dijkstra();
         test.dijkstraAlgorithm("d", 0, 1308);
-        }
+
+        // Compare output file made to original output file
+    }
 }

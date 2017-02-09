@@ -19,13 +19,12 @@ public class Dijkstra {
      * @param fileName maze to compute dijkstra on.
      */
     public void dijkstraOnMaze(String fileName) {
-        // For each node
-            // For every other node
-                //dijkstra algorithm
-                //NOTE: change dijkstra algorithm to take a list of nodes.
+        // Create output file
 
-        //NOTE: maybe we can just go from node 1 to the last node, then node 2 to the last node,
-        // then node 3 to last, etc.
+        // For i to n
+            // for j to i
+                // dijkstra algorithm
+                // write to output file
 
 
         //NOTE on output file
