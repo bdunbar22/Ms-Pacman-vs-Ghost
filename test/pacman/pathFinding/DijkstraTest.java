@@ -69,12 +69,17 @@ public class DijkstraTest {
      */
     @Test
     public void testMazeA() {
-        Dijkstra test = new Dijkstra();
-        String fileLocation = test.dijkstraOnMaze("a");
-        int[] old_distances = new int[836571];
-        int[] new_distances = new int[836571];
         try
         {
+            Dijkstra test = new Dijkstra();
+            String fileLocation = test.dijkstraOnMaze("data/mazes/a");
+            if(fileLocation == null) {
+                throw new Exception("No file found.");
+            }
+
+            int[] old_distances = new int[836571];
+            int[] new_distances = new int[836571];
+
             BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream
                 ("data/distances/da")));
             String input=br.readLine();
@@ -98,8 +103,13 @@ public class DijkstraTest {
                 new_distances[index++]=Integer.parseInt(input);
                 input=br.readLine();
             }
+
+            // Check that the numbers are the same.
+            for(int i = 0; i < old_distances.length; i++) {
+                assertTrue(old_distances[i] == new_distances[i]);
+            }
         }
-        catch(IOException ioe)
+        catch(Exception ioe)
         {
             // Fail the test
             assertTrue(false);

@@ -15,8 +15,10 @@ public class Dijkstra {
     /**
      * Take a maze and then compute the distance from every node to every other node.
      * @param fileName maze to compute dijkstra on.
+     *
+     * @return the file location which was created
      */
-    public void dijkstraOnMaze(String fileName) {
+    public String dijkstraOnMaze(String fileName) {
         // Create output file
         List<Vertex> nodes = new ArrayList<>();
         loadVertices(fileName, nodes);
@@ -56,7 +58,8 @@ public class Dijkstra {
 
         // Create 1D output file, with the values in distances separated by new lines.
         try{
-            String distanceFileName = "distances_for_" + fileName;
+            String distanceFileName = "data/distances/distances_for_" + fileName.replace("/",
+                "_");
             PrintWriter writer = new PrintWriter(distanceFileName, "UTF-8");
 
             // Loop through distances and print
@@ -65,8 +68,9 @@ public class Dijkstra {
             }
 
             writer.close();
+            return distanceFileName;
         } catch (IOException e) {
-            // do something
+            return null;
         }
     }
 
@@ -136,7 +140,7 @@ public class Dijkstra {
         try
         {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream
-                (pathMazes+System.getProperty("file.separator")+fileName+".txt")));
+                (fileName + ".txt")));
 
             /* Don't need to use preamble line */
             String preableLine = br.readLine();
