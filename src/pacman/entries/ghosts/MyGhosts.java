@@ -1,12 +1,17 @@
 package pacman.entries.ghosts;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.List;
+
 import pacman.controllers.Controller;
 import pacman.game.Constants;
 import pacman.game.Constants.GHOST;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 import pacman.game.internal.Node;
+import pacman.pathFinding.Vertex;
 
 /*
  * This is the class you need to modify for your entry. In particular, you need to
@@ -36,12 +41,12 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 						game.getPacmanCurrentNodeIndex(),game.getGhostLastMoveMade(ghost), Constants.DM.PATH));
 				else
 				{
-						// attack Ms. Pacman with self written code.
-						ghostNodeIndex = game.getGhostCurrentNodeIndex(ghost);
+					// attack Ms. Pacman with self written code.
+					ghostNodeIndex = game.getGhostCurrentNodeIndex(ghost);
 
-						MOVE move = getNextMoveAStar(game.getCurrentMaze().graph, pacManNodeIndex, ghostNodeIndex);
+					MOVE move = getNextMoveAStar(game.getCurrentMaze().graph, pacManNodeIndex, ghostNodeIndex);
 
-						myMoves.put(ghost, move);
+					myMoves.put(ghost, move);
 				}
 			}
 		}
@@ -59,64 +64,121 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 	 * @return direction to travel
 	 */
 	public MOVE getNextMoveAStar(Node[] graph, int pacManNodeIndex, int ghostNodeIndex) {
+		try {
 
+			// List of nodes in ascending order of distance estimations
+			List<Vertex> fringe = new ArrayList<>();
 
-		/*
-			inputs
-			map
-			start and goal locations
+			// List of evaluated nodes
+			List<Vertex> closedList = new ArrayList<>();
 
-			Internal Data
+			// Convert nodes into the vertex class we decided to use.
+			Vertex goal = null;
+			List<Vertex> nodes = new ArrayList<>();
+			for (Node n : graph) {
+				Vertex node = new Vertex(n);
+				nodes.add(node);
+				if (node.getIndex() == ghostNodeIndex) {
+					fringe.add(node);
+				}
+				if (node.getIndex() == pacManNodeIndex) {
+					goal = node;
+				}
+			}
 
-			fringe - a list of map locations to be evaluated, in ascending order of estimated distance
-			closedList - a list of map locations that have been fully evaluated
+			// Send neutral if goal wasn't found.
+			if (goal == null) {
+				throw new Exception("Goal not found.");
+			}
 
+			// Get the end position after A* find route
+			Vertex position = findRoute(nodes, closedList, fringe, goal);
 
-			Data Structure
+			// Back trace from end position to start
+			while (position != null && position.getPrevious() != null
+				&& position.getPrevious().getIndex() != ghostNodeIndex) {
+				position = position.getPrevious();
+			}
 
-			RouteNode, contains
+			if (position == null) {
+				throw new Exception("Path error.");
+			}
 
-			a map location
-			pointer to this node's parent node
-			d, the actual distance traveled to reach this node
-			dPlusL2, which is d + linear distance to goal
+			Vertex start = position.getPrevious();
+			int[] neighbors = start.getNeighbors();
 
+			// Order of neighbors: UP, RIGHT, DOWN, LEFT
+			if (neighbors[0] == position.getIndex()) {
+				return MOVE.UP;
+			} else if (neighbors[1] == position.getIndex()) {
+				return MOVE.RIGHT;
+			} else if (neighbors[2] == position.getIndex()) {
+				return MOVE.DOWN;
+			} else if (neighbors[3] == position.getIndex()) {
+				return MOVE.LEFT;
+			}
+			return MOVE.NEUTRAL;
+		}
+		catch (Exception error) {
+			// On error send a neutral move
+			return MOVE.NEUTRAL;
+		}
+	}
 
-			Search()
+	private Vertex findRoute(List<Vertex> nodes, List<Vertex> closedList, List<Vertex>
+		fringe, Vertex goal) {
 
-			Put start node onto fringe
-			endNode = findRoute()
+		if(fringe.isEmpty()) {
+			return null;
+		}
 
+		Collections.sort(fringe, Vertex.VertexDistanceWithHeuristicComparator);
+		// Get shortest estimated distance vertex
+		Vertex vertex = fringe.get(0);
 
-			findRoute()
+		if(vertex.equals(goal)) {
+			return vertex;
+		}
 
-			if fringe is empty
-			// No route exists between start and goal.
-			return 0
-			else
-			node = remove first fringe node (it will have the shortest estimated distance to the goal)
-			if node's location is the goal
-			return RouteNode data for current location
-			else
-			if node's location is not on the closedList
-			add node to closedList
-			addChildrenToFringe(node)
-			return findRoute()
+		if(!closedList.contains(vertex)) {
+			closedList.add(vertex);
+			addChildrenToFringe(nodes, closedList, fringe, vertex, goal);
+		}
 
+		return findRoute(nodes, closedList, fringe, goal);
+	}
 
-			addChildrenToFringe(parentNode)
+	/**
+	 * Examine children of a node, if needed update their prev value and distance and heuristic
+	 * values. If they aren't in the open list then add them to the open list.
+	 *
+	 * @param nodes full node list
+	 * @param closedList list of closed values
+	 * @param fringe open list
+	 * @param parentNode the node being analyzed
+	 * @param goal to reach
+	 * */
+	private void addChildrenToFringe(List<Vertex> nodes, List<Vertex> closedList, List<Vertex>
+		fringe, Vertex parentNode, Vertex goal) {
+		int[] neighbors = parentNode.getNeighbors();
+		for(Vertex v : nodes) {
+			for (int index = 0; index < neighbors.length; index++) {
+				if(v.getIndex() == neighbors[index] && !closedList.contains(v)) {
+					if(v.getDistance() > parentNode.getDistance() + 1) {
+						v.setDistance(parentNode.getDistance() + 1);
+						v.setPrevious(parentNode);
+					}
 
-			for all children of parentNode
-			if child's location is not on closedList
-			childNode = new RoutNode()
-			childNode.parent = parentNode
-			childNode.d = parent.d + linearDistance(parent, child)
-			L2 = linearDistance(childNode, goal)
-			childNode.dPlusL2 = childNode.d + L2
-			Add childNode to fringe, maintaining ascending dPlusL2 order
-		 */
+					int heuristic = (goal.getxPosition() - v.getxPosition()) +
+						(goal.getyPosition() + v.getyPosition());
+					v.setHeuristic(heuristic);
 
-		return MOVE.NEUTRAL;
+					if(!fringe.contains(v)) {
+						fringe.add(v);
+					}
+				}
+			}
+		}
 	}
 
 

@@ -2,6 +2,11 @@ package pacman.pathFinding;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
+
 /**
  * Unit and functionality testing for Dijkstra code.
  *
@@ -10,13 +15,45 @@ import org.junit.Test;
 public class DijkstraTest {
 
     /**
-     * Test from node 3 to node 6 of maze a.
+     * Test on a small set of nodes
      * Based on our analysis, it should have a distance of 3.
      */
     @Test
     public void testShortDistance() {
         Dijkstra test = new Dijkstra();
-        test.dijkstraAlgorithm("a", 3, 6);
+        List<Vertex> nodes = makeSmallGraph();
+        int distance = test.dijkstraAlgorithm(nodes, 0, 9);
+        assertTrue(distance == 5);
+    }
+
+    /**
+     * Test on a small set of nodes
+     * Based on our analysis, it should have a distance of 3.
+     */
+    @Test
+    public void testNoRoute() {
+        Dijkstra test = new Dijkstra();
+        List<Vertex> nodes = makeSmallGraph();
+        int distance = test.dijkstraAlgorithm(nodes, 0, 11);
+        assertTrue(distance == -1);
+    }
+
+    private List<Vertex> makeSmallGraph() {
+        List<Vertex> nodes = new ArrayList<>();
+        // UP, RIGHT, DOWN, LEFT
+        nodes.add(new Vertex(0, 0, 0, new int[] {-1, 1, -1, -1}));
+        nodes.add(new Vertex(1, 1, 0, new int[] {4, 2, -1, 0}));
+        nodes.add(new Vertex(2, 2, 0, new int[] {-1, 3, -1, 1}));
+        nodes.add(new Vertex(3, 3, 0, new int[] {5, -1, -1, 2}));
+        nodes.add(new Vertex(4, 1, 1, new int[] {6, -1, 1, -1}));
+        nodes.add(new Vertex(5, 3, 1, new int[] {7, -1, 3, -1}));
+        nodes.add(new Vertex(6, 1, 2, new int[] {8, -1, 4, -1}));
+        nodes.add(new Vertex(7, 3, 2, new int[] {10, -1, 5, -1}));
+        nodes.add(new Vertex(8, 1, 3, new int[] {-1, 9, 6, -1}));
+        nodes.add(new Vertex(9, 2, 3, new int[] {-1, 10, -1, 8}));
+        nodes.add(new Vertex(10, 3, 3, new int[] {-1, -1, 7, 9}));
+        nodes.add(new Vertex(11, 0, 4, new int[] {-1, -1, -1, -1})); // No neighbors
+        return nodes;
     }
 
     /**
@@ -42,7 +79,7 @@ public class DijkstraTest {
     @Test
     public void testMazeB() {
         Dijkstra test = new Dijkstra();
-        test.dijkstraAlgorithm("b", 0, 1318);
+        test.dijkstraOnMaze("b");
 
         // Compare output file made to original output file
     }
@@ -55,7 +92,7 @@ public class DijkstraTest {
     @Test
     public void testMazeC() {
         Dijkstra test = new Dijkstra();
-        test.dijkstraAlgorithm("c", 0, 1379);
+        test.dijkstraOnMaze("c");
     }
 
     /**
@@ -66,7 +103,7 @@ public class DijkstraTest {
     @Test
     public void testMazeD() {
         Dijkstra test = new Dijkstra();
-        test.dijkstraAlgorithm("d", 0, 1308);
+        test.dijkstraOnMaze("d");
 
         // Compare output file made to original output file
     }

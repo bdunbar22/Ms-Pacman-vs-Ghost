@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Random;
 
+import pacman.controllers.examples.StarterPacMan;
+import pacman.entries.ghosts.MyGhosts;
 import pacman.pathFinding.Dijkstra;
 import pacman.controllers.Controller;
 import pacman.controllers.HumanController;
@@ -36,7 +38,12 @@ public class Executor
 	{
 		Executor exec=new Executor();
 
-		exec.dijkstraCalculation();
+		//Uncomment to run dijkstra.
+		//exec.dijkstraCalculation();
+
+		//Uncomment to run A* ghosts
+		boolean visual = true;
+		exec.runGameTimed(new StarterPacMan(), new MyGhosts(), visual);
 
 		/*
 		//run multiple games in batch mode - good for testing.
@@ -78,7 +85,7 @@ public class Executor
 
 		public void dijkstraCalculation() {
 			Dijkstra dijkstraCalculator = new Dijkstra();
-			dijkstraCalculator.dijkstraAlgorithm("a", 3, 1000);
+			dijkstraCalculator.dijkstraOnMaze("a");
 		}
 	
     /**

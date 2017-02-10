@@ -1,5 +1,8 @@
 package pacman.pathFinding;
 
+import pacman.game.Constants;
+import pacman.game.internal.Node;
+
 import java.util.Comparator;
 
 /**
@@ -14,6 +17,7 @@ public class Vertex {
     private Vertex previous;
     private int distance;
     private int[] neighbors;
+    private int heuristic;
 
     public Vertex(int index, int x, int y, int[] neighbors) {
         this.index = index;
@@ -22,6 +26,40 @@ public class Vertex {
         this.previous = null;
         this.distance = Integer.MAX_VALUE;
         this.neighbors = neighbors;
+        this.heuristic = 0;
+    }
+
+    // Easily create a vertex from a node.
+    public Vertex(Node n) {
+        int[] neighbors = new int[4];
+        if(n.neighbourhood.get(Constants.MOVE.UP) != null) {
+            neighbors[0] = n.neighbourhood.get(Constants.MOVE.UP);
+        } else {
+            neighbors[0] = -1;
+        }
+        if(n.neighbourhood.get(Constants.MOVE.RIGHT) != null) {
+            neighbors[1] = n.neighbourhood.get(Constants.MOVE.RIGHT);
+        } else {
+            neighbors[1] = -1;
+        }
+        if(n.neighbourhood.get(Constants.MOVE.DOWN) != null) {
+            neighbors[2] = n.neighbourhood.get(Constants.MOVE.DOWN);
+        } else {
+            neighbors[2] = -1;
+        }
+        if(n.neighbourhood.get(Constants.MOVE.LEFT) != null) {
+            neighbors[3] = n.neighbourhood.get(Constants.MOVE.LEFT);
+        } else {
+            neighbors[3] = -1;
+        }
+
+        this.index = n.nodeIndex;
+        this.xPosition = n.x;
+        this.yPosition = n.y;
+        this.previous = null;
+        this.distance = Integer.MAX_VALUE;
+        this.neighbors = neighbors;
+        this.heuristic = 0;
     }
 
     public int getIndex() {
@@ -72,6 +110,14 @@ public class Vertex {
         this.neighbors = neighbors;
     }
 
+    public int getHeuristic() {
+        return heuristic;
+    }
+
+    public void setHeuristic(int heuristic) {
+        this.heuristic = heuristic;
+    }
+
     @Override
     public boolean equals(Object obj) {
         try {
@@ -84,12 +130,29 @@ public class Vertex {
     }
 
     public static Comparator<Vertex> VertexDistanceComparator = new Comparator<Vertex>() {
-        public int compare(Vertex fruit1, Vertex fruit2) {
-            if(fruit1.getDistance() > fruit2.getDistance()) {
+        public int compare(Vertex v1, Vertex v2) {
+            if(v1.getDistance() > v2.getDistance()) {
                 return 1;
-            } else if(fruit1.getDistance() < fruit2.getDistance()){
+            } else if(v1.getDistance() < v2.getDistance()){
                 return -1;
-            } else if(fruit1.getIndex() > fruit2.getIndex()) {
+            } else if(v1.getIndex() > v2.getIndex()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    };
+
+    public static Comparator<Vertex> VertexDistanceWithHeuristicComparator = new
+        Comparator<Vertex>() {
+        public int compare(Vertex v1, Vertex v2) {
+            if(v1.getDistance() + v1.getHeuristic() >
+                v2.getDistance() + v2.getHeuristic()) {
+                return 1;
+            } else if(v1.getDistance() + v1.getHeuristic() <
+                v2.getDistance() + v2.getHeuristic()){
+                return -1;
+            } else if(v1.getIndex() > v2.getIndex()) {
                 return 1;
             } else {
                 return -1;
