@@ -39,11 +39,11 @@ public class Executor
 		Executor exec=new Executor();
 
 		//Uncomment to run dijkstra.
-		//exec.dijkstraCalculation();
+		exec.dijkstraCalculation();
 
 		//UNCOMMENT TO RUN A* ghosts
-		boolean visual = true;
-		exec.runGameTimed(new StarterPacMan(), new MyGhosts(), visual);
+		//boolean visual = true;
+		//exec.runGameTimed(new StarterPacMan(), new MyGhosts(), visual);
 
 		/*
 		//run multiple games in batch mode - good for testing.
@@ -85,7 +85,7 @@ public class Executor
 
 		public void dijkstraCalculation() {
 			Dijkstra dijkstraCalculator = new Dijkstra();
-			dijkstraCalculator.dijkstraOnMaze("a");
+			dijkstraCalculator.dijkstraOnMaze("data/mazes/a");
 		}
 	
     /**

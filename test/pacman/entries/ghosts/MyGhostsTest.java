@@ -22,7 +22,7 @@ import static pacman.game.Constants.DELAY;
 public class MyGhostsTest {
 
     /**
-     * Test that the controller will function with a timed game.
+     * Test that the controller will function correctly with a timed game.
      *
      * @throws Exception
      */

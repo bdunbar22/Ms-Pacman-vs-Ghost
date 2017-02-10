@@ -12,6 +12,8 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Unit and functionality testing for Dijkstra code.
+ * Unit test the function on short route and no route with a small graph.
+ * Functionally test with the maze and output data files.
  *
  * Created by Ben on 2/1/16.
  */
