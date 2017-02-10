@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
-import static pacman.game.Constants.INTERVAL_WAIT;
 import static pacman.game.Constants.pathMazes;
 
 /**

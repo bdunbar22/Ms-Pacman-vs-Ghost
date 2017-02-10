@@ -2,10 +2,16 @@ package pacman.pathFinding;
 
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
+import static pacman.game.Constants.pathDistances;
+import static pacman.game.Constants.pathMazes;
 
 /**
  * Unit and functionality testing for Dijkstra code.
@@ -58,52 +64,82 @@ public class DijkstraTest {
 
     /**
      * Test Maze A.
-     * The output distance from node 1 to the last node should be the
-     * same as given in the static distance a file.
+     *
+     * Compare the generated file to the existing file.
      */
     @Test
     public void testMazeA() {
         Dijkstra test = new Dijkstra();
-        test.dijkstraOnMaze("a");
+        String fileLocation = test.dijkstraOnMaze("a");
+        int[] old_distances = new int[836571];
+        int[] new_distances = new int[836571];
+        try
+        {
+            BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream
+                ("data/distances/da")));
+            String input=br.readLine();
 
-        // Compare output file made to original output file
-        // Read both files into a list of ints
-        // compare the lists
+            int index=0;
+
+            while(input!=null)
+            {
+                old_distances[index++]=Integer.parseInt(input);
+                input=br.readLine();
+            }
+
+            br = new BufferedReader(new InputStreamReader(new FileInputStream
+                (fileLocation)));
+            input=br.readLine();
+
+            index=0;
+
+            while(input!=null)
+            {
+                new_distances[index++]=Integer.parseInt(input);
+                input=br.readLine();
+            }
+        }
+        catch(IOException ioe)
+        {
+            // Fail the test
+            assertTrue(false);
+            ioe.printStackTrace();
+        }
     }
 
     /**
      * Test Maze B.
-     * The output distance from node 1 to the last node should be the
-     * same as given in the static distance b file.
+     *
+     * Compare the generated file to the existing file.
      */
     @Test
     public void testMazeB() {
-        Dijkstra test = new Dijkstra();
-        test.dijkstraOnMaze("b");
+        //Dijkstra test = new Dijkstra();
+        //test.dijkstraOnMaze("b");
 
         // Compare output file made to original output file
     }
 
     /**
      * Test Maze C.
-     * The output distance from node 1 to the last node should be the
-     * same as given in the static distance c file.
+     *
+     * Compare the generated file to the existing file.
      */
     @Test
     public void testMazeC() {
-        Dijkstra test = new Dijkstra();
-        test.dijkstraOnMaze("c");
+        //Dijkstra test = new Dijkstra();
+        //test.dijkstraOnMaze("c");
     }
 
     /**
      * Test Maze D.
-     * The output distance from node 1 to the last node should be the
-     * same as given in the static distance d file.
+     *
+     * Compare the generated file to the existing file.
      */
     @Test
     public void testMazeD() {
-        Dijkstra test = new Dijkstra();
-        test.dijkstraOnMaze("d");
+        //Dijkstra test = new Dijkstra();
+        //test.dijkstraOnMaze("d");
 
         // Compare output file made to original output file
     }
