@@ -55,8 +55,7 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 	}
 
 	/**
-	 * Run A* algorithm on the list of nodes to get short path from the ghost to the pacman.
-	 * Return the direction the ghost has to go to start down the path.
+	 * Convert from provided data into a list of vertices, call A start calculation.
 	 *
 	 * @param graph list of nodes
 	 * @param pacManNodeIndex pacman location
@@ -65,34 +64,19 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 	 */
 	public MOVE getNextMoveAStar(Node[] graph, int pacManNodeIndex, int ghostNodeIndex) {
 		try {
-
-			// List of nodes in ascending order of distance estimations
-			List<Vertex> fringe = new ArrayList<>();
-
-			// List of evaluated nodes
-			List<Vertex> closedList = new ArrayList<>();
-
-			// Convert nodes into the vertex class we decided to use.
-			Vertex goal = null;
 			List<Vertex> nodes = new ArrayList<>();
+			Vertex start = null;
+			Vertex goal = null;
 			for (Node n : graph) {
-				Vertex node = new Vertex(n);
-				nodes.add(node);
-				if (node.getIndex() == ghostNodeIndex) {
-					fringe.add(node);
-				}
-				if (node.getIndex() == pacManNodeIndex) {
-					goal = node;
-				}
+				Vertex v = new Vertex(n);
+				nodes.add(v);
+				if(v.getIndex() == ghostNodeIndex)
+					start = v;
+				else if(v.getIndex() == pacManNodeIndex)
+					goal = v;
 			}
 
-			// Send neutral if goal wasn't found.
-			if (goal == null) {
-				throw new Exception("Goal not found.");
-			}
-
-			// Get the end position after A* find route
-			Vertex position = findRoute(nodes, closedList, fringe, goal);
+			Vertex position = aStarAlgorithm(nodes, start, goal);
 
 			// Back trace from end position to start
 			while (position != null && position.getPrevious() != null
@@ -104,7 +88,7 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 				throw new Exception("Path error.");
 			}
 
-			Vertex start = position.getPrevious();
+			start = position.getPrevious();
 			int[] neighbors = start.getNeighbors();
 
 			// Order of neighbors: UP, RIGHT, DOWN, LEFT
@@ -125,60 +109,78 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 		}
 	}
 
-	private Vertex findRoute(List<Vertex> nodes, List<Vertex> closedList, List<Vertex>
-		fringe, Vertex goal) {
-
-		if(fringe.isEmpty()) {
-			return null;
-		}
-
-		Collections.sort(fringe, Vertex.VertexDistanceWithHeuristicComparator);
-		// Get shortest estimated distance vertex
-		Vertex vertex = fringe.get(0);
-
-		if(vertex.equals(goal)) {
-			return vertex;
-		}
-
-		if(!closedList.contains(vertex)) {
-			closedList.add(vertex);
-			addChildrenToFringe(nodes, closedList, fringe, vertex, goal);
-		}
-
-		return findRoute(nodes, closedList, fringe, goal);
-	}
-
 	/**
-	 * Examine children of a node, if needed update their prev value and distance and heuristic
-	 * values. If they aren't in the open list then add them to the open list.
+	 * Takes a maze, start node and end node, and adds previous node fields to find a path
+	 * between the two using A* algorithm.
 	 *
-	 * @param nodes full node list
-	 * @param closedList list of closed values
-	 * @param fringe open list
-	 * @param parentNode the node being analyzed
-	 * @param goal to reach
-	 * */
-	private void addChildrenToFringe(List<Vertex> nodes, List<Vertex> closedList, List<Vertex>
-		fringe, Vertex parentNode, Vertex goal) {
-		int[] neighbors = parentNode.getNeighbors();
-		for(Vertex v : nodes) {
-			for (int index = 0; index < neighbors.length; index++) {
-				if(v.getIndex() == neighbors[index] && !closedList.contains(v)) {
-					if(v.getDistance() > parentNode.getDistance() + 1) {
-						v.setDistance(parentNode.getDistance() + 1);
-						v.setPrevious(parentNode);
-					}
+	 * @param nodes the list of nodes from a file.
+	 * @param start the start vertex.
+	 * @param goal the end vertex.
+	 * @throws Exception exception if path can't be found.
+	 */
+	private Vertex aStarAlgorithm(List<Vertex> nodes, Vertex start, Vertex goal) throws Exception {
+		if(start == null || goal == null) {
+			throw new Exception("Extrema of search not found.");
+		}
+		// Create a set
+		// Chose a sorted set so we always have shortest at front
+		List<Vertex> openList = new ArrayList<>();
+		List<Vertex> closedList = new ArrayList<>();
+		for(Vertex n : nodes) {
+			n.setDistance(Integer.MAX_VALUE);
+			// Take heuristic from manhattan distance (delta x + delta y)
+			int heuristic = (goal.getxPosition() - n.getxPosition()) + (goal.getyPosition() + n.getyPosition());
+			n.setHeuristic(heuristic);
 
-					int heuristic = (goal.getxPosition() - v.getxPosition()) +
-						(goal.getyPosition() + v.getyPosition());
-					v.setHeuristic(heuristic);
+			if(n.equals(start)) {
+				n.setDistance(0);
+			}
+			openList.add(n);
+		}
 
-					if(!fringe.contains(v)) {
-						fringe.add(v);
+		while (!openList.isEmpty()) {
+			Collections.sort(openList, Vertex.VertexDistanceWithHeuristicComparator);
+
+			// Take node u in Q with least distance
+			Vertex u = openList.get(0);
+
+			// Remove u from Q since it's best path has been found （visited）
+			openList.remove(u);
+			closedList.add(u);
+
+			// If u is the end node then terminate algorithm
+			if(u.equals(goal)) {
+				// Output the results
+				return u;
+			}
+
+			// for each neighbor (v) of u
+			int[] neighbors = u.getNeighbors();
+
+			for(Vertex vertex : nodes) {
+				for (int index = 0; index < neighbors.length; index++) {
+					if(vertex.getIndex() == neighbors[index]) {
+						// If a better distance is found, update distance and previous node.
+						if(vertex.getDistance() > (u.getDistance() + 1)) {
+							vertex.setDistance(u.getDistance() + 1);
+							vertex.setPrevious(u);
+
+							// Update lists
+							if(!openList.contains(vertex)) {
+								if(!closedList.contains(vertex)) {
+									openList.add(vertex);
+								} else {
+									closedList.remove(vertex);
+									openList.add(vertex);
+								}
+							}
+						}
 					}
 				}
 			}
 		}
+
+		throw new Exception("End not reached.");
 	}
 
 
