@@ -3,8 +3,6 @@ package pacman.pathFinding;
 import java.io.*;
 import java.util.*;
 
-import static pacman.game.Constants.pathMazes;
-
 /**
  * Dijkstra's Algorithm class
  *

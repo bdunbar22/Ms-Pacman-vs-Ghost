@@ -6,10 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.Random;
+import java.util.*;
 
+import pacman.controllers.KeyBoardInput;
 import pacman.controllers.examples.StarterPacMan;
 import pacman.entries.ghosts.MyGhosts;
 import pacman.pathFinding.Dijkstra;
@@ -39,11 +38,15 @@ public class Executor
 		Executor exec=new Executor();
 
 		//Uncomment to run dijkstra.
-		exec.dijkstraCalculation();
+		//exec.dijkstraCalculation();
 
 		//UNCOMMENT TO RUN A* ghosts
 		//boolean visual = true;
 		//exec.runGameTimed(new StarterPacMan(), new MyGhosts(), visual);
+
+		//UNCOMMENT TO PLAY AGAINST A*
+		boolean visual = true;
+		exec.runGameTimed(new HumanController(new KeyBoardInput()), new MyGhosts(), visual);
 
 		/*
 		//run multiple games in batch mode - good for testing.
@@ -85,7 +88,21 @@ public class Executor
 
 		public void dijkstraCalculation() {
 			Dijkstra dijkstraCalculator = new Dijkstra();
-			dijkstraCalculator.dijkstraOnMaze("data/mazes/a");
+
+			final Scanner sc = new Scanner(System.in);
+			String inputFile;
+			try {
+				System.out.print("Let's run Dijkstra's Algorithm. Please give a file location: ");
+				inputFile = sc.nextLine();
+			}
+			catch(InputMismatchException exception) {
+				inputFile = "data/mazes/a";
+				System.out.println("Input Error, running maze a by default.");
+			}
+			System.out.println("Maze to run: " + inputFile);
+
+			String output = dijkstraCalculator.dijkstraOnMaze(inputFile);
+			System.out.println("Look for output at: " + output);
 		}
 	
     /**

@@ -14,9 +14,8 @@ import pacman.game.internal.Node;
 import pacman.pathFinding.Vertex;
 
 /*
- * This is the class you need to modify for your entry. In particular, you need to
- * fill in the getActions() method. Any additional classes you write should either
- * be placed in this package or sub-packages (e.g., game.entries.ghosts.mypackage).
+ * MyGhosts implemented with A*, always chases if not edible and pacman not
+ * near power pill.
  */
 public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 {
