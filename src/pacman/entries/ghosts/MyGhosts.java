@@ -45,12 +45,13 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 					ghostNodeIndex = game.getGhostCurrentNodeIndex(ghost);
 
 					MOVE move = getNextMoveAStar(game.getCurrentMaze().graph, pacManNodeIndex, ghostNodeIndex);
+					System.out.println("Ghost: " + ghost.toString() + " Move: " + move.toString());
 
 					myMoves.put(ghost, move);
 				}
 			}
 		}
-		
+		System.out.println("");
 		return myMoves;
 	}
 
