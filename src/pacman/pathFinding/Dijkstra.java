@@ -35,13 +35,13 @@ public class Dijkstra {
             List<Vertex> closedList = dijkstraAlgorithmFullList(nodes, fromNode.getIndex());
 
             for(Vertex visited : closedList) {
-                if(fromNode.getIndex() <= visited.getDistance()) {
+                if(fromNode.getIndex() <= visited.getIndex()) {
                     index = ((visited.getIndex() * (visited.getIndex() + 1)) / 2) + fromNode.getIndex();
                 } else {
                     index = ((fromNode.getIndex() * (fromNode.getIndex() + 1)) / 2) + visited.getIndex();
                 }
-
-                distances[index] = visited.getDistance();
+                if(visited.getDistance() > -1)
+                    distances[index] = visited.getDistance();
             }
         }
 
@@ -132,15 +132,15 @@ public class Dijkstra {
         // Create a set
         // Chose a sorted set so we always have shortest at front
         List<Vertex> Q = new ArrayList<>();
-        Q.addAll(nodes);
-        List<Vertex> closedList = new ArrayList<>();
-
-        // Set distance of start node to 0
-        for(Vertex v : Q) {
-            if(v.getIndex() == start) {
-                v.setDistance(0);
+        for(Vertex n : nodes) {
+            n.setDistance(Integer.MAX_VALUE);
+            if(n.getIndex() == start) {
+                n.setDistance(0);
             }
+            Q.add(n);
         }
+
+        List<Vertex> closedList = new ArrayList<>();
 
         while (!Q.isEmpty()) {
             Collections.sort(Q, Vertex.VertexDistanceComparator);
@@ -168,6 +168,10 @@ public class Dijkstra {
             }
         }
 
+        for(Vertex v : closedList) {
+            if(v.getDistance() == Integer.MAX_VALUE)
+                v.setDistance(-1);
+        }
         return closedList;
     }
 

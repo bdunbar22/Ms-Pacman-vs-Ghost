@@ -74,35 +74,12 @@ public class DijkstraTest {
                 throw new Exception("No file found.");
             }
 
-            int[] old_distances = new int[836571];
-            int[] new_distances = new int[836571];
-
-            BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream
-                ("data/distances/da")));
-            String input=br.readLine();
-
-            int index=0;
-
-            while(input!=null)
-            {
-                old_distances[index++]=Integer.parseInt(input);
-                input=br.readLine();
-            }
-
-            br = new BufferedReader(new InputStreamReader(new FileInputStream
-                (fileLocation)));
-            input=br.readLine();
-
-            index=0;
-
-            while(input!=null)
-            {
-                new_distances[index++]=Integer.parseInt(input);
-                input=br.readLine();
-            }
+            int[] old_distances = readIntFromFile("data/distances/da", 836571);
+            int[] new_distances = readIntFromFile(fileLocation, 836571);
 
             // Check that the numbers are the same.
             for(int i = 0; i < old_distances.length; i++) {
+                // System.out.println("Checking iteration: " + i);
                 assertTrue(old_distances[i] == new_distances[i]);
             }
         }
@@ -121,10 +98,30 @@ public class DijkstraTest {
      */
     @Test
     public void testMazeB() {
-        //Dijkstra test = new Dijkstra();
-        //test.dijkstraOnMaze("b");
+        try
+        {
+            Dijkstra test = new Dijkstra();
+            String fileLocation = test.dijkstraOnMaze("data/mazes/b");
+            if(fileLocation == null) {
+                throw new Exception("No file found.");
+            }
 
-        // Compare output file made to original output file
+            int[] old_distances = readIntFromFile("data/distances/db", 870540);
+            int[] new_distances = readIntFromFile(fileLocation, 870540);
+
+
+            // Check that the numbers are the same.
+            for(int i = 0; i < old_distances.length; i++) {
+                // System.out.println("Checking iteration: " + i);
+                assertTrue(old_distances[i] == new_distances[i]);
+            }
+        }
+        catch(Exception ioe)
+        {
+            // Fail the test
+            assertTrue(false);
+            ioe.printStackTrace();
+        }
     }
 
     /**
@@ -134,8 +131,30 @@ public class DijkstraTest {
      */
     @Test
     public void testMazeC() {
-        //Dijkstra test = new Dijkstra();
-        //test.dijkstraOnMaze("c");
+        try
+        {
+            Dijkstra test = new Dijkstra();
+            String fileLocation = test.dijkstraOnMaze("data/mazes/c");
+            if(fileLocation == null) {
+                throw new Exception("No file found.");
+            }
+
+            int[] old_distances = readIntFromFile("data/distances/dc", 952890);
+            int[] new_distances = readIntFromFile(fileLocation, 952890);
+
+
+            // Check that the numbers are the same.
+            for(int i = 0; i < old_distances.length; i++) {
+                // System.out.println("Checking iteration: " + i);
+                assertTrue(old_distances[i] == new_distances[i]);
+            }
+        }
+        catch(Exception ioe)
+        {
+            // Fail the test
+            assertTrue(false);
+            ioe.printStackTrace();
+        }
     }
 
     /**
@@ -145,9 +164,54 @@ public class DijkstraTest {
      */
     @Test
     public void testMazeD() {
-        //Dijkstra test = new Dijkstra();
-        //test.dijkstraOnMaze("d");
+        try
+        {
+            Dijkstra test = new Dijkstra();
+            String fileLocation = test.dijkstraOnMaze("data/mazes/d");
+            if(fileLocation == null) {
+                throw new Exception("No file found.");
+            }
 
-        // Compare output file made to original output file
+            int[] old_distances = readIntFromFile("data/distances/dd", 857395);
+            int[] new_distances = readIntFromFile(fileLocation, 857395);
+
+
+            // Check that the numbers are the same.
+            for(int i = 0; i < old_distances.length; i++) {
+                // System.out.println("Checking iteration: " + i);
+                assertTrue(old_distances[i] == new_distances[i]);
+            }
+        }
+        catch(Exception ioe)
+        {
+            // Fail the test
+            assertTrue(false);
+            ioe.printStackTrace();
+        }
+    }
+
+    private int[] readIntFromFile(String filename, int fileLength) {
+        try
+        {
+            int[] ints = new int[fileLength];
+
+            BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream
+                (filename)));
+            String input=br.readLine();
+
+            int index=0;
+
+            while(input!=null)
+            {
+                ints[index++]=Integer.parseInt(input);
+                input=br.readLine();
+            }
+
+            return ints;
+        }
+        catch(Exception ioe)
+        {
+            return new int[fileLength];
+        }
     }
 }
