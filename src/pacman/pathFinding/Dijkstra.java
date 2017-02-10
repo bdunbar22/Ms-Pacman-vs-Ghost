@@ -34,24 +34,17 @@ public class Dijkstra {
 
         for(Vertex fromNode : nodes) {
             for(Vertex toNode : nodes) {
-                if(fromNode.getIndex() <= toNode.getDistance()) {
+                if(fromNode.getIndex() <= toNode.getIndex()) {
                     index = ((toNode.getIndex() * (toNode.getIndex() +1))/2) + fromNode.getIndex();
-                    distance = distances[index];
-
-                    // If the distance hasn't been found, run dijkstra
-                    if(distance == -1) {
-                        distances[index] = dijkstraAlgorithm(nodes, fromNode.getIndex(),
-                            toNode.getIndex());
-                    }
                 } else {
                     index = (( fromNode.getIndex() * (fromNode.getIndex() + 1))/2) + toNode.getIndex();
-                    distance = distances[index];
+                }
+                distance = distances[index];
 
-                    // If the distance hasn't been found, run dijkstra
-                    if(distance == -1) {
-                        distances[index] = dijkstraAlgorithm(nodes, fromNode.getIndex(),
-                            toNode.getIndex());
-                    }
+                // If the distance hasn't been found, run dijkstra
+                if(distance == -1) {
+                    distance = dijkstraAlgorithm(nodes, fromNode.getIndex(), toNode.getIndex());
+                    distances[index] = distance;
                 }
             }
         }
@@ -86,13 +79,12 @@ public class Dijkstra {
         // Create a set
         // Chose a sorted set so we always have shortest at front
         List<Vertex> Q = new ArrayList<>();
-        Q.addAll(nodes);
-
-        // Set distance of start node to 0
-        for(Vertex v : Q) {
-            if(v.getIndex() == start) {
-                v.setDistance(0);
+        for(Vertex n : nodes) {
+            n.setDistance(Integer.MAX_VALUE);
+            if(n.getIndex() == start) {
+                n.setDistance(0);
             }
+            Q.add(n);
         }
 
         while (!Q.isEmpty()) {
@@ -107,6 +99,9 @@ public class Dijkstra {
             // If u is the end node then terminate algorithm
             if(u.getIndex() == end) {
                 // Output the results
+                if(u.getDistance() == Integer.MAX_VALUE) {
+                    return -1;
+                }
                 return u.getDistance();
             }
 
@@ -117,7 +112,7 @@ public class Dijkstra {
                 for (int index = 0; index < neighbors.length; index++) {
                     if(v.getIndex() == neighbors[index]) {
                         // If a better distance is found, update distance and previous node.
-                        if(v.getDistance() > u.getDistance() + 1) {
+                        if(v.getDistance() > (u.getDistance() + 1)) {
                             v.setDistance(u.getDistance() + 1);
                             v.setPrevious(u);
                         }

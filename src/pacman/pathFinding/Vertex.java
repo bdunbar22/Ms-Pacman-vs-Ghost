@@ -24,7 +24,7 @@ public class Vertex {
         this.xPosition = x;
         this.yPosition = y;
         this.previous = null;
-        this.distance = -1;
+        this.distance = Integer.MAX_VALUE;
         this.neighbors = neighbors;
         this.heuristic = 0;
     }
@@ -57,7 +57,7 @@ public class Vertex {
         this.xPosition = n.x;
         this.yPosition = n.y;
         this.previous = null;
-        this.distance = -1;
+        this.distance = Integer.MAX_VALUE;
         this.neighbors = neighbors;
         this.heuristic = 0;
     }
@@ -131,9 +131,9 @@ public class Vertex {
 
     public static Comparator<Vertex> VertexDistanceComparator = new Comparator<Vertex>() {
         public int compare(Vertex v1, Vertex v2) {
-            if(v1.getDistance() > v2.getDistance() || v1.getDistance() == -1) {
+            if(v1.getDistance() > v2.getDistance()) {
                 return 1;
-            } else if(v1.getDistance() < v2.getDistance() || v2.getDistance() == -1){
+            } else if(v1.getDistance() < v2.getDistance()){
                 return -1;
             } else if(v1.getIndex() > v2.getIndex()) {
                 return 1;
@@ -147,10 +147,10 @@ public class Vertex {
         Comparator<Vertex>() {
         public int compare(Vertex v1, Vertex v2) {
             if(v1.getDistance() + v1.getHeuristic() >
-                v2.getDistance() + v2.getHeuristic() ||  v1.getDistance() == -1) {
+                v2.getDistance() + v2.getHeuristic()) {
                 return 1;
             } else if(v1.getDistance() + v1.getHeuristic() <
-                v2.getDistance() + v2.getHeuristic() || v2.getDistance() == -1){
+                v2.getDistance() + v2.getHeuristic()){
                 return -1;
             } else if(v1.getIndex() > v2.getIndex()) {
                 return 1;
