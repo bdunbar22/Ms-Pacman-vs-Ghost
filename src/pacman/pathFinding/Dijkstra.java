@@ -1,8 +1,6 @@
 package pacman.pathFinding;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 import static pacman.game.Constants.pathMazes;
@@ -57,7 +55,19 @@ public class Dijkstra {
         }
 
         // Create 1D output file, with the values in distances separated by new lines.
+        try{
+            String distanceFileName = "distances_for_" + fileName;
+            PrintWriter writer = new PrintWriter(distanceFileName, "UTF-8");
 
+            // Loop through distances and print
+            for (int d : distances) {
+                writer.println(Integer.toString(d));
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            // do something
+        }
     }
 
     /**
