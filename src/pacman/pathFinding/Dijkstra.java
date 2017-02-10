@@ -29,30 +29,19 @@ public class Dijkstra {
             distances[i] = -1;
         }
 
-        int distance;
         int index;
 
         for(Vertex fromNode : nodes) {
-            for(Vertex toNode : nodes) {
-                if(fromNode.getIndex() <= toNode.getDistance()) {
-                    index = ((toNode.getIndex() * (toNode.getIndex() +1))/2) + fromNode.getIndex();
-                    distance = distances[index];
+            List<Vertex> closedList = dijkstraAlgorithmFullList(nodes, fromNode.getIndex());
 
-                    // If the distance hasn't been found, run dijkstra
-                    if(distance == -1) {
-                        distances[index] = dijkstraAlgorithm(nodes, fromNode.getIndex(),
-                            toNode.getIndex());
-                    }
+            for(Vertex visited : closedList) {
+                if(fromNode.getIndex() <= visited.getDistance()) {
+                    index = ((visited.getIndex() * (visited.getIndex() + 1)) / 2) + fromNode.getIndex();
                 } else {
-                    index = (( fromNode.getIndex() * (fromNode.getIndex() + 1))/2) + toNode.getIndex();
-                    distance = distances[index];
-
-                    // If the distance hasn't been found, run dijkstra
-                    if(distance == -1) {
-                        distances[index] = dijkstraAlgorithm(nodes, fromNode.getIndex(),
-                            toNode.getIndex());
-                    }
+                    index = ((fromNode.getIndex() * (fromNode.getIndex() + 1)) / 2) + visited.getIndex();
                 }
+
+                distances[index] = visited.getDistance();
             }
         }
 
@@ -128,6 +117,56 @@ public class Dijkstra {
 
         // If no path is found, return -1 to indicate no route.
         return -1;
+    }
+
+    /**
+     * Takes a maze and start node and outputs a list of nodes which each store their distance
+     * from start. Uses dijkstra algorithm.
+     *
+     * @param nodes the list of nodes from a file.
+     * @param start the index of the start node.
+     */
+    public List<Vertex> dijkstraAlgorithmFullList(List<Vertex> nodes, int start) {
+        // Create a set
+        // Chose a sorted set so we always have shortest at front
+        List<Vertex> Q = new ArrayList<>();
+        Q.addAll(nodes);
+        List<Vertex> closedList = new ArrayList<>();
+
+        // Set distance of start node to 0
+        for(Vertex v : Q) {
+            if(v.getIndex() == start) {
+                v.setDistance(0);
+            }
+        }
+
+        while (!Q.isEmpty()) {
+            Collections.sort(Q, Vertex.VertexDistanceComparator);
+
+            // Take node u in Q with least distance
+            Vertex u = Q.get(0);
+
+            // Remove u from Q since it's best path has been found （visited）
+            Q.remove(u);
+            closedList.add(u);
+
+            // for each neighbor (v) of u
+            int[] neighbors = u.getNeighbors();
+
+            for(Vertex v : Q) {
+                for (int index = 0; index < neighbors.length; index++) {
+                    if(v.getIndex() == neighbors[index]) {
+                        // If a better distance is found, update distance and previous node.
+                        if(v.getDistance() > u.getDistance() + 1) {
+                            v.setDistance(u.getDistance() + 1);
+                            v.setPrevious(u);
+                        }
+                    }
+                }
+            }
+        }
+
+        return closedList;
     }
 
     /**
