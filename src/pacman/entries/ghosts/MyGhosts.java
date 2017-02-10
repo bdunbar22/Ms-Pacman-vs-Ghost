@@ -51,7 +51,7 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 				}
 			}
 		}
-		System.out.println("");
+
 		return myMoves;
 	}
 
@@ -135,8 +135,8 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 
 			if(n.equals(start)) {
 				n.setDistance(0);
+				openList.add(n);
 			}
-			openList.add(n);
 		}
 
 		while (!openList.isEmpty()) {
