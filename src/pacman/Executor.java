@@ -41,7 +41,7 @@ public class Executor
 		//Uncomment to run dijkstra.
 		//exec.dijkstraCalculation();
 
-		//Uncomment to run A* ghosts
+		//UNCOMMENT TO RUN A* ghosts
 		boolean visual = true;
 		exec.runGameTimed(new StarterPacMan(), new MyGhosts(), visual);
 

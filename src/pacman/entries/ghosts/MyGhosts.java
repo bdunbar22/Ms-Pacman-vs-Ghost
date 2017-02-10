@@ -45,7 +45,7 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 					ghostNodeIndex = game.getGhostCurrentNodeIndex(ghost);
 
 					MOVE move = getNextMoveAStar(game.getCurrentMaze().graph, pacManNodeIndex, ghostNodeIndex);
-					System.out.println("Ghost: " + ghost.toString() + " Move: " + move.toString());
+					//System.out.println("Ghost: " + ghost.toString() + " Move: " + move.toString());
 
 					myMoves.put(ghost, move);
 				}
@@ -119,7 +119,7 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 	 * @param goal the end vertex.
 	 * @throws Exception exception if path can't be found.
 	 */
-	private Vertex aStarAlgorithm(List<Vertex> nodes, Vertex start, Vertex goal) throws Exception {
+	public Vertex aStarAlgorithm(List<Vertex> nodes, Vertex start, Vertex goal) throws Exception {
 		if(start == null || goal == null) {
 			throw new Exception("Extrema of search not found.");
 		}
@@ -181,21 +181,8 @@ public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
 			}
 		}
 
-		throw new Exception("End not reached.");
+		return null;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
