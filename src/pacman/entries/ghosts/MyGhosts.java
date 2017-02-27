@@ -14,10 +14,10 @@ import pacman.game.internal.Node;
 import pacman.pathFinding.Vertex;
 
 /*
- * MyGhosts implemented with A*, always chases if not edible and pacman not
+ * MyGhosts implemented with A*, always chases if not edible and PacMan not
  * near power pill.
  */
-public class MyGhosts extends Controller<EnumMap<GHOST,MOVE>>
+public class MyGhosts extends Controller<EnumMap<GHOST, MOVE>>
 {
 	private final static int PILL_PROXIMITY = 15;		//if Ms Pac-Man is this near a power pill, run
 
