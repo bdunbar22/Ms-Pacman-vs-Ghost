@@ -10,6 +10,7 @@ src/pacman/entries/pacman/RAPPacman
 src/pacman/decisionMaking/**
 
 data/decisionMaking/**
+data/decisionMaking/readme
 
 test/pacman/entries/pacman/**
 test/pacman/decisionMaking/**
@@ -18,7 +19,8 @@ test/pacman/decisionMaking/**
 TODO
 EXPLAIN HOW TO RUN
 
-
+Best,
+Ben & Mengling
 
 For more information please see the included pdf document: GameAIHW3.pdf
 
