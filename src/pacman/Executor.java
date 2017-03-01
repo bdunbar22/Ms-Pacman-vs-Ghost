@@ -9,7 +9,6 @@ import java.io.PrintWriter;
 import java.util.*;
 
 import pacman.controllers.KeyBoardInput;
-import pacman.controllers.examples.StarterPacMan;
 import pacman.entries.ghosts.MyGhosts;
 import pacman.pathFinding.Dijkstra;
 import pacman.controllers.Controller;
@@ -37,17 +36,28 @@ public class Executor
 	{
 		Executor exec=new Executor();
 
+		/* ASSIGNMENT 2
 		//Uncomment to run dijkstra.
 		//exec.dijkstraCalculation();
 
-		//UNCOMMENT TO RUN A* ghosts
+		//Uncomment to run A* ghosts
 		//boolean visual = true;
 		//exec.runGameTimed(new StarterPacMan(), new MyGhosts(), visual);
 
-		//UNCOMMENT TO PLAY AGAINST A*
+		//Uncomment to play against A*
 		boolean visual = true;
 		exec.runGameTimed(new HumanController(new KeyBoardInput()), new MyGhosts(), visual);
+		*/
 
+		// ASSIGNMENT 3
+		//Uncomment to run DT
+		//boolean visual = true;
+		//exec.runGameTimed(new StarterPacMan(), new StarterGhosts(), visual);
+		//Uncomment to run RAP
+		//boolean visual = true;
+		//exec.runGameTimed(new StarterPacMan(), new StarterGhosts(), visual);
+
+		// Provided
 		/*
 		//run multiple games in batch mode - good for testing.
 		int numTrials=10;
@@ -64,8 +74,8 @@ public class Executor
 		///*
 		//run the game in asynchronous mode.
 		//boolean visual=true;
-//		exec.runGameTimed(new NearestPillPacMan(),new AggressiveGhosts(),visual);
-//		exec.runGameTimed(new StarterPacMan(),new StarterGhosts(),visual);
+		//exec.runGameTimed(new NearestPillPacMan(),new AggressiveGhosts(),visual);
+		//exec.runGameTimed(new StarterPacMan(),new StarterGhosts(),visual);
 		//exec.runGameTimed(new HumanController(new KeyBoardInput()),new StarterGhosts(),visual);
 		//*/
 		

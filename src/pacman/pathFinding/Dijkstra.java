@@ -175,6 +175,9 @@ public class Dijkstra {
 
     /**
      * Loads all the nodes from files into a set of vertices.
+     * File should be of maze type.
+     *
+     *
      * @param fileName to read
      * @param Q set to insert vertices to
      */

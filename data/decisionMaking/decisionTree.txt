@@ -1,0 +1,10 @@
+1
+0   DECISION    null    1   2
+
+
+
+
+
+#   ACTION  NEAREST_PILL
+#   ACTION  RUN
+#   ACTION  ATTACK

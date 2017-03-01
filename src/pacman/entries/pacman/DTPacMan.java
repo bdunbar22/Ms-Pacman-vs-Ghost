@@ -1,6 +1,8 @@
 package pacman.entries.pacman;
 
 import pacman.controllers.Controller;
+import pacman.decisionMaking.ActionType;
+import pacman.decisionMaking.DecisionTree;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
@@ -16,7 +18,21 @@ public class DTPacMan extends Controller<MOVE>
 	public MOVE getMove(Game game, long timeDue) 
 	{
 		//Place your game logic here to play the game as Ms Pac-Man
-		
-		return myMove;
+		DecisionTree decisionTree = new DecisionTree("data/decisionMaking/decisionTree");
+		ActionType action = decisionTree.makeDecision();
+
+		// Perform the action chosen by the tree.
+		switch (action) {
+			case NEAREST_PILL:
+				break;
+			case ATTACK:
+				break;
+			case RUN:
+				break;
+			default:
+				break;
+		}
+
+		return MOVE.NEUTRAL;
 	}
 }
