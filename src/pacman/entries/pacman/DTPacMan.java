@@ -13,7 +13,7 @@ import pacman.game.Game;
  */
 public class DTPacMan extends Controller<MOVE>
 {
-	private MOVE myMove=MOVE.NEUTRAL;
+	private MOVE myMove = MOVE.NEUTRAL;
 	
 	public MOVE getMove(Game game, long timeDue) 
 	{

@@ -1,5 +1,7 @@
 package pacman.decisionMaking;
 
+import pacman.game.Game;
+
 /**
  * Nodes which perform an action will use this
  * class to be able to perform the action.
@@ -9,9 +11,15 @@ package pacman.decisionMaking;
 public class Action implements DecisionTreeNode {
 
     private ActionType action;
+    private Game game;
 
     public Action(String actionInput) {
-        // chose action from action input.
+        try {
+            this.action = ActionType.valueOf(actionInput);
+        }
+        catch (Exception e) {
+            this.action = ActionType.RUN;
+        }
     }
 
     @Override

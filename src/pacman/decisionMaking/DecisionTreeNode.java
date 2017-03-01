@@ -9,5 +9,5 @@ interface DecisionTreeNode {
      * Perform an action if required.
      * Recursively go through treebased on conditions.
      */
-    ActionType makeDecision();
+    ActionType makeDecision(DecisionTreeNode[] decisionTreeNodes);
 }

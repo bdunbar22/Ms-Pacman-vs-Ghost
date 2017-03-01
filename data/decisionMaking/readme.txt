@@ -10,7 +10,9 @@ DecisionTreeText:
 
 - The items in a line will be tab delimited.
 
-- The first item is an id for the node, they should go in order from 0 to numberOfNodes - 1
+- The first item is an id for the node, they should go in order from 0 to numberOfNodes - 1,
+  increasing by 1 each line.
+
 - The second item is the node type, an enum with choices: ACTION, DECISION
 
 The next items depend on the type.
@@ -19,9 +21,10 @@ ACTION
 End Of Line
 
 DECISION
-- The third item is the condition
-- The fourth item is the left node id
-- The fifth item is the right node id
+- The third item is the entity in question with condition: GHOST, EDIBLE_GHOST, POWER_PILL, PILL
+- The fourth item is the distance we are checking for that item to be within
+- The fifth item is the left node id
+- The sixth item is the right node id
 End Of Line
 
 

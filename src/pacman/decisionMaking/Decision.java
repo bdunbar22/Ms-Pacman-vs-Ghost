@@ -8,22 +8,25 @@ package pacman.decisionMaking;
  */
 public class Decision implements DecisionTreeNode {
 
-    // Condition variable
-    private DecisionTreeNode trueNode;
-    private DecisionTreeNode falseNode;
+    // Condition variables
+    private EntityType entityTypeToCheck;
+    private int distanceToLook;
 
-    public Decision(DecisionTreeNode trueNode, DecisionTreeNode falseNode) {
+    private int trueNode;
+    private int falseNode;
+
+    public Decision(int trueNode, int falseNode) {
         this.trueNode = trueNode;
         this.falseNode = falseNode;
     }
 
-    private DecisionTreeNode getBranch() {
+    private int getBranch() {
         return trueNode;
     }
 
     @Override
-    public ActionType makeDecision() {
-        DecisionTreeNode childToCall = getBranch();
-        return childToCall.makeDecision();
+    public ActionType makeDecision(DecisionTreeNode[] decisionTreeNodes) {
+        int decisionTreeNodeToCall = getBranch();
+        return decisionTreeNodes[decisionTreeNodeToCall].makeDecision(decisionTreeNodes);
     }
 }

@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
  */
 public class DecisionTree {
 
-    private DecisionTreeNode[] decisionTree;
+    private DecisionTreeNode[] decisionTreeNodes;
     private String fileName;
 
     public DecisionTree(String fileName) {
@@ -34,23 +34,38 @@ public class DecisionTree {
             String preambleLine = br.readLine();
 
             int numberOfNodes = Integer.parseInt(preambleLine);
-            decisionTree = new DecisionTreeNode[numberOfNodes];
+            decisionTreeNodes = new DecisionTreeNode[numberOfNodes];
 
             String input = br.readLine();
+            int count = 0;
 
             while(input!=null)
             {
-
-                //TODO INPUT NODES!!!!!!
-                //TODO BOTH TYPES!!!
                 String[] values = input.split("\t");
 
                 int index = Integer.parseInt(values[0]);
-                int x = Integer.parseInt(values[1]);
-                int y = Integer.parseInt(values[2]);
+                if(index != count) {
+                    throw new Exception("Malformed decision tree text file. Index error: " +
+                        fileName);
+                }
 
+                String nodeType = values[1];
+                if(nodeType.equals("ACTION")) {
+                    String actiontype = values[2];
+                    decisionTreeNodes[index] = new Action(actiontype);
+                } else if(nodeType.equals("DECISION")) {
+                    String conditionEntity = values[2];
+                    int conditionDistance = Integer.parseInt(values[3]);
+                    int trueChild = Integer.parseInt(values[4]);
+                    int falseChild = Integer.parseInt(values[5]);
+                    decisionTreeNodes[index] = new Decision(trueChild, falseChild);
+                } else {
+                    throw new Exception("Malformed decision tree text file. Format error: " +
+                        fileName);
+                }
 
                 input = br.readLine();
+                count ++;
             }
         }
         catch(Exception errorSent)
@@ -60,6 +75,6 @@ public class DecisionTree {
     }
 
     public ActionType makeDecision() {
-        return decisionTree[0].makeDecision();
+        return decisionTreeNodes[0].makeDecision(decisionTreeNodes);
     }
 }
