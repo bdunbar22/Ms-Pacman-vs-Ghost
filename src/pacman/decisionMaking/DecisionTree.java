@@ -22,7 +22,6 @@ public class DecisionTree {
     /**
      * Loads all the lines from text file into a decision tree.
      * File should be of type: DecisionTreeText. See data/decisionMaking/readme.txt
-     *
      */
     private void loadDecisionTree()
     {

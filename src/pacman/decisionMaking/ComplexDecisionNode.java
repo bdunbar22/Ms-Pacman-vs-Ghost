@@ -4,8 +4,9 @@ package pacman.decisionMaking;
  * In the case a node has an action AND will have a child with a decision,
  * this class will allow the functionality.
  *
- * This class won't be in use for Assignment three, but could be a possibility for
- * more advanced decision making algorithms, so we have included the code to show
+ * This class won't be in use for Assignment three so the implementations has not been
+ * done, but as the need could be a possibility for
+ * more advanced decision making algorithms, we have included the class to show
  * understanding.
  *
  * Created by Ben on 2/28/17.
@@ -27,9 +28,9 @@ public class ComplexDecisionNode implements DecisionTreeNode {
     }
 
     @Override
-    public ActionType makeDecision() {
+    public ActionType makeDecision(DecisionTreeNode[] decisionTreeNodes) {
         //call action
         DecisionTreeNode childToCall = getBranch();
-        return childToCall.makeDecision();
+        return childToCall.makeDecision(decisionTreeNodes);
     }
 }

@@ -9,7 +9,9 @@ import java.io.PrintWriter;
 import java.util.*;
 
 import pacman.controllers.KeyBoardInput;
+import pacman.controllers.examples.StarterGhosts;
 import pacman.entries.ghosts.MyGhosts;
+import pacman.entries.pacman.DTPacMan;
 import pacman.pathFinding.Dijkstra;
 import pacman.controllers.Controller;
 import pacman.controllers.HumanController;
@@ -51,8 +53,9 @@ public class Executor
 
 		// ASSIGNMENT 3
 		//Uncomment to run DT
-		//boolean visual = true;
-		//exec.runGameTimed(new StarterPacMan(), new StarterGhosts(), visual);
+		boolean visual = true;
+		exec.runGameTimed(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(), visual);
+
 		//Uncomment to run RAP
 		//boolean visual = true;
 		//exec.runGameTimed(new StarterPacMan(), new StarterGhosts(), visual);
