@@ -6,6 +6,7 @@ package pacman.decisionMaking;
  * Created by Ben on 2/28/17.
  */
 public enum ActionType {
+    NEAREST_POWER_PILL,
     NEAREST_PILL,
     ATTACK,
     RUN;

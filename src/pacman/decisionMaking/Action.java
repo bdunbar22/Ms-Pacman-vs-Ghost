@@ -23,7 +23,7 @@ public class Action implements DecisionTreeNode {
     }
 
     @Override
-    public ActionType makeDecision(DecisionTreeNode[] decisionTreeNodes) {
+    public ActionType makeDecision(DecisionTreeNode[] decisionTreeNodes, Game game) {
         return action;
     }
 }

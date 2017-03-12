@@ -57,7 +57,8 @@ public class DecisionTree {
                     int conditionDistance = Integer.parseInt(values[3]);
                     int trueChild = Integer.parseInt(values[4]);
                     int falseChild = Integer.parseInt(values[5]);
-                    decisionTreeNodes[index] = new Decision(trueChild, falseChild);
+                    decisionTreeNodes[index] = new Decision(trueChild, falseChild,
+                        conditionEntity, conditionDistance);
                 } else {
                     throw new Exception("Malformed decision tree text file. Format error: " +
                         fileName);

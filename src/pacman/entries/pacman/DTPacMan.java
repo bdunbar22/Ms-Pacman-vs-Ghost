@@ -34,7 +34,6 @@ public class DTPacMan extends Controller<MOVE>
 		switch (action) {
 			case NEAREST_PILL:
 				int[] pills=game.getPillIndices();
-				int[] powerPills=game.getPowerPillIndices();
 
 				ArrayList<Integer> targets=new ArrayList<Integer>();
 
@@ -42,17 +41,31 @@ public class DTPacMan extends Controller<MOVE>
 					if(game.isPillStillAvailable(i))
 						targets.add(pills[i]);
 
-				for(int i=0;i<powerPills.length;i++)
-					if(game.isPowerPillStillAvailable(i))
-						targets.add(powerPills[i]);
-
 				int[] targetsArray = new int[targets.size()];
 
 				for(int i=0;i<targetsArray.length;i++)
 					targetsArray[i] = targets.get(i);
 
-				game.getNextMoveTowardsTarget(current, game.getClosestNodeIndexFromNodeIndex(current,
+				myMove = game.getNextMoveTowardsTarget(current, game.getClosestNodeIndexFromNodeIndex
+				(current,
 					targetsArray, Constants.DM.PATH), Constants.DM.PATH);
+				break;
+			case NEAREST_POWER_PILL:
+				int[] powerPills=game.getPowerPillIndices();
+
+				ArrayList<Integer> powerTargets=new ArrayList<Integer>();
+
+				for(int i=0;i<powerPills.length;i++)
+					if(game.isPowerPillStillAvailable(i))
+						powerTargets.add(powerPills[i]);
+
+				int[] powerTargetsArray = new int[powerTargets.size()];
+
+				for(int i=0;i<powerTargetsArray.length;i++)
+					powerTargetsArray[i] = powerTargets.get(i);
+
+				myMove = game.getNextMoveTowardsTarget(current, game.getClosestNodeIndexFromNodeIndex
+					(current, powerTargetsArray, Constants.DM.PATH), Constants.DM.PATH);
 				break;
 			case ATTACK:
 				int minDistance=Integer.MAX_VALUE;
@@ -71,7 +84,8 @@ public class DTPacMan extends Controller<MOVE>
 					}
 
 				if(minGhost!=null)	//we found an edible ghost
-					return game.getNextMoveTowardsTarget(game.getPacmanCurrentNodeIndex(),game.getGhostCurrentNodeIndex(minGhost),
+					myMove = game.getNextMoveTowardsTarget(game.getPacmanCurrentNodeIndex(),game
+				.getGhostCurrentNodeIndex(minGhost),
 						Constants.DM.PATH);
 				break;
 			case RUN:
@@ -88,11 +102,11 @@ public class DTPacMan extends Controller<MOVE>
 						}
 					}
 
-				return game.getNextMoveAwayFromTarget(game.getPacmanCurrentNodeIndex(),game
+				myMove = game.getNextMoveAwayFromTarget(game.getPacmanCurrentNodeIndex(),game
 					.getGhostCurrentNodeIndex(closestGhostType),
 								Constants.DM.PATH);
 		}
 
-		return MOVE.NEUTRAL;
+		return myMove;
 	}
 }
