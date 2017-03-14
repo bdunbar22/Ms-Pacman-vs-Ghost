@@ -6,9 +6,10 @@ DecisionTreeText:
 
 - Each line of the file will represent a Decision tree node.
 
-- The tree should be added to the file so that the root is the first node.
+- The tree should be added to the file so that the root is the first node. The rest can be any
+  order preferred by the user.
 
-- The items in a line will be tab delimited.
+- The items in a line will be comma delimited.
 
 - The first item is an id for the node, they should go in order from 0 to numberOfNodes - 1,
   increasing by 1 each line.
@@ -17,7 +18,7 @@ DecisionTreeText:
 
 The next items depend on the type.
 ACTION
-- The third item is the action itself
+- The third item is the action itself (See ActionType within src/pacman/decisionMaking folder)
 End Of Line
 
 DECISION

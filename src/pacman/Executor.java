@@ -10,6 +10,7 @@ import java.util.*;
 
 import pacman.controllers.KeyBoardInput;
 import pacman.controllers.examples.StarterGhosts;
+import pacman.controllers.examples.StarterPacMan;
 import pacman.entries.ghosts.MyGhosts;
 import pacman.entries.pacman.DTPacMan;
 import pacman.pathFinding.Dijkstra;
@@ -53,19 +54,28 @@ public class Executor
 
 		// ASSIGNMENT 3
 		//Uncomment to run DT
+		/*
 		boolean visual = true;
-		exec.runGameTimed(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(), visual);
+		exec.runGameTimed(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(),
+		visual);
+		*/
+
+
+		int numTrials = 2;
+		System.out.println("New.");
+		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(), numTrials);
+		System.out.println("Starter.");
+		exec.runExperimentEachMap(new StarterPacMan(),new StarterGhosts(),numTrials);
 
 		//Uncomment to run RAP
 		//boolean visual = true;
 		//exec.runGameTimed(new StarterPacMan(), new StarterGhosts(), visual);
 
 		// Provided
-		/*
+
 		//run multiple games in batch mode - good for testing.
-		int numTrials=10;
-		exec.runExperiment(new RandomPacMan(),new RandomGhosts(),numTrials);
-		 */
+		//int numTrials=3;
+		//exec.runExperiment(new StarterPacMan(),new StarterGhosts(),numTrials);
 		
 		/*
 		//run a game in synchronous mode: game waits until controllers respond.
@@ -149,8 +159,42 @@ public class Executor
 			System.out.println(i+"\t"+game.getScore());
 		}
 		
-		System.out.println(avgScore/trials);
+		System.out.println("AVERAGE: " + avgScore/trials);
     }
+
+	/**
+	 * For running multiple games without visuals. Tries each map.
+	 *
+	 * @param pacManController The Pac-Man controller
+	 * @param ghostController The Ghosts controller
+	 * @param trials The number of trials to be executed
+	 */
+	public void runExperimentEachMap(Controller<MOVE> pacManController,Controller<EnumMap<GHOST,
+		MOVE>> ghostController, int trials)
+	{
+		double avgScore=0;
+
+		Random rnd=new Random(0);
+		Game game;
+
+		for(int j=0;j<4;j++)
+		{
+			for(int i=0;i<trials;i++) {
+				game=new Game(rnd.nextLong(), j);
+
+				while(!game.gameOver())
+				{
+					game.advanceGame(pacManController.getMove(game.copy(),System.currentTimeMillis()+DELAY),
+						ghostController.getMove(game.copy(),System.currentTimeMillis()+DELAY));
+				}
+
+				avgScore+=game.getScore();
+				System.out.println(i+" Maze: " + j + "\t"+game.getScore());
+			}
+		}
+
+		System.out.println("AVERAGE: " + avgScore/(trials*4));
+	}
 	
 	/**
 	 * Run a game in asynchronous mode: the game waits until a move is returned. In order to slow thing down in case

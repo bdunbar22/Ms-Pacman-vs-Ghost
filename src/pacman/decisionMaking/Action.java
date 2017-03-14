@@ -18,7 +18,7 @@ public class Action implements DecisionTreeNode {
             this.action = ActionType.valueOf(actionInput);
         }
         catch (Exception e) {
-            this.action = ActionType.RUN;
+            this.action = ActionType.RUN_AWAY;
         }
     }
 

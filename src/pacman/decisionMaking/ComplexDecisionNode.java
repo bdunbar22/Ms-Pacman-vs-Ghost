@@ -1,5 +1,7 @@
 package pacman.decisionMaking;
 
+import pacman.game.Game;
+
 /**
  * In the case a node has an action AND will have a child with a decision,
  * this class will allow the functionality.
@@ -28,9 +30,9 @@ public class ComplexDecisionNode implements DecisionTreeNode {
     }
 
     @Override
-    public ActionType makeDecision(DecisionTreeNode[] decisionTreeNodes) {
+    public ActionType makeDecision(DecisionTreeNode[] decisionTreeNodes, Game game) {
         //call action
         DecisionTreeNode childToCall = getBranch();
-        return childToCall.makeDecision(decisionTreeNodes);
+        return childToCall.makeDecision(decisionTreeNodes, game);
     }
 }

@@ -1,5 +1,7 @@
 package pacman.decisionMaking;
 
+import pacman.game.Game;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -40,7 +42,7 @@ public class DecisionTree {
 
             while(input!=null)
             {
-                String[] values = input.split("\t");
+                String[] values = input.split(",");
 
                 int index = Integer.parseInt(values[0]);
                 if(index != count) {
@@ -55,8 +57,8 @@ public class DecisionTree {
                 } else if(nodeType.equals("DECISION")) {
                     String conditionEntity = values[2];
                     int conditionDistance = Integer.parseInt(values[3]);
-                    int trueChild = Integer.parseInt(values[4]);
-                    int falseChild = Integer.parseInt(values[5]);
+                    int falseChild = Integer.parseInt(values[4]);
+                    int trueChild = Integer.parseInt(values[5]);
                     decisionTreeNodes[index] = new Decision(trueChild, falseChild,
                         conditionEntity, conditionDistance);
                 } else {
@@ -74,7 +76,7 @@ public class DecisionTree {
         }
     }
 
-    public ActionType makeDecision() {
-        return decisionTreeNodes[0].makeDecision(decisionTreeNodes);
+    public ActionType makeDecision(Game game) {
+        return decisionTreeNodes[0].makeDecision(decisionTreeNodes, game);
     }
 }

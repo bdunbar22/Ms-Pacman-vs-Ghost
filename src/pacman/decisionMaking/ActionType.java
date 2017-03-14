@@ -9,7 +9,7 @@ public enum ActionType {
     NEAREST_POWER_PILL,
     NEAREST_PILL,
     ATTACK,
-    RUN;
+    RUN_AWAY;
 
     ActionType() {}
 

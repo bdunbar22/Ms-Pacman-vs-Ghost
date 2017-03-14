@@ -69,8 +69,12 @@ public class Decision implements DecisionTreeNode {
                 for(int i=0;i<powerTargetsArray.length;i++)
                     powerTargetsArray[i] = powerTargets.get(i);
 
-                foundDistance = game.getShortestPathDistance(current,
-                    game.getClosestNodeIndexFromNodeIndex(current, powerTargetsArray, Constants.DM.PATH));
+                if(powerTargetsArray.length < 1) {
+                    foundDistance = Integer.MAX_VALUE;
+                } else {
+                    foundDistance = game.getShortestPathDistance(current,
+                        game.getClosestNodeIndexFromNodeIndex(current, powerTargetsArray, Constants.DM.PATH));
+                }
                 break;
             case EDIBLE_GHOST:
                 int minDistance=Integer.MAX_VALUE;
@@ -92,7 +96,7 @@ public class Decision implements DecisionTreeNode {
                     foundDistance = minDistance;
                 break;
             case GHOST:
-            default: //Made RUN by default
+            default:
                 Constants.GHOST closestGhostType = null;
                 int closestGhostDistance = Integer.MAX_VALUE;
                 for(Constants.GHOST ghost : Constants.GHOST.values())
