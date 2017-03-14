@@ -34,40 +34,14 @@ public class DTPacMan extends Controller<MOVE>
 		// Perform the action chosen by the tree.
 		switch (action) {
 			case NEAREST_PILL:
-				int[] pills = game.getPillIndices();
+				int closestPill = getClosestPill(game, current);
 
-				ArrayList<Integer> targets = new ArrayList<Integer>();
-
-				for (int i = 0; i < pills.length; i++)
-					if (game.isPillStillAvailable(i))
-						targets.add(pills[i]);
-
-				int[] targetsArray = new int[targets.size()];
-
-				for (int i = 0; i < targetsArray.length; i++)
-					targetsArray[i] = targets.get(i);
-
-				myMove = game.getNextMoveTowardsTarget(current,
-					game.getClosestNodeIndexFromNodeIndex(current, targetsArray, Constants.DM.PATH),
-					Constants.DM.PATH);
+				myMove = game.getNextMoveTowardsTarget(current, closestPill, Constants.DM.PATH);
 				break;
 			case NEAREST_POWER_PILL:
-				int[] powerPills = game.getPowerPillIndices();
+				int closestPowerPill = getClosestPowerPill(game, current);
 
-				ArrayList<Integer> powerTargets = new ArrayList<Integer>();
-
-				for (int i = 0; i < powerPills.length; i++)
-					if (game.isPowerPillStillAvailable(i))
-						powerTargets.add(powerPills[i]);
-
-				int[] powerTargetsArray = new int[powerTargets.size()];
-
-				for (int i = 0; i < powerTargetsArray.length; i++)
-					powerTargetsArray[i] = powerTargets.get(i);
-
-				myMove = game.getNextMoveTowardsTarget(current,
-					game.getClosestNodeIndexFromNodeIndex(current, powerTargetsArray, Constants.DM.PATH),
-					Constants.DM.PATH);
+				myMove = game.getNextMoveTowardsTarget(current, closestPowerPill, Constants.DM.PATH);
 				break;
 			case ATTACK:
 				int minDistance = Integer.MAX_VALUE;
@@ -113,7 +87,7 @@ public class DTPacMan extends Controller<MOVE>
 		for (GHOST ghost : GHOST.values()) {
 			if (game.getGhostEdibleTime(ghost) == 0 && game.getGhostLairTime(ghost) == 0) {
 				int currentGhostDistance = game.getShortestPathDistance(current, game.getGhostCurrentNodeIndex(ghost));
-				if (currentGhostDistance < closestGhostDistance + 15) {
+				if (currentGhostDistance < closestGhostDistance + 25) {
 					for (MOVE move : moves) {
 						if (move.equals(game.getNextMoveTowardsTarget(
 								current,
@@ -125,8 +99,29 @@ public class DTPacMan extends Controller<MOVE>
 				}
 			}
 		}
+		ArrayList<MOVE> betterMoves = new ArrayList<>();
+		for (MOVE move : goodMoves) {
+			int closestPill = getClosestPill(game, current);
+			MOVE nextPill = null;
+			MOVE nextPowerPill = null;
+			if(closestPill >= 0) {
+				nextPill = game.getNextMoveTowardsTarget(current, closestPill, Constants.DM.PATH);
+			}
+			int closestPowerPill = getClosestPowerPill(game, current);
+			if(closestPowerPill >= 0) {
+				nextPowerPill = game.getNextMoveTowardsTarget(current, closestPowerPill, Constants.DM
+					.PATH);
+			}
+			if((nextPill != null && move.equals(nextPill))
+				|| (nextPowerPill != null && move.equals(nextPowerPill))) {
+				betterMoves.add(move);
+			}
+		}
 
-		if(!goodMoves.isEmpty()) {
+		if(!betterMoves.isEmpty()) {
+			myMove = betterMoves.get(0);
+		}
+		else if(!goodMoves.isEmpty()) {
 			myMove = goodMoves.get(0);
 		} else {
 			int[] junctions = game.getJunctionIndices();
@@ -134,5 +129,39 @@ public class DTPacMan extends Controller<MOVE>
 				.PATH);
 			myMove = game.getNextMoveTowardsTarget(current, goal, Constants.DM.PATH);
 		}
+	}
+
+	private int getClosestPill(Game game, int current) {
+		int[] pills = game.getPillIndices();
+
+		ArrayList<Integer> targets = new ArrayList<Integer>();
+
+		for (int i = 0; i < pills.length; i++)
+			if (game.isPillStillAvailable(i))
+				targets.add(pills[i]);
+
+		int[] targetsArray = new int[targets.size()];
+
+		for (int i = 0; i < targetsArray.length; i++)
+			targetsArray[i] = targets.get(i);
+
+		return game.getClosestNodeIndexFromNodeIndex(current, targetsArray, Constants.DM.PATH);
+	}
+
+	private int getClosestPowerPill(Game game, int current) {
+		int[] powerPills = game.getPowerPillIndices();
+
+		ArrayList<Integer> powerTargets = new ArrayList<Integer>();
+
+		for (int i = 0; i < powerPills.length; i++)
+			if (game.isPowerPillStillAvailable(i))
+				powerTargets.add(powerPills[i]);
+
+		int[] powerTargetsArray = new int[powerTargets.size()];
+
+		for (int i = 0; i < powerTargetsArray.length; i++)
+			powerTargetsArray[i] = powerTargets.get(i);
+
+		return game.getClosestNodeIndexFromNodeIndex(current, powerTargetsArray, Constants.DM.PATH);
 	}
 }

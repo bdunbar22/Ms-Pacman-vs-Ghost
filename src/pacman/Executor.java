@@ -54,11 +54,13 @@ public class Executor
 
 		// ASSIGNMENT 3
 		//Uncomment to run DT
-		/*
+
 		boolean visual = true;
-		exec.runGameTimed(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(),
-		visual);
-		*/
+		//exec.runGameTimed(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(),
+		//visual);
+
+
+		//exec.runGameTimed(new HumanController(new KeyBoardInput()), new StarterGhosts(), true);
 
 
 		int numTrials = 2;
