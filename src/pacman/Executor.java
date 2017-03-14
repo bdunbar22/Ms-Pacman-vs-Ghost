@@ -59,8 +59,7 @@ public class Executor
 		//exec.runGameTimed(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(),
 		//visual);
 
-
-		//exec.runGameTimed(new HumanController(new KeyBoardInput()), new StarterGhosts(), true);
+		exec.runGameTimed(new HumanController(new KeyBoardInput()), new StarterGhosts(), true);
 
 
 		int numTrials = 2;
