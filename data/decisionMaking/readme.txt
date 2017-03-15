@@ -1,7 +1,7 @@
-The files we will use to load decision making into decision trees and raps
+The files we will use to load decision trees and raps
 are described in this readme. Please see the two types below.
 
-DECISION TREE TEXT:
+FILE TYPE 1 -> DECISION TREE TEXT:
 - The first line of the file is the number of decision tree nodes in the file.
 
 - Each line of the file will represent a Decision tree node.
@@ -29,10 +29,10 @@ DECISION
 End Of Line
 
 
-RAPS TEXT:
-NOTE: the first raps added to the execution queue are all of the non-primitive raps. In order
-to run a primitive rap, it will have to have been added by a non-primitive rap!
-NOTE2: the non-primitive raps have both a min and max distance to use in comparisons!
+FILE TYPE 2 -> RAPS TEXT:
+NOTE: To start the execution queue all of the non-primitive raps are added. In order
+to run a primitive rap, it will have to have been added to the queue by a non-primitive rap!!
+NOTE2: the non-primitive raps have both a min and max distance to use in comparisons.
 
 - The first line of the file is a number, it represents the number of raps provided.
 

@@ -40,7 +40,7 @@ public class Executor
 	{
 		Executor exec=new Executor();
 
-		/* ASSIGNMENT 2
+		// ASSIGNMENT 2 ==============================================================================
 		//Uncomment to run dijkstra.
 		//exec.dijkstraCalculation();
 
@@ -49,34 +49,37 @@ public class Executor
 		//exec.runGameTimed(new StarterPacMan(), new MyGhosts(), visual);
 
 		//Uncomment to play against A*
+		//boolean visual = true;
+		//exec.runGameTimed(new HumanController(new KeyBoardInput()), new MyGhosts(), visual);
+
+
+
+		// ASSIGNMENT 3 ==============================================================================
+		//Uncomment to run DT
 		boolean visual = true;
-		exec.runGameTimed(new HumanController(new KeyBoardInput()), new MyGhosts(), visual);
+		String dtFileLocation = "data/decisionMaking/decisionTree";
+		exec.runGameTimed(new DTPacMan(dtFileLocation), new StarterGhosts(), visual);
+
+		//Uncomment to run RAPS
+		//boolean visual = true;
+		String rapFileLocation = "data/decisionMaking/rapText";
+		exec.runGameTimed(new RAPPacMan(rapFileLocation), new StarterGhosts(), visual);
+
+
+		//Uncomment to run some experimental trials on all maps.
+		/*
+		int numTrials = 2;
+		System.out.println("Running Decision Tree.");
+		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(),numTrials);
+
+		System.out.println("Running Raps.");
+		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText"), new StarterGhosts(),numTrials);
+		System.out.println("Running Starter.");
+		exec.runExperimentEachMap(new StarterPacMan(),new StarterGhosts(),numTrials);
 		*/
 
-		// ASSIGNMENT 3
-		//Uncomment to run DT
 
-		boolean visual = true;
-		//exec.runGameTimed(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(),
-		//visual);
-
-		//exec.runGameTimed(new HumanController(new KeyBoardInput()), new StarterGhosts(), true);
-
-
-		int numTrials = 2;
-		System.out.println("Decision Tree.");
-		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(), numTrials);
-		System.out.println("Raps.");
-		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText"), new StarterGhosts(),
-			numTrials);
-		System.out.println("Starter.");
-		exec.runExperimentEachMap(new StarterPacMan(),new StarterGhosts(),numTrials);
-
-		//Uncomment to run RAP
-		//boolean visual = true;
-		//exec.runGameTimed(new StarterPacMan(), new StarterGhosts(), visual);
-
-		// Provided
+		// PROVIDED ==================================================================================
 
 		//run multiple games in batch mode - good for testing.
 		//int numTrials=3;
