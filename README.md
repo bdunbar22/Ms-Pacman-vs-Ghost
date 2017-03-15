@@ -4,6 +4,7 @@ This repository is an exploration of Game Artificial Intelligence.
 
 Our code for Assignment 3 can be found in the following files:
 
+#New Sources
 src/pacman/entries/pacman/DTPacman
 src/pacman/entries/pacman/RAPPacman
 
@@ -12,16 +13,20 @@ src/pacman/decisionMaking/**
 data/decisionMaking/**
 data/decisionMaking/readme
 
+#New tests
 test/pacman/entries/pacman/**
 test/pacman/decisionMaking/**
 
 
 #Running
-We have already set the number of lives to 10, but haven't written any code to stop after 5 min
-or one leve.
+Note, we have already set the number of lives to 10, but haven't written any code to stop after 5
+min or one level.
 
-Our
-
+Our two different methods (DTPacMan & RAPPacMan) can be used by going to the executor file
+and uncommenting the desired lines within the Assignment 3 block of main(). The first two
+commented sections are the basic way to run a visual with either DT or RAPS. To change the text
+file, the string (dtFileLocation or rapFileLocation) for the file location can be edited after
+uncommenting the lines.
 
 #Explanations
 Our implementations work by having an enum for possible actions and an enum for entity
@@ -92,7 +97,10 @@ However, with more work to the rap text files, they also have the capability of 
 or very similar logic. So for a simple game like pacman, either method is reasonable, and a
 decision tree would be our preference because it is a little more straightforward and the
 flexibility of Raps aren't necessary for a simple game which just desires one command per turn.
-The tests we ran resulted in 1000 runs for each of 4 implementations. Summarized below:
+The tests we ran resulted in 1000 runs for each of 4 implementations. We played around
+with some tree logic/rap conditions and tried different values to try and optimize our
+scores. Additionally, we think our improved running away ability also helps boost our
+pacmans's scoring ability. Our experiments are summarized below:
 
 Decision Tree
 decisionTree.txt  - AVERAGE: 18579.83  MIN: 4250.0  MAX: 47520.0

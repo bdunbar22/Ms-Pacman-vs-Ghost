@@ -62,7 +62,7 @@ public class Executor
 
 		//Uncomment to run RAPS
 		//boolean visual = true;
-		//String rapFileLocation = "data/decisionMaking/rapText";
+		//String rapFileLocation = "data/decisionMaking/rapText2";
 		//exec.runGameTimed(new RAPPacMan(rapFileLocation), new StarterGhosts(), visual);
 
 
@@ -73,7 +73,8 @@ public class Executor
 		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(),numTrials);
 
 		System.out.println("Running Raps.");
-		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText"), new StarterGhosts(),numTrials);
+		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText2"), new StarterGhosts(),numTrials);
+
 		System.out.println("Running Starter.");
 		exec.runExperimentEachMap(new StarterPacMan(),new StarterGhosts(),numTrials);
 		*/
