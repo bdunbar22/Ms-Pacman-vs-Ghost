@@ -20,42 +20,17 @@ public final class Util {
     static int conditionTest(EntityType entityTypeToCheck, Game game, int current) {
         switch (entityTypeToCheck) {
             case PILL:
-                int[] pills = game.getPillIndices();
-
-                ArrayList<Integer> targets = new ArrayList<Integer>();
-
-                for (int i = 0; i < pills.length; i++)
-                    if (game.isPillStillAvailable(i))
-                        targets.add(pills[i]);
-
-                int[] targetsArray = new int[targets.size()];
-
-                for (int i = 0; i < targetsArray.length; i++)
-                    targetsArray[i] = targets.get(i);
-
-                return game.getShortestPathDistance(current,
-                    game.getClosestNodeIndexFromNodeIndex(current, targetsArray, DM.PATH));
-            case POWER_PILL:
-                int[] powerPills = game.getPowerPillIndices();
-
-                ArrayList<Integer> powerTargets = new ArrayList<Integer>();
-
-                for (int i = 0; i < powerPills.length; i++)
-                    if (game.isPowerPillStillAvailable(i))
-                        powerTargets.add(powerPills[i]);
-
-                int[] powerTargetsArray = new int[powerTargets.size()];
-
-                for (int i = 0; i < powerTargetsArray.length; i++)
-                    powerTargetsArray[i] = powerTargets.get(i);
-
-                if (powerTargetsArray.length < 1) {
-                    return Integer.MAX_VALUE;
-                } else {
-                    return game.getShortestPathDistance(current,
-                        game.getClosestNodeIndexFromNodeIndex(current, powerTargetsArray,
-                            DM.PATH));
+                int closestPill = getClosestPill(game, current);
+                if (closestPill >= 0) {
+                    return game.getShortestPathDistance(current, closestPill);
                 }
+                break;
+            case POWER_PILL:
+                int closestPowerPill = getClosestPowerPill(game, current);
+                if (closestPowerPill >= 0) {
+                    return game.getShortestPathDistance(current, closestPowerPill);
+                }
+                break;
             case EDIBLE_GHOST:
                 int minDistance = Integer.MAX_VALUE;
                 GHOST minGhost = null;
@@ -99,12 +74,16 @@ public final class Util {
         switch (action) {
             case NEAREST_PILL:
                 int closestPill = getClosestPill(game, current);
-
-                return game.getNextMoveTowardsTarget(current, closestPill, DM.PATH);
+                if (closestPill >= 0) {
+                    return game.getNextMoveTowardsTarget(current, closestPill, DM.PATH);
+                }
+                break;
             case NEAREST_POWER_PILL:
                 int closestPowerPill = getClosestPowerPill(game, current);
-
-                return game.getNextMoveTowardsTarget(current, closestPowerPill, DM.PATH);
+                if (closestPowerPill >= 0) {
+                    return game.getNextMoveTowardsTarget(current, closestPowerPill, DM.PATH);
+                }
+                break;
             case ATTACK:
                 int minDistance = Integer.MAX_VALUE;
                 GHOST minGhost = null;
@@ -208,6 +187,10 @@ public final class Util {
 
         for (int i = 0; i < targetsArray.length; i++)
             targetsArray[i] = targets.get(i);
+
+        if(targetsArray.length < 1) {
+            return getClosestPowerPill(game, current);
+        }
 
         return game.getClosestNodeIndexFromNodeIndex(current, targetsArray, Constants.DM.PATH);
     }

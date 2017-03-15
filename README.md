@@ -81,11 +81,34 @@ NEAREST_PILL - give the move towards the nearest available pill
 ATTACK - give the move towards the nearest edible ghost
 RUN_AWAY - give a move away from the closest ghosts. If not possible, try to go to a junction.
 
+
+#Conclusions
+We created two text files for each method and then for each of these 4 implementations of
+pacman we ran 250 games on each of the maps (with 10 lives). For each method the second test
+file has the same structure/number of nodes, but tries different comparison distances.
+
+In general our decisions trees had a little more logic added in and performed better.
+However, with more work to the rap text files, they also have the capability of giving the same
+or very similar logic. So for a simple game like pacman, either method is reasonable, and a
+decision tree would be our preference because it is a little more straightforward and the
+flexibility of Raps aren't necessary for a simple game which just desires one command per turn.
+The tests we ran resulted in 1000 runs for each of 4 implementations. Summarized below:
+
+Decision Tree
+decisionTree.txt  - AVERAGE: 18579.83  MIN: 4250.0  MAX: 47520.0
+decisionTree2.txt - AVERAGE: 18173.44  MIN: 4690.0  MAX: 47730.0
+
+
+Raps
+rapText.txt  - AVERAGE: 14923.19  MIN: 1340.0  MAX: 45320.0
+rapText2.txt - AVERAGE: 16407.78  MIN: 3320.0  MAX: 40260.0
+
+
 Best,
 Ben & Mengling
 
 #More Info
-For more information on the provided trees based on the submitted text files,
+For more information on the provided trees based on the first two submitted text files,
 please see the included pdf document: GameAIHW3.pdf
 
 This repo was originally forked from: http://joseatovar.github.io/Ms-Pacman-vs-Ghost/

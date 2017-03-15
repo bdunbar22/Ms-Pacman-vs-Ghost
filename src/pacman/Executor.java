@@ -56,14 +56,14 @@ public class Executor
 
 		// ASSIGNMENT 3 ==============================================================================
 		//Uncomment to run DT
-		boolean visual = true;
-		String dtFileLocation = "data/decisionMaking/decisionTree";
-		exec.runGameTimed(new DTPacMan(dtFileLocation), new StarterGhosts(), visual);
+		//boolean visual = true;
+		//String dtFileLocation = "data/decisionMaking/decisionTree";
+		//exec.runGameTimed(new DTPacMan(dtFileLocation), new StarterGhosts(), visual);
 
 		//Uncomment to run RAPS
 		//boolean visual = true;
-		String rapFileLocation = "data/decisionMaking/rapText";
-		exec.runGameTimed(new RAPPacMan(rapFileLocation), new StarterGhosts(), visual);
+		//String rapFileLocation = "data/decisionMaking/rapText";
+		//exec.runGameTimed(new RAPPacMan(rapFileLocation), new StarterGhosts(), visual);
 
 
 		//Uncomment to run some experimental trials on all maps.
@@ -78,6 +78,25 @@ public class Executor
 		exec.runExperimentEachMap(new StarterPacMan(),new StarterGhosts(),numTrials);
 		*/
 
+		//DT experiment
+		System.out.println("Running Decision Tree.");
+		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree"), new
+			StarterGhosts(),250);
+
+		//RAPS experiment
+		System.out.println("Running Raps.");
+		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText"), new StarterGhosts()
+			,250);
+
+		//DT experiment 2
+		System.out.println("Running Decision Tree.");
+		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree2"), new
+			StarterGhosts(),250);
+
+		//RAPS experiment 2
+		System.out.println("Running Raps.");
+		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText2"), new StarterGhosts()
+			,250);
 
 		// PROVIDED ==================================================================================
 
@@ -181,6 +200,8 @@ public class Executor
 		MOVE>> ghostController, int trials)
 	{
 		double avgScore=0;
+		double minScore=Double.MAX_VALUE;
+		double maxScore=0;
 
 		Random rnd=new Random(0);
 		Game game;
@@ -197,11 +218,19 @@ public class Executor
 				}
 
 				avgScore+=game.getScore();
+				if(game.getScore() < minScore) {
+					minScore = game.getScore();
+				}
+				if(game.getScore() > maxScore) {
+					maxScore = game.getScore();
+				}
 				System.out.println(i+" Maze: " + j + "\t"+game.getScore());
 			}
 		}
 
-		System.out.println("AVERAGE: " + avgScore/(trials*4));
+		System.out.println("AVERAGE: " + avgScore/(trials*4) +
+			"  MIN: " + minScore +
+			"  MAX: " + maxScore);
 	}
 	
 	/**
