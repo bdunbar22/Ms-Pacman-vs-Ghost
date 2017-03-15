@@ -1,5 +1,6 @@
 package pacman.decisionMaking;
 
+import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
 import java.util.Queue;
@@ -34,22 +35,29 @@ public class Rap implements IRap{
         }
     }
 
-    public boolean executeRap(Queue<Object> executionQueue, IRap[] allRaps, Game game) {
-        ActionType[] actionTypes = ActionType.values();
-        for(int i = 0; i < actionTypes.length; i++) {
-            if(executionQueue.contains(actionTypes[i]))
+    @Override
+    public boolean goalCheck(Queue<Object> executionQueue, Game game, MOVE lastMove) {
+        MOVE[] moves = MOVE.values();
+        for(int i = 0; i < moves.length; i++) {
+            if(executionQueue.contains(moves[i]))
                 return true;
         }
-        // Test precondition.
+        return false;
+    }
+
+    @Override
+    public boolean validityCheck(Game game) {
         int current = game.getPacmanCurrentNodeIndex();
         int foundDistance = Util.conditionTest(preconditionEntityType, game, current);
-        if(foundDistance <= preconditionMaxDistance && foundDistance >= preconditionMinDistance) {
-            for(int i = 0; i < taskNet.length; i++) {
-                executionQueue.add(allRaps[taskNet[i]]);
-            }
-        }
-        executionQueue.add(this);
+        return (foundDistance <= preconditionMaxDistance && foundDistance >= preconditionMinDistance);
+    }
 
-        return false;
+    @Override
+    public Object[] taskNetSelector(IRap[] allRaps, Game game, MOVE lastMove) {
+        IRap[] subRaps = new IRap[taskNet.length];
+        for(int i = 0; i < taskNet.length; i++) {
+            subRaps[i] = allRaps[taskNet[i]];
+        }
+        return subRaps;
     }
 }

@@ -1,5 +1,6 @@
 package pacman.decisionMaking;
 
+import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
 import java.util.Queue;
@@ -34,18 +35,21 @@ public class PrimitiveRap implements IRap{
         }
     }
 
-    public boolean executeRap(Queue<Object> executionQueue, IRap[] allRaps, Game game) {
-        if(executionQueue.contains(goal)) {
-            return true;
-        }
-        // Test precondition.
+    @Override
+    public boolean goalCheck(Queue<Object> executionQueue, Game game, MOVE lastMove) {
+        MOVE desiredMove = Util.findDirection(goal, game, lastMove);
+        return (executionQueue.contains(desiredMove));
+    }
+
+    @Override
+    public boolean validityCheck(Game game) {
         int current = game.getPacmanCurrentNodeIndex();
         int foundDistance = Util.conditionTest(preconditionEntityType, game, current);
-        if(foundDistance <= preconditionDistance) {
-            executionQueue.add(goal);
-        }
-        executionQueue.add(this);
+        return (foundDistance <= preconditionDistance);
+    }
 
-        return false;
+    @Override
+    public Object[] taskNetSelector(IRap[] allRaps, Game game, MOVE lastMove) {
+        return new Object[]{Util.findDirection(goal, game, lastMove)};
     }
 }

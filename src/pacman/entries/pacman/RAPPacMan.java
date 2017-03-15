@@ -11,8 +11,6 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static pacman.game.Constants.DELAY;
-
 /**
  * This class uses Raps to try and find acceptable moves for pacman to take. The class has
  * an array of raps, and each turn it adds the non primitive Raps to the queue. The class
@@ -47,13 +45,20 @@ public class RAPPacMan extends Controller<MOVE>
 		 */
 		while (!executionQueue.isEmpty() && System.currentTimeMillis() < timeDue - 1) {
 			Object popped = executionQueue.poll();
-			if (popped instanceof ActionType) {
-				ActionType actionType = (ActionType) popped;
-				myMove = Util.findDirection(actionType, game, myMove);
+			if (popped instanceof MOVE) {
+				myMove = (MOVE) popped;
 				break;
 			} else if (popped instanceof IRap) {
 				IRap rap = (IRap) popped;
-				rap.executeRap(executionQueue, raps, game);
+				if(!rap.goalCheck(executionQueue, game, myMove)) {
+					executionQueue.add(rap);
+					if(rap.validityCheck(game)) {
+						Object[] tasks = rap.taskNetSelector(raps, game, myMove);
+						for(int i = 0; i < tasks.length; i++) {
+							executionQueue.add(tasks[i]);
+						}
+					}
+				}
 			} else {
 				System.out.println("Unexpected queued item type in rap execution queue.");
 			}
