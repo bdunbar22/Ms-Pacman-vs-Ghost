@@ -38,8 +38,13 @@ public class RAPPacMan extends Controller<MOVE>
 				executionQueue.add(raps[i]);
 		}
 
-		//Execute raps until queue is empty or time is up.
-		//If a move is found, break the loop.
+		/**
+		 * Execute raps until queue is empty or time is up.
+		 * If a move is found, break the loop
+		 * Note: in a more complex system which wasn't turn based the execution queue would
+		 * just send found commands to hardware and continue going through raps, but in this
+		 * implementation it makes more sense to take the move found and break the loop.
+		 */
 		while (!executionQueue.isEmpty() && System.currentTimeMillis() < timeDue - 1) {
 			Object popped = executionQueue.poll();
 			if (popped instanceof ActionType) {
