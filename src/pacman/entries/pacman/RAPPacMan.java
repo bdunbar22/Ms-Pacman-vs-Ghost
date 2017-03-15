@@ -68,24 +68,24 @@ public class RAPPacMan extends Controller<MOVE>
 				}
 
 				String conditionEntity;
-				int conditionDistance;
 				String goal;
 				String rapType = values[1];
 				if(rapType.equals("PRIMITIVE")) {
 					conditionEntity = values[2];
-					conditionDistance = Integer.parseInt(values[3]);
+					int conditionDistance = Integer.parseInt(values[3]);
 					goal = values[4];
 					raps[index] = new PrimitiveRap(conditionEntity, conditionDistance, goal);
 				} else if(rapType.equals("RAP")) {
 					conditionEntity = values[2];
-					conditionDistance = Integer.parseInt(values[3]);
-					goal = values[4];
+					int conditionMinDistance = Integer.parseInt(values[3]);
+					int conditionMaxDistance = Integer.parseInt(values[4]);
+					goal = values[5];
 
-					int[] taskNet = new int[values.length - 5];
+					int[] taskNet = new int[values.length - 6];
 					for(int i = 0; i < taskNet.length; i++)
-						taskNet[i] = Integer.parseInt(values[i + 5]);
+						taskNet[i] = Integer.parseInt(values[i + 6]);
 
-					raps[index] = new Rap(conditionEntity, conditionDistance, goal, taskNet);
+					raps[index] = new Rap(conditionEntity, conditionMinDistance, conditionMaxDistance, goal, taskNet);
 				} else {
 					throw new Exception("Malformed rap text file. File: " +
 						fileName + "Format error on index: " + index);

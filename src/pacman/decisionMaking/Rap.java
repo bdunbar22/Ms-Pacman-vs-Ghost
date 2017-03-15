@@ -12,14 +12,17 @@ import java.util.Queue;
  */
 public class Rap implements IRap{
     private EntityType preconditionEntityType;
-    private int preconditionDistance;
+    private int preconditionMinDistance;
+    private int preconditionMaxDistance;
     private String goal;
     private int[] taskNet;
 
-    public Rap(String conditionEntity, int distance, String goal, int[] taskNet) {
+    public Rap(String conditionEntity, int minDistance, int maxDistance, String goal, int[]
+        taskNet) {
         this.goal = goal;
         this.taskNet = taskNet;
-        this.preconditionDistance = distance;
+        this.preconditionMinDistance = minDistance;
+        this.preconditionMaxDistance = maxDistance;
         try {
             this.preconditionEntityType = EntityType.valueOf(conditionEntity);
         }
@@ -38,7 +41,7 @@ public class Rap implements IRap{
         // Test precondition.
         int current = game.getPacmanCurrentNodeIndex();
         int foundDistance = Util.conditionTest(preconditionEntityType, game, current);
-        if(foundDistance <= preconditionDistance) {
+        if(foundDistance <= preconditionMaxDistance && foundDistance >= preconditionMinDistance) {
             for(int i = 0; i < taskNet.length; i++) {
                 executionQueue.add(allRaps[taskNet[i]]);
             }

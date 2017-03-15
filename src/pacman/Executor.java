@@ -13,6 +13,7 @@ import pacman.controllers.examples.StarterGhosts;
 import pacman.controllers.examples.StarterPacMan;
 import pacman.entries.ghosts.MyGhosts;
 import pacman.entries.pacman.DTPacMan;
+import pacman.entries.pacman.RAPPacMan;
 import pacman.pathFinding.Dijkstra;
 import pacman.controllers.Controller;
 import pacman.controllers.HumanController;
@@ -65,8 +66,9 @@ public class Executor
 		int numTrials = 2;
 		System.out.println("Decision Tree.");
 		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree"), new StarterGhosts(), numTrials);
-//		System.out.println("Raps.");
-//		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/rapText"), new StarterGhosts(), numTrials);
+		System.out.println("Raps.");
+		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText"), new StarterGhosts(),
+			numTrials);
 		System.out.println("Starter.");
 		exec.runExperimentEachMap(new StarterPacMan(),new StarterGhosts(),numTrials);
 
