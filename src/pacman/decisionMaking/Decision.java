@@ -1,9 +1,6 @@
 package pacman.decisionMaking;
 
-import pacman.game.Constants;
 import pacman.game.Game;
-
-import java.util.ArrayList;
 
 /**
  * Nodes which chose between two children based on a condition can follow this
@@ -33,10 +30,9 @@ public class Decision implements DecisionTreeNode {
     }
 
     private int getBranch(Game game) {
-        int foundDistance = Integer.MAX_VALUE;
         int current = game.getPacmanCurrentNodeIndex();
         // Perform the action chosen by the tree.
-        foundDistance = Util.conditionTest(entityTypeToCheck, game, current);
+        int foundDistance = Util.conditionTest(entityTypeToCheck, game, current);
 
         if(foundDistance < distanceToLook) {
             return trueNode;
