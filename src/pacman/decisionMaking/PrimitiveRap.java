@@ -5,20 +5,17 @@ import pacman.game.Game;
 import java.util.Queue;
 
 /**
- * Implement IRap for the cases when a rap will add a task net to the
- * execution queue.
+ * Primitive rap for when an action should be added to the queue instead
+ * of a task net.
  *
  * Created by Ben on 3/14/17.
  */
-public class Rap implements IRap{
+public class PrimitiveRap implements IRap{
     private EntityType preconditionEntityType;
     private int preconditionDistance;
-    private String goal;
-    private int[] taskNet;
+    private ActionType goal;
 
-    public Rap(String conditionEntity, int distance, String goal, int[] taskNet) {
-        this.goal = goal;
-        this.taskNet = taskNet;
+    public PrimitiveRap(String conditionEntity, int distance, String goal) {
         this.preconditionDistance = distance;
         try {
             this.preconditionEntityType = EntityType.valueOf(conditionEntity);
@@ -27,23 +24,25 @@ public class Rap implements IRap{
             System.out.println("Error finding entity type: " + conditionEntity);
             this.preconditionEntityType = EntityType.GHOST;
         }
+        try {
+            this.goal = ActionType.valueOf(goal);
+        }
+        catch (Exception e) {
+            this.goal = ActionType.RUN_AWAY;
+        }
     }
 
     public boolean executeRap(Queue<Object> executionQueue, IRap[] allRaps, Game game) {
-        ActionType[] actionTypes = ActionType.values();
-        for(int i = 0; i < actionTypes.length; i++) {
-            if(executionQueue.contains(actionTypes[i]))
-                return true;
+        if(executionQueue.contains(goal)) {
+            return true;
         }
         // Test precondition.
         int current = game.getPacmanCurrentNodeIndex();
         int foundDistance = Util.conditionTest(preconditionEntityType, game, current);
         if(foundDistance <= preconditionDistance) {
-            for(int i = 0; i < taskNet.length; i++) {
-                executionQueue.add(allRaps[taskNet[i]]);
-            }
-            executionQueue.add(this);
+            executionQueue.add(goal);
         }
+        executionQueue.add(this);
 
         return false;
     }

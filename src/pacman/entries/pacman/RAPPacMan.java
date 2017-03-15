@@ -2,20 +2,23 @@ package pacman.entries.pacman;
 
 import pacman.controllers.Controller;
 import pacman.decisionMaking.IRap;
+import pacman.decisionMaking.PrimitiveRap;
+import pacman.decisionMaking.Rap;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-/*
- * This is the class you need to modify for your entry. In particular, you need to
- * fill in the getAction() method. Any additional classes you write should either
- * be placed in this package or sub-packages (e.g., game.entries.pacman.mypackage).
+/**
+ * This class uses Raps to try and find acceptable moves for pacman to take. The class has
+ * an array of raps, and each turn it adds the non primitive Raps to the queue. The class
+ * then goes through the execution queue as described in the paper by R. James Firby. In order to
+ * easily stop before the turn ends, the loop will stop when either the queue is empty or a
+ * Rap finished successfully, since in this implementation that would mean a move has been found.
  */
 public class RAPPacMan extends Controller<MOVE>
 {
@@ -46,21 +49,50 @@ public class RAPPacMan extends Controller<MOVE>
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream
 				(fileName + ".txt")));
 
-            /* Don't need to use preamble line */
 			String preambleLine = br.readLine();
 
+			int numberOfRaps = Integer.parseInt(preambleLine);
+			raps = new IRap[numberOfRaps];
+
 			String input = br.readLine();
+			int count = 0;
 
 			while(input!=null)
 			{
-				String[] values = input.split("\t");
+				String[] values = input.split(",");
 
 				int index = Integer.parseInt(values[0]);
-				int x = Integer.parseInt(values[1]);
-				int y = Integer.parseInt(values[2]);
+				if(index != count) {
+					throw new Exception("Malformed rap text file. Index error: " +
+						fileName);
+				}
 
+				String conditionEntity;
+				int conditionDistance;
+				String goal;
+				String rapType = values[1];
+				if(rapType.equals("PRIMITIVE")) {
+					conditionEntity = values[2];
+					conditionDistance = Integer.parseInt(values[3]);
+					goal = values[4];
+					raps[index] = new PrimitiveRap(conditionEntity, conditionDistance, goal);
+				} else if(rapType.equals("RAP")) {
+					conditionEntity = values[2];
+					conditionDistance = Integer.parseInt(values[3]);
+					goal = values[4];
+
+					int[] taskNet = new int[values.length - 5];
+					for(int i = 0; i < taskNet.length; i++)
+						taskNet[i] = Integer.parseInt(values[i + 5]);
+
+					raps[index] = new Rap(conditionEntity, conditionDistance, goal, taskNet);
+				} else {
+					throw new Exception("Malformed rap text file. File: " +
+						fileName + "Format error on index: " + index);
+				}
 
 				input = br.readLine();
+				count ++;
 			}
 		}
 		catch(Exception errorSent)

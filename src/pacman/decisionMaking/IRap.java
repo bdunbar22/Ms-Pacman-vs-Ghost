@@ -1,8 +1,7 @@
 package pacman.decisionMaking;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import pacman.game.Game;
+
 import java.util.Queue;
 
 /**
@@ -20,5 +19,5 @@ public interface IRap {
      *                       re-adds itself.
      * @return true or false.
      */
-    boolean run(Queue<Object> executionQueue);
+    boolean executeRap(Queue<Object> executionQueue, IRap[] allRaps, Game game);
 }
