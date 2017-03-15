@@ -22,6 +22,8 @@ public class Rap implements IRap{
         this.goal = goal;
         this.taskNet = taskNet;
         this.preconditionMinDistance = minDistance;
+        if(maxDistance == -1)
+            maxDistance = Integer.MAX_VALUE;
         this.preconditionMaxDistance = maxDistance;
         try {
             this.preconditionEntityType = EntityType.valueOf(conditionEntity);
@@ -45,8 +47,8 @@ public class Rap implements IRap{
             for(int i = 0; i < taskNet.length; i++) {
                 executionQueue.add(allRaps[taskNet[i]]);
             }
-            executionQueue.add(this);
         }
+        executionQueue.add(this);
 
         return false;
     }

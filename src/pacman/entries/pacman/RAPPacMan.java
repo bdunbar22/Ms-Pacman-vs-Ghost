@@ -1,9 +1,7 @@
 package pacman.entries.pacman;
 
 import pacman.controllers.Controller;
-import pacman.decisionMaking.IRap;
-import pacman.decisionMaking.PrimitiveRap;
-import pacman.decisionMaking.Rap;
+import pacman.decisionMaking.*;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
@@ -12,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
+
+import static pacman.game.Constants.DELAY;
 
 /**
  * This class uses Raps to try and find acceptable moves for pacman to take. The class has
@@ -32,7 +32,28 @@ public class RAPPacMan extends Controller<MOVE>
 	
 	public MOVE getMove(Game game, long timeDue) 
 	{
-		//Place your game logic here to play the game as Ms Pac-Man
+		executionQueue.clear();
+		for(int i = 0; i < raps.length; i++) {
+			if(raps[i] instanceof Rap)
+				executionQueue.add(raps[i]);
+		}
+
+		//Execute raps until queue is empty or time is up.
+		//If a move is found, break the loop.
+		while (!executionQueue.isEmpty() && System.currentTimeMillis() < timeDue - 1) {
+			Object popped = executionQueue.poll();
+			if (popped instanceof ActionType) {
+				ActionType actionType = (ActionType) popped;
+				myMove = Util.findDirection(actionType, game, myMove);
+				break;
+			} else if (popped instanceof IRap) {
+				IRap rap = (IRap) popped;
+				rap.executeRap(executionQueue, raps, game);
+			} else {
+				System.out.println("Unexpected queued item type in rap execution queue.");
+			}
+		}
+
 		return myMove;
 	}
 
@@ -57,7 +78,7 @@ public class RAPPacMan extends Controller<MOVE>
 			String input = br.readLine();
 			int count = 0;
 
-			while(input!=null)
+			while(input!=null && count < numberOfRaps)
 			{
 				String[] values = input.split(",");
 

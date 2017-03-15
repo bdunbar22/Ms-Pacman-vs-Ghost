@@ -40,7 +40,7 @@ public class DecisionTree {
             String input = br.readLine();
             int count = 0;
 
-            while(input!=null)
+            while(input!=null && count < numberOfNodes)
             {
                 String[] values = input.split(",");
 

@@ -16,6 +16,8 @@ public class PrimitiveRap implements IRap{
     private ActionType goal;
 
     public PrimitiveRap(String conditionEntity, int distance, String goal) {
+        if(distance == -1)
+            distance = Integer.MAX_VALUE;
         this.preconditionDistance = distance;
         try {
             this.preconditionEntityType = EntityType.valueOf(conditionEntity);

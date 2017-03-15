@@ -52,7 +52,9 @@ The next items depend on the type.
 RAP
 - The third item is the entity in question for the condition: - see EntityTypes enum
 - The fourth item is a min distance we are checking for that item to be within
-- The fifth item is a max distance we are checking for that item to be within
+- The fifth item is a max distance we are checking for that item to be within. Use -1 to get
+Integer.MAX_VALUE
+
 - The sixth item is the goal - see ActionTypes enum
 - The next x items are the task net raps.
 
