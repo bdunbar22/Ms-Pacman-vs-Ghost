@@ -48,7 +48,7 @@ public class MyGhostsTest {
         EnumMap<Constants.GHOST, Constants.MOVE> map = (EnumMap<Constants.GHOST, Constants.MOVE>) moves;
 
         // Give a visual of the game state we created for a test.
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 5; i++) {
             Thread.sleep(1000);
             gv.repaint();
         }
