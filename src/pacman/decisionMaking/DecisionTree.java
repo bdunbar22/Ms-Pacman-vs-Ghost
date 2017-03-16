@@ -1,5 +1,6 @@
 package pacman.decisionMaking;
 
+import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
 import java.io.BufferedReader;
@@ -76,7 +77,7 @@ public class DecisionTree {
         }
     }
 
-    public ActionType makeDecision(Game game) {
-        return decisionTreeNodes[0].makeDecision(decisionTreeNodes, game);
+    public MOVE makeDecision(Game game, MOVE lastMove) {
+        return decisionTreeNodes[0].makeDecision(decisionTreeNodes, game, lastMove);
     }
 }

@@ -23,10 +23,11 @@ Note, we have already set the number of lives to 10, but haven't written any cod
 min or one level.
 
 Our two different methods (DTPacMan & RAPPacMan) can be used by going to the executor file
-and uncommenting the desired lines within the Assignment 3 block of main(). The first two
-commented sections are the basic way to run a visual with either DT or RAPS. To change the text
+and uncommenting/commenting any desired lines within the Assignment 3 block of main(). The first
+ two sections are the basic way to run a visual with either DT or RAPS. To change the text
 file, the string (dtFileLocation or rapFileLocation) for the file location can be edited after
-uncommenting the lines.
+uncommenting the lines. Currently both are run in sequence and then a large experiment batch is
+ run.
 
 #Explanations
 Our implementations work by having an enum for possible actions and an enum for entity
@@ -40,11 +41,11 @@ nearest entity of the entity type of the condition.
 In our Decision tree implementation, our text file and classes allow the dynamic creation of
 a binary tree. DTPacman is initialized with a text file location and loads the tree into a
 variable. The tree is made of of two types of nodes, Decisions and Actions. Decision nodes run
-a comparision and recursively call a child. Action nodes return an action type to be turned into
-a move. When getMove is called on DTPacman a recursive makeDecision function is called on the
-root of the tree and eventually returns with a final action.
-DTPacman converts this action into a move using a util file which we created. In
-this way, our text file can easily allow for the creation of different decision trees. Pacman
+a comparision and recursively call a child. Action nodes have an action type which is turned
+into a move to be returned. When getMove is called on DTPacman a recursive makeDecision function
+ is called on the root of the tree and eventually returns with a move to send to the game.
+
+In this way, our text file can easily allow for the creation of different decision trees. Pacman
 can chase edible ghosts, go towards power pills, go towards pill, and run away from ghosts. The
 tree can be simple, or could be complex to fine tune pacmans actions. Users can add nodes to the
 tree to make it more complex, or just edit the distances used for comparisons to try and optimize
@@ -56,22 +57,15 @@ Raps. There are primitive and non-primitive raps. RAPPacman will load all of its
 raps onto an execution queue when getMove is called. A while loop will pop objects of the the
 queue while the queue is not empty and there is still time.
 
-In cases where the object popped of the the queue is a rap then the executeRap function of that
-rap will be called. A non-primitive rap will first perform a goal check, then run a validity check
-based on its preconditions. If needed then sub raps from a task net will be added to the
-execution queue and the rap will be added back on to the queue after them so it can recheck its
-goal later.
+In cases where the object popped of the the queue is of the IRap type, the goalCheck function
+will be called first. If the goal hasn't been met then the checkValidity function will be called.
+If the raps precondition is valid, then the tasknet is pushed onto the queue and the rap is
+added back on to have its goal checked again in the future. The task net of a non-primitive rap
+ will add subraps to the queue. The tasknet of a primitive rap will be a MOVE.
 
-A primitive rap (which will be an eventual sub rap in our implementation) will also have
-its executeRap called when it is popped off of the queue. The primitive rap will
-first run its goal check and return true if the goal is satisfied. Then it will also run a
-validity check just like a normal rap. The difference for a primitive rap is that if its
-validity check passes then it will add a command (actionType) to the execution queue instead of
-raps from a task net.
-
-If the object popped off of the queue is an action type, a move is found from the action type
-and the cycle will exit because a move is the end goal of the function. (In a more complex
-game, the execution queue would send the command to hardware and keep going.)
+If the object popped off of the queue is a MOVE, the cycle will exit because a move is the end goal
+of the function. (In a more complex game, the execution queue would send the command to
+hardware and keep going.)
 
 After analysis of the execution queue results in a move, the getMove function will return with
 that move.
@@ -79,7 +73,8 @@ that move.
 
 Finally, the util file we created is slightly different from the starter pacman code
 because it splits power pills and normal pills into two different goals. Additionally, we
-slightly improved the functionality of running away. Our util file converts actions to moves as
+slightly improved the functionality of running away. Our util file converts actions to moves to
+ help with the action nodes and primitive raps, it works as
 follows:
 NEAREST_POWER_PILL - give the move towards the nearest available power pill
 NEAREST_PILL - give the move towards the nearest available pill
@@ -117,6 +112,6 @@ Ben & Mengling
 
 #More Info
 For more information on the provided trees based on the first two submitted text files,
-please see the included pdf document: GameAIHW3.pdf
+please see the included pdf document: GameAIHW3 graph.pdf
 
 This repo was originally forked from: http://joseatovar.github.io/Ms-Pacman-vs-Ghost/

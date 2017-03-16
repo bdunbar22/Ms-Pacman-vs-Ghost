@@ -1,5 +1,6 @@
 package pacman.decisionMaking;
 
+import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
 /**
@@ -23,7 +24,8 @@ public class Action implements DecisionTreeNode {
     }
 
     @Override
-    public ActionType makeDecision(DecisionTreeNode[] decisionTreeNodes, Game game) {
-        return action;
+    public MOVE makeDecision(DecisionTreeNode[] decisionTreeNodes, Game game, MOVE lastMove) {
+
+        return Util.findDirection(action, game, lastMove);
     }
 }

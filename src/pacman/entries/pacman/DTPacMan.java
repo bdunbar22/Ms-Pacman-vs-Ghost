@@ -23,10 +23,9 @@ public class DTPacMan extends Controller<MOVE>
 	
 	public MOVE getMove(Game game, long timeDue) 
 	{
-		ActionType actionType = this.decisionTree.makeDecision(game);
+		myMove = this.decisionTree.makeDecision(game, myMove);
 
-		// Perform the action chosen by the tree.
-		myMove = Util.findDirection(actionType, game, myMove);
+		// Perform the move chosen by the tree.
 		return myMove;
 	}
 }

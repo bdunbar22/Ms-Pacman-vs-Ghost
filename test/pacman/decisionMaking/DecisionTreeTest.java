@@ -1,6 +1,7 @@
 package pacman.decisionMaking;
 
 import org.junit.Test;
+import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 
 import static org.junit.Assert.*;
@@ -21,7 +22,7 @@ public class DecisionTreeTest {
             + "RIGHT,270,0,0,UP,1111111111111111111111111111111111011111111111111111111111011111011111011111011111111111111101010101010100000000000000000000000010011001111111110000000011111111111111111111111111111111111111111111111111111111111111111111,1111,-1,false,false,false,false,false,false,false";
         game.setGameState(testGameState);
 
-        ActionType choice = testTree.makeDecision(game);
-        assertEquals(choice, ActionType.NEAREST_PILL);
+        MOVE choice = testTree.makeDecision(game, MOVE.RIGHT);
+        assertEquals(choice, MOVE.LEFT);
     }
 }

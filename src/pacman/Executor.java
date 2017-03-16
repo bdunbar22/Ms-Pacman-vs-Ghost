@@ -56,14 +56,14 @@ public class Executor
 
 		// ASSIGNMENT 3 ==============================================================================
 		//Uncomment to run DT
-		//boolean visual = true;
-		//String dtFileLocation = "data/decisionMaking/decisionTree";
-		//exec.runGameTimed(new DTPacMan(dtFileLocation), new StarterGhosts(), visual);
+		boolean visual = true;
+		String dtFileLocation = "data/decisionMaking/decisionTree";
+		exec.runGameTimed(new DTPacMan(dtFileLocation), new StarterGhosts(), visual);
 
 		//Uncomment to run RAPS
 		//boolean visual = true;
-		//String rapFileLocation = "data/decisionMaking/rapText2";
-		//exec.runGameTimed(new RAPPacMan(rapFileLocation), new StarterGhosts(), visual);
+		String rapFileLocation = "data/decisionMaking/rapText2";
+		exec.runGameTimed(new RAPPacMan(rapFileLocation), new StarterGhosts(), visual);
 
 
 		//Uncomment to run some experimental trials on all maps.

@@ -1,6 +1,8 @@
 package pacman.decisionMaking;
 
 import pacman.game.Game;
+import pacman.game.Constants.MOVE;
+
 
 /**
  * Node interface for a decision tree
@@ -11,5 +13,5 @@ interface DecisionTreeNode {
      * Perform an action if required.
      * Recursively go through treebased on conditions.
      */
-    ActionType makeDecision(DecisionTreeNode[] decisionTreeNodes, Game game);
+    MOVE makeDecision(DecisionTreeNode[] decisionTreeNodes, Game game, MOVE lastMove);
 }
