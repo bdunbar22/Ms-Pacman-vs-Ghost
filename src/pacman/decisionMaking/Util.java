@@ -174,7 +174,7 @@ public final class Util {
         }
     }
 
-    private static int getClosestPill(Game game, int current) {
+    public static int getClosestPill(Game game, int current) {
         int[] pills = game.getPillIndices();
 
         ArrayList<Integer> targets = new ArrayList<Integer>();
@@ -195,7 +195,7 @@ public final class Util {
         return game.getClosestNodeIndexFromNodeIndex(current, targetsArray, Constants.DM.PATH);
     }
 
-    private static int getClosestPowerPill(Game game, int current) {
+    public static int getClosestPowerPill(Game game, int current) {
         int[] powerPills = game.getPowerPillIndices();
 
         ArrayList<Integer> powerTargets = new ArrayList<Integer>();
