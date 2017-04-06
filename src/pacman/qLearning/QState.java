@@ -53,6 +53,11 @@ public class QState {
         this.closestPowerDistance = closestPowerDistance;
     }
 
+    /**
+     * Override the equals function to make it easy to compare states.
+     * @param obj to compare with
+     * @return true or false
+     */
     @Override
     public boolean equals(Object obj) {
         try {
@@ -65,6 +70,16 @@ public class QState {
         catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * Override the to string function to make it easy to re write the q map file.
+     */
+    @Override
+    public String toString() {
+
+        //TODO
+        return "";
     }
 
     public static QState getState(Game game) {

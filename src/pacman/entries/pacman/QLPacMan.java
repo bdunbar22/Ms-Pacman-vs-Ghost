@@ -2,19 +2,14 @@ package pacman.entries.pacman;
 
 import pacman.controllers.Controller;
 import pacman.decisionMaking.ActionType;
-import pacman.decisionMaking.DecisionTree;
 import pacman.decisionMaking.Util;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
 import pacman.qLearning.QState;
+import java.util.Map.Entry;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 /**
  * This implementation of pacman uses a Q Learning approach. It is given a text file location
@@ -25,6 +20,8 @@ public class QLPacMan extends Controller<MOVE>
 {
 	  private MOVE myMove = MOVE.NEUTRAL;
 	  private Map<QState, List<Integer>> qMap;
+    private Random rnd = new Random();
+    private Random rndChoice = new Random();
 
     private int numberOfRuns;
 
@@ -106,7 +103,47 @@ public class QLPacMan extends Controller<MOVE>
 		    }
 	  }
 
+    /**
+     * Save the updated q Map to the desired txt file.
+     * @param qMapFileLocation file name.
+     */
+    private String saveQMap(String qMapFileLocation) {
+        this.qMap = new HashMap<>();
+        try {
+            String fileLocation = qMapFileLocation + ".txt";
 
+            PrintWriter writer = new PrintWriter(fileLocation, "UTF-8");
+
+            writer.println(Integer.toString(numberOfRuns + 1));
+
+            Set<Entry<QState, List<Integer>>> entriesOfQMap = qMap.entrySet();
+
+            for (Entry<QState, List<Integer>> entry : entriesOfQMap) {
+                String qMapEntry = "";
+                qMapEntry += entry.getKey().toString();
+                for(Integer score : entry.getValue()) {
+                    qMapEntry += ";" + score.toString();
+                }
+
+                writer.println(qMapEntry);
+            }
+
+            writer.close();
+            return fileLocation;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Based on the most recent reward, update the q value for last state and action pair which
+     * was chosen.
+     *
+     * @param game current game
+     * @param currentState current summarized state
+     */
     private void updateQValue(Game game, QState currentState) {
         if(lastState != null && lastAction != null) {
             Integer reward;
@@ -137,8 +174,16 @@ public class QLPacMan extends Controller<MOVE>
         }
     }
 
+    /**
+     * Calculate Q value based on current value and the prediction error based on the possible
+     * choices at the current state and the most recent reward. Note that prediction error is
+     * scaled by learning rate.
+     * @param oldQValue old q value
+     * @param reward most recent reward
+     * @param currentState current summarized game state
+     * @return new q value
+     */
     private Integer calculateQValue(Integer oldQValue, Integer reward, QState currentState) {
-        //TODO
         Integer maxCurrentValue = 0;
         List<Integer> currents = qMap.get(currentState);
         for(Integer integer : currents) {
@@ -146,14 +191,49 @@ public class QLPacMan extends Controller<MOVE>
                 maxCurrentValue = integer;
             }
         }
-        Integer newQValue = oldQValue + (int) ((1.0f / numberOfRuns) * reward);
+        float learningRate = (1.0f / numberOfRuns);
+        float gamma = 0.5f;
+        float prediction = reward + gamma * maxCurrentValue - oldQValue;
+        float newQValue = oldQValue + (learningRate * prediction);
 
-
-        return newQValue;
+        return (int) newQValue;
     }
 
+    /**
+     * Chose actions based on the idea that at first we are just exploring, but as the Q map
+     * gets more filled out then we can start to chose the best paths. However still allowing
+     * to choose other options in the hope of finding a better option. As time goes on, the
+     * probability to explore new options will decrease.
+     * @param currentState of the game
+     * @return the chosen action
+     */
     private ActionType choseAction(QState currentState) {
-     //TODO
-        return ActionType.RUN_AWAY;
+        float randomValue = rnd.nextFloat();
+        float probabilityToExplore = 0.1f;
+        if(numberOfRuns < 101) {
+            probabilityToExplore += 0.9f * (1.0f - numberOfRuns / 100.0f);
+        } else {
+            probabilityToExplore = 0.05f + 1.0f / numberOfRuns;
+        }
+        // Explore
+        if(randomValue < probabilityToExplore) {
+            int choice = (int) rndChoice.nextFloat() * 4;
+            if(choice > 3) choice = 3;
+
+            return ActionType.values()[choice];
+        } else {
+            // Choose the best option
+            List<Integer> scores = qMap.get(currentState);
+            Integer maxCurrentValue = 0;
+            Integer maxLocation = 0;
+            for(int i = 0; i < scores.size(); i++) {
+                if(scores.get(i) > maxCurrentValue) {
+                    maxCurrentValue = scores.get(i);
+                    maxLocation = i;
+                }
+            }
+
+            return ActionType.values()[maxLocation];
+        }
     }
 }
