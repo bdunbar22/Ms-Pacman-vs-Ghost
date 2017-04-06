@@ -18,29 +18,32 @@ learning algorithm in pacman.
 
 #Explanations
 --------------------------------------------------------------------------------------------------
-First, we need to simplify the number of states in pacman. We have decided to model the state as an array of values.
-The values will be semicolon delimited in a text file.
-The state values will be ordered as follows
+First, we need to simplify the number of states in pacman. We have decided to model the state
+as an array of values. The values will be semicolon delimited in a text file.
+We decided to create a fairly simple representation
+of state so that we would be able to demonstrate an original q learning algorithm, without
+having to worry too much about complexity of states. It would have been possible to create the
+same state representation using integers instead of a discrete enum, but then we would have an
+enormous number of states.
 State:
-	- closest_direction: (LEFT, RIGHT, UP, DOWN)
-	- closest_distance: (NEAR, MID, FAR)
-	- closest_edible: (TRUE, FALSE)
-	- closest_pill_direction: (LEFT, RIGHT, UP, DOWN)
-	- left_possible: (TRUE, FALSE)
-    - right_possible: (TRUE, FALSE)
-    - up_possible: (TRUE, FALSE)
-    - down_possible: (TRUE, FALSE)
+	- closest_ghost_distance: (NEAR, MID, FAR)
+	- closest_edible_distance: (NEAR, MID, FAR)
+	- closest_pill_distance: (NEAR, MID, FAR)
+	- closest_power_pill_distance: (NEAR, MID, FAR)
 
-This gives us a really manageable 1536 states to be used in a Q matrix.
+This gives us a really manageable 81 states to be used in a Q matrix.
 Our Q matrix will be created by adding scored Q values for each of the four possible actions:
-left_score;right_score:up_score;down_score
+    NEAREST_POWER_PILL,
+    NEAREST_PILL,
+    ATTACK,
+    RUN_AWAY;
 
 Initially the Q matrix will be initialized to have 0s for each of the scored Q values.
 
-An example line would be: left;near;false;right;right;0;100;40;40
+An example line would be: near;near;near;near;10;20;40;100
 
 For our storage mechanism we have created a txt file at data/qLearning/q_values.txt
-The first line is the number of entries (384)
+The first line is the number of times the q map has been ran and updated.
 The rest of the lines follow the format as shown above.
 
 

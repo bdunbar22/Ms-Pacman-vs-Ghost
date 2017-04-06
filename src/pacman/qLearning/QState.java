@@ -1,78 +1,63 @@
 package pacman.qLearning;
 
-import pacman.game.Constants.MOVE;
-
 /**
  * A way to store the state of the game, with an equals operator to make it easy to compare states
  * Created by Ben on 4/5/17.
  */
 public class QState {
-    private MOVE closestDirection;
-    private DistanceEnum closestDistance;
-    private Boolean closestEdible;
-    private MOVE closestPillDirection;
-    private MOVE closestPowerPillDirection;
+    private DistanceEnum closestGhostDistance;
+    private DistanceEnum closestEdibleDistance;
+    private DistanceEnum closestPillDistance;
+    private DistanceEnum closestPowerDistance;
 
 
-    public QState(String direction1, String distance, String edible, String pillDirection,
-                  String powerPillDirection) {
-        this.closestDirection = MOVE.valueOf(direction1);
-        this.closestDistance = DistanceEnum.valueOf(distance);
-        this.closestEdible = Boolean.getBoolean(edible);
-        this.closestPillDirection = MOVE.valueOf(pillDirection);
-        this.closestPillDirection = MOVE.valueOf(powerPillDirection);
+    public QState(String distance1, String distance2, String distance3, String distance4) {
+        this.closestGhostDistance = DistanceEnum.valueOf(distance1);
+        this.closestEdibleDistance = DistanceEnum.valueOf(distance2);
+        this.closestPillDistance = DistanceEnum.valueOf(distance3);
+        this.closestPowerDistance = DistanceEnum.valueOf(distance4);
     }
 
-
-    public MOVE getClosestDirection() {
-        return closestDirection;
+    public DistanceEnum getClosestGhostDistance() {
+        return closestGhostDistance;
     }
 
-    public void setClosestDirection(MOVE closestDirection) {
-        this.closestDirection = closestDirection;
+    public void setClosestGhostDistance(DistanceEnum closestGhostDistance) {
+        this.closestGhostDistance = closestGhostDistance;
     }
 
-    public DistanceEnum getClosestDistance() {
-        return closestDistance;
+    public DistanceEnum getClosestEdibleDistance() {
+        return closestEdibleDistance;
     }
 
-    public void setClosestDistance(DistanceEnum closestDistance) {
-        this.closestDistance = closestDistance;
+    public void setClosestEdibleDistance(DistanceEnum closestEdibleDistance) {
+        this.closestEdibleDistance = closestEdibleDistance;
     }
 
-    public Boolean getClosestEdible() {
-        return closestEdible;
+    public DistanceEnum getClosestPillDistance() {
+        return closestPillDistance;
     }
 
-    public void setClosestEdible(Boolean closestEdible) {
-        this.closestEdible = closestEdible;
+    public void setClosestPillDistance(DistanceEnum closestPillDistance) {
+        this.closestPillDistance = closestPillDistance;
     }
 
-    public MOVE getClosestPillDirection() {
-        return closestPillDirection;
+    public DistanceEnum getClosestPowerDistance() {
+        return closestPowerDistance;
     }
 
-    public void setClosestPillDirection(MOVE closestPillDirection) {
-        this.closestPillDirection = closestPillDirection;
-    }
-
-    public MOVE getClosestPowerPillDirection() {
-        return closestPowerPillDirection;
-    }
-
-    public void setClosestPowerPillDirection(MOVE closestPowerPillDirection) {
-        this.closestPowerPillDirection = closestPowerPillDirection;
+    public void setClosestPowerDistance(DistanceEnum closestPowerDistance) {
+        this.closestPowerDistance = closestPowerDistance;
     }
 
     @Override
     public boolean equals(Object obj) {
         try {
             QState other = (QState) obj;
-            return (other.getClosestEdible().equals(this.getClosestEdible()) &&
-                other.getClosestDirection().equals(this.getClosestDirection()) &&
-                other.getClosestDistance().equals(this.getClosestDistance()) &&
-                other.getClosestPillDirection().equals(this.getClosestPillDirection()) &&
-                other.getClosestPowerPillDirection().equals(this.getClosestPowerPillDirection()));
+            return (other.getClosestGhostDistance().equals(this.getClosestGhostDistance()) &&
+                other.getClosestEdibleDistance().equals(this.getClosestEdibleDistance()) &&
+                other.getClosestPillDistance().equals(this.getClosestPillDistance()) &&
+                other.getClosestPowerDistance().equals(this.getClosestPowerDistance()));
         }
         catch (Exception e) {
             return false;
