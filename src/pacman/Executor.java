@@ -40,6 +40,8 @@ public class Executor
 	{
 		Executor exec=new Executor();
 
+		exec.runGameTimed(new HumanController(new KeyBoardInput()), new StarterGhosts(), true);
+
 		// ASSIGNMENT 2 ==============================================================================
 		//Uncomment to run dijkstra.
 		//exec.dijkstraCalculation();
@@ -56,14 +58,14 @@ public class Executor
 
 		// ASSIGNMENT 3 ==============================================================================
 		//Uncomment to run DT
-		boolean visual = true;
-		String dtFileLocation = "data/decisionMaking/decisionTree";
-		exec.runGameTimed(new DTPacMan(dtFileLocation), new StarterGhosts(), visual);
+		//boolean visual = true;
+		//String dtFileLocation = "data/decisionMaking/decisionTree";
+		//exec.runGameTimed(new DTPacMan(dtFileLocation), new StarterGhosts(), visual);
 
 		//Uncomment to run RAPS
 		//boolean visual = true;
-		String rapFileLocation = "data/decisionMaking/rapText2";
-		exec.runGameTimed(new RAPPacMan(rapFileLocation), new StarterGhosts(), visual);
+		//String rapFileLocation = "data/decisionMaking/rapText2";
+		//exec.runGameTimed(new RAPPacMan(rapFileLocation), new StarterGhosts(), visual);
 
 
 		//Uncomment to run some experimental trials on all maps.
@@ -80,24 +82,24 @@ public class Executor
 		*/
 
 		//DT experiment
-		System.out.println("Running Decision Tree.");
-		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree"), new
-			StarterGhosts(),250);
+//		System.out.println("Running Decision Tree.");
+//		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree"), new
+//			StarterGhosts(),250);
 
 		//RAPS experiment
-		System.out.println("Running Raps.");
-		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText"), new StarterGhosts()
-			,250);
+//		System.out.println("Running Raps.");
+//		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText"), new StarterGhosts()
+//			,250);
 
 		//DT experiment 2
-		System.out.println("Running Decision Tree.");
-		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree2"), new
-			StarterGhosts(),250);
+//		System.out.println("Running Decision Tree.");
+//		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree2"), new
+//			StarterGhosts(),250);
 
 		//RAPS experiment 2
-		System.out.println("Running Raps.");
-		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText2"), new StarterGhosts()
-			,250);
+//		System.out.println("Running Raps.");
+//		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText2"), new StarterGhosts()
+//			,250);
 
 		// PROVIDED ==================================================================================
 

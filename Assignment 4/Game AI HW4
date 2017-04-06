@@ -1,0 +1,48 @@
+Pacman Q Learning
+
+We have decided to attempt the half of the extra credit for assignment 4 by implementing a q
+learning algorithm in pacman.
+
+#New Sources
+--------------------------------------------------------------------------------------------------
+
+#New tests
+--------------------------------------------------------------------------------------------------
+
+
+
+#Running
+--------------------------------------------------------------------------------------------------
+
+
+
+#Explanations
+--------------------------------------------------------------------------------------------------
+First, we need to simplify the number of states in pacman. We have decided to model the state as an array of values.
+The values will be semicolon delimited in a text file.
+The state values will be ordered as follows
+State:
+	- closest_direction: (LEFT, RIGHT, UP, DOWN)
+	- closest_distance: (NEAR, MID, FAR)
+	- closest_edible: (TRUE, FALSE)
+	- closest_pill_direction: (LEFT, RIGHT, UP, DOWN)
+	- left_possible: (TRUE, FALSE)
+    - right_possible: (TRUE, FALSE)
+    - up_possible: (TRUE, FALSE)
+    - down_possible: (TRUE, FALSE)
+
+This gives us a really manageable 1536 states to be used in a Q matrix.
+Our Q matrix will be created by adding scored Q values for each of the four possible actions:
+left_score;right_score:up_score;down_score
+
+Initially the Q matrix will be initialized to have 0s for each of the scored Q values.
+
+An example line would be: left;near;false;right;right;0;100;40;40
+
+For our storage mechanism we have created a txt file at data/qLearning/q_values.txt
+The first line is the number of entries (384)
+The rest of the lines follow the format as shown above.
+
+
+#Conclusions
+--------------------------------------------------------------------------------------------------
