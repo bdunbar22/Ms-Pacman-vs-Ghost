@@ -1,5 +1,7 @@
 package pacman.qLearning;
 
+import pacman.game.Game;
+
 /**
  * A way to store the state of the game, with an equals operator to make it easy to compare states
  * Created by Ben on 4/5/17.
@@ -10,6 +12,7 @@ public class QState {
     private DistanceEnum closestPillDistance;
     private DistanceEnum closestPowerDistance;
 
+    private QState() { }
 
     public QState(String distance1, String distance2, String distance3, String distance4) {
         this.closestGhostDistance = DistanceEnum.valueOf(distance1);
@@ -62,5 +65,10 @@ public class QState {
         catch (Exception e) {
             return false;
         }
+    }
+
+    public static QState getState(Game game) {
+        // TODO
+        return new QState();
     }
 }
