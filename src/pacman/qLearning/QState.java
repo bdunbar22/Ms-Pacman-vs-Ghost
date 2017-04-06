@@ -77,9 +77,12 @@ public class QState {
      */
     @Override
     public String toString() {
-
-        //TODO
-        return "";
+        String stateString = "";
+        stateString += closestGhostDistance + ";";
+        stateString += closestEdibleDistance + ";";
+        stateString += closestPillDistance + ";";
+        stateString += closestPowerDistance;
+        return stateString;
     }
 
     public static QState getState(Game game) {

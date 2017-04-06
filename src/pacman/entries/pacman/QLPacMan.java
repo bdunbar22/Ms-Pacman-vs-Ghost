@@ -134,6 +134,7 @@ public class QLPacMan extends Controller<MOVE>
         catch (IOException e) {
             e.printStackTrace();
         }
+        return "";
     }
 
 
