@@ -62,7 +62,7 @@ public class QLPacMan extends Controller<MOVE>
      * @param qMapFileLocation file name.
      */
 	  private void loadQMap(String qMapFileLocation) {
-		    this.qMap = new HashMap<>();
+		    this.qMap = new HashMap<QState, List<Integer>>();
 		    try
 		    {
 			      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream
@@ -78,19 +78,20 @@ public class QLPacMan extends Controller<MOVE>
 			      {
                 String[] values = input.split(";");
 
-                String closestGhostDistance = values[0];
-                String closestEdibleDistance = values[1];
-                String closestPillDistance = values[2];
-                String closestPowerDistance = values[3];
+                String powerPillBool = values[0];
+                String closestGhostDistance = values[1];
+                String closestEdibleDistance = values[2];
+                String closestPillDistance = values[3];
+                String closestPowerDistance = values[4];
 
-                QState stateEntry = new QState(closestGhostDistance, closestEdibleDistance,
-                    closestPillDistance, closestPowerDistance);
+                QState stateEntry = new QState(powerPillBool, closestGhostDistance,
+                    closestEdibleDistance, closestPillDistance, closestPowerDistance);
 
                 List<Integer> scores = new ArrayList<>();
-                scores.add(Integer.parseInt(values[4]));
                 scores.add(Integer.parseInt(values[5]));
                 scores.add(Integer.parseInt(values[6]));
                 scores.add(Integer.parseInt(values[7]));
+                scores.add(Integer.parseInt(values[8]));
 
                 qMap.put(stateEntry,scores);
 
@@ -107,8 +108,7 @@ public class QLPacMan extends Controller<MOVE>
      * Save the updated q Map to the desired txt file.
      * @param qMapFileLocation file name.
      */
-    private String saveQMap(String qMapFileLocation) {
-        this.qMap = new HashMap<>();
+    public String saveQMap(String qMapFileLocation) {
         try {
             String fileLocation = qMapFileLocation + ".txt";
 
@@ -149,9 +149,9 @@ public class QLPacMan extends Controller<MOVE>
         if(lastState != null && lastAction != null) {
             Integer reward;
             if(game.wasPacManEaten()) {
-                reward = -1;
+                reward = -50;
             } else {
-                reward = game.getScore() - lastScore;
+                reward = Math.max(1, game.getScore() - lastScore);
             }
             List<Integer> qValues = qMap.get(lastState);
             Integer newQValue;
@@ -185,7 +185,7 @@ public class QLPacMan extends Controller<MOVE>
      * @return new q value
      */
     private Integer calculateQValue(Integer oldQValue, Integer reward, QState currentState) {
-        Integer maxCurrentValue = 0;
+        Integer maxCurrentValue = Integer.MIN_VALUE;
         List<Integer> currents = qMap.get(currentState);
         for(Integer integer : currents) {
             if(integer > maxCurrentValue) {
@@ -216,16 +216,25 @@ public class QLPacMan extends Controller<MOVE>
         } else {
             probabilityToExplore = 0.05f + 1.0f / numberOfRuns;
         }
-        // Explore
+        // Explore with probablilty = to probability to explore
+        // While exploring:
+        // 70% of the time, keep last action so that you can actually see the affects over time
+        // 30% of time, choose a new action.
         if(randomValue < probabilityToExplore) {
-            int choice = (int) rndChoice.nextFloat() * 4;
-            if(choice > 3) choice = 3;
+            randomValue = rnd.nextFloat();
+            if(randomValue < 0.7 && lastAction != null) {
+                return lastAction;
+            } else {
+                float choice = rndChoice.nextFloat() * 4.0f;
+                int intChoice = (int) choice;
+                if(intChoice > 3) intChoice = 3;
 
-            return ActionType.values()[choice];
+                return ActionType.values()[intChoice];
+            }
         } else {
             // Choose the best option
             List<Integer> scores = qMap.get(currentState);
-            Integer maxCurrentValue = 0;
+            Integer maxCurrentValue = Integer.MIN_VALUE;
             Integer maxLocation = 0;
             for(int i = 0; i < scores.size(); i++) {
                 if(scores.get(i) > maxCurrentValue) {

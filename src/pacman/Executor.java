@@ -13,6 +13,7 @@ import pacman.controllers.examples.StarterGhosts;
 import pacman.controllers.examples.StarterPacMan;
 import pacman.entries.ghosts.MyGhosts;
 import pacman.entries.pacman.DTPacMan;
+import pacman.entries.pacman.QLPacMan;
 import pacman.entries.pacman.RAPPacMan;
 import pacman.pathFinding.Dijkstra;
 import pacman.controllers.Controller;
@@ -40,7 +41,7 @@ public class Executor
 	{
 		Executor exec=new Executor();
 
-		exec.runGameTimed(new HumanController(new KeyBoardInput()), new StarterGhosts(), true);
+		//exec.runGameTimed(new HumanController(new KeyBoardInput()), new StarterGhosts(), true);
 
 		// ASSIGNMENT 2 ==============================================================================
 		//Uncomment to run dijkstra.
@@ -82,24 +83,38 @@ public class Executor
 		*/
 
 		//DT experiment
-//		System.out.println("Running Decision Tree.");
-//		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree"), new
-//			StarterGhosts(),250);
+		//System.out.println("Running Decision Tree.");
+		//exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree"), new
+		//	StarterGhosts(),250);
 
 		//RAPS experiment
-//		System.out.println("Running Raps.");
-//		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText"), new StarterGhosts()
-//			,250);
+		//System.out.println("Running Raps.");
+		//exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText"), new StarterGhosts()
+		//	,250);
 
 		//DT experiment 2
-//		System.out.println("Running Decision Tree.");
-//		exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree2"), new
-//			StarterGhosts(),250);
+		//System.out.println("Running Decision Tree.");
+		//exec.runExperimentEachMap(new DTPacMan("data/decisionMaking/decisionTree2"), new
+		//	StarterGhosts(),250);
 
 		//RAPS experiment 2
-//		System.out.println("Running Raps.");
-//		exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText2"), new StarterGhosts()
-//			,250);
+		//System.out.println("Running Raps.");
+		//exec.runExperimentEachMap(new RAPPacMan("data/decisionMaking/rapText2"), new StarterGhosts()
+		//	,250);
+
+		// ASSIGNMENT 4 ==============================================================================
+		String qMapFile = "data/qLearning/q_values";
+
+		// Q Learning Algorithm
+		boolean visual = true;
+		System.out.println("Running Qlearning.");
+		exec.runGameTimed(new QLPacMan(qMapFile), new StarterGhosts(), visual);
+
+
+		// Q Learning Algorithm Training cycles
+		System.out.println("Running Q Learning training for file.");
+		exec.trainQLearning(qMapFile, new StarterGhosts(), 250);
+
 
 		// PROVIDED ==================================================================================
 
@@ -228,6 +243,46 @@ public class Executor
 					maxScore = game.getScore();
 				}
 				System.out.println(i+" Maze: " + j + "\t"+game.getScore());
+			}
+		}
+
+		System.out.println("AVERAGE: " + avgScore/(trials*4) +
+			"  MIN: " + minScore +
+			"  MAX: " + maxScore);
+	}
+
+	public void trainQLearning(String qMapFile, Controller<EnumMap<GHOST,
+	  MOVE>> ghostController, int trials)
+	{
+		double avgScore=0;
+		double minScore=Double.MAX_VALUE;
+		double maxScore=0;
+
+		Random rnd=new Random(0);
+		Game game;
+
+		for(int j=0;j<4;j++)
+		{
+			for(int i=0;i<trials;i++) {
+				game=new Game(rnd.nextLong(), j);
+				QLPacMan pacManController = new QLPacMan(qMapFile);
+
+				while(!game.gameOver())
+				{
+					game.advanceGame(pacManController.getMove(game.copy(),System.currentTimeMillis()+DELAY),
+						ghostController.getMove(game.copy(),System.currentTimeMillis()+DELAY));
+				}
+
+				pacManController.saveQMap(qMapFile);
+
+				avgScore+=game.getScore();
+				if(game.getScore() < minScore) {
+					minScore = game.getScore();
+				}
+				if(game.getScore() > maxScore) {
+					maxScore = game.getScore();
+				}
+				System.out.println("Run: " + i + "  Maze: " + j + "  Score: " + game.getScore());
 			}
 		}
 

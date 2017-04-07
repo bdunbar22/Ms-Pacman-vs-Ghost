@@ -9,13 +9,14 @@ import pacman.game.Game;
  * Created by Ben on 4/5/17.
  */
 public class QState {
+    private Boolean powerPillsAvailable;
     private DistanceEnum closestGhostDistance;
     private DistanceEnum closestEdibleDistance;
     private DistanceEnum closestPillDistance;
     private DistanceEnum closestPowerDistance;
 
-    private static int NEAR_THRESHOLD = 12;
-    private static int MID_THRESHOLD = 20;
+    private static int NEAR_THRESHOLD = 10;
+    private static int MID_THRESHOLD = 40;
 
     /*
      * Creating a new default state: all values far.
@@ -25,12 +26,15 @@ public class QState {
         this.closestEdibleDistance = DistanceEnum.FAR;
         this.closestPillDistance = DistanceEnum.FAR;
         this.closestPowerDistance = DistanceEnum.FAR;
+        this.powerPillsAvailable = Boolean.FALSE;
     }
 
     /*
      * Create a state from 4 strings.
      */
-    public QState(String distance1, String distance2, String distance3, String distance4) {
+    public QState(String powerPillsBool, String distance1, String distance2, String distance3,
+        String distance4) {
+        this.powerPillsAvailable = Boolean.parseBoolean(powerPillsBool);
         this.closestGhostDistance = DistanceEnum.valueOf(distance1);
         this.closestEdibleDistance = DistanceEnum.valueOf(distance2);
         this.closestPillDistance = DistanceEnum.valueOf(distance3);
@@ -69,6 +73,14 @@ public class QState {
         this.closestPowerDistance = closestPowerDistance;
     }
 
+    public Boolean getPowerPillsAvailable() {
+        return powerPillsAvailable;
+    }
+
+    public void setPowerPillsAvailable(Boolean powerPillsAvailable) {
+        this.powerPillsAvailable = powerPillsAvailable;
+    }
+
     /**
      * Override the equals function to make it easy to compare states.
      * @param obj to compare with
@@ -81,11 +93,21 @@ public class QState {
             return (other.getClosestGhostDistance().equals(this.getClosestGhostDistance()) &&
                 other.getClosestEdibleDistance().equals(this.getClosestEdibleDistance()) &&
                 other.getClosestPillDistance().equals(this.getClosestPillDistance()) &&
-                other.getClosestPowerDistance().equals(this.getClosestPowerDistance()));
+                other.getClosestPowerDistance().equals(this.getClosestPowerDistance()) &&
+                other.getPowerPillsAvailable().equals(this.getPowerPillsAvailable()));
         }
         catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return this.powerPillsAvailable.hashCode() * 10000 +
+               this.closestPowerDistance.hashCode() * 1000 +
+               this.closestPillDistance.hashCode() * 100 +
+               this.closestEdibleDistance.hashCode() * 10 +
+               this.closestGhostDistance.hashCode();
     }
 
     /**
@@ -94,6 +116,7 @@ public class QState {
     @Override
     public String toString() {
         String stateString = "";
+        stateString += powerPillsAvailable + ";";
         stateString += closestGhostDistance + ";";
         stateString += closestEdibleDistance + ";";
         stateString += closestPillDistance + ";";
@@ -142,7 +165,9 @@ public class QState {
 
         // Closest Pill
         Integer closestPillIndex = Util.getClosestPill(game, current);
-        int pillDistance = game.getShortestPathDistance(current, closestPillIndex);
+        int pillDistance = Integer.MAX_VALUE;
+        if (closestPillIndex >= 0)
+            pillDistance = game.getShortestPathDistance(current, closestPillIndex);
 
         if(pillDistance < NEAR_THRESHOLD) {
             state.closestPillDistance = DistanceEnum.NEAR;
@@ -153,7 +178,11 @@ public class QState {
 
         // Closest Power Pill
         Integer closestPowerIndex = Util.getClosestPowerPill(game, current);
-        int powerDistance = game.getShortestPathDistance(current, closestPowerIndex);
+        int powerDistance = Integer.MAX_VALUE;
+        if (closestPowerIndex >= 0) {
+            powerDistance = game.getShortestPathDistance(current, closestPowerIndex);
+            state.powerPillsAvailable = true;
+        }
 
         if(powerDistance < NEAR_THRESHOLD) {
             state.closestPowerDistance = DistanceEnum.NEAR;

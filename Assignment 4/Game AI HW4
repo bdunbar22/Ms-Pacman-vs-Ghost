@@ -26,12 +26,13 @@ having to worry too much about complexity of states. It would have been possible
 same state representation using integers instead of a discrete enum, but then we would have an
 enormous number of states.
 State:
+    - power_pills_still_avail: (TRUE, FALSE)
 	- closest_ghost_distance: (NEAR, MID, FAR)
 	- closest_edible_distance: (NEAR, MID, FAR)
 	- closest_pill_distance: (NEAR, MID, FAR)
 	- closest_power_pill_distance: (NEAR, MID, FAR)
 
-This gives us a really manageable 81 states to be used in a Q matrix.
+This gives us a really manageable 162 states to be used in a Q matrix.
 Our Q matrix will be created by adding scored Q values for each of the four possible actions:
     NEAREST_POWER_PILL,
     NEAREST_PILL,
