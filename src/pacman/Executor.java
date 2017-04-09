@@ -115,6 +115,9 @@ public class Executor
 		System.out.println("Running Q Learning training for file.");
 		exec.trainQLearning(qMapFile, new StarterGhosts(), 250);
 
+		System.out.println("Running Qlearning after training.");
+		exec.runGameTimed(new QLPacMan(qMapFile), new StarterGhosts(), visual);
+
 
 		// PROVIDED ==================================================================================
 

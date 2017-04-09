@@ -1,10 +1,12 @@
 package pacman.entries.pacman;
 
+import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 import pacman.controllers.Controller;
 import pacman.decisionMaking.ActionType;
 import pacman.decisionMaking.Util;
 import pacman.game.Constants.MOVE;
 import pacman.game.Game;
+import pacman.qLearning.DistanceEnum;
 import pacman.qLearning.QState;
 import java.util.Map.Entry;
 
@@ -27,6 +29,8 @@ public class QLPacMan extends Controller<MOVE>
 
     private ActionType lastAction;
     private QState lastState;
+    private int actionTakenCount;
+
     private int lastScore;
 
     public QLPacMan(String qMapFileLocation) {
@@ -34,6 +38,7 @@ public class QLPacMan extends Controller<MOVE>
         lastAction = null;
         lastState = null;
         lastScore = 0;
+        actionTakenCount = 0;
     }
 	
     public MOVE getMove(Game game, long timeDue)
@@ -147,11 +152,18 @@ public class QLPacMan extends Controller<MOVE>
      */
     private void updateQValue(Game game, QState currentState) {
         if(lastState != null && lastAction != null) {
-            Integer reward;
+            Integer reward = 0;
             if(game.wasPacManEaten()) {
-                reward = -50;
-            } else {
-                reward = Math.max(1, game.getScore() - lastScore);
+                reward = lastAction.equals(ActionType.RUN_AWAY) ? 0: -50; // Penalty for death
+            } else if(game.wasPowerPillEaten() && lastAction.equals(ActionType.NEAREST_POWER_PILL)) {
+                reward = 25;  // Reward power pill
+            } else if(currentState.getClosestGhostDistance().equals(
+                DistanceEnum.NEAR) && lastAction.equals(ActionType.RUN_AWAY)) {
+                reward = 10;  // Reward trying to escape
+            } else if(lastAction.equals(ActionType.ATTACK)) {
+                reward = 10 * game.getNumGhostsEaten();
+            } else if(lastAction.equals(ActionType.NEAREST_PILL)) {
+                reward = 5;  // Reward for normal pills as that is the game objective
             }
             List<Integer> qValues = qMap.get(lastState);
             Integer newQValue;
@@ -159,12 +171,15 @@ public class QLPacMan extends Controller<MOVE>
                 case NEAREST_POWER_PILL:
                     newQValue = calculateQValue(qValues.get(0), reward, currentState);
                     qValues.set(0, newQValue);
+                    break;
                 case NEAREST_PILL:
                     newQValue = calculateQValue(qValues.get(1), reward, currentState);
                     qValues.set(1, newQValue);
+                    break;
                 case ATTACK:
                     newQValue = calculateQValue(qValues.get(2), reward, currentState);
                     qValues.set(2, newQValue);
+                    break;
                 case RUN_AWAY:
                     newQValue = calculateQValue(qValues.get(3), reward, currentState);
                     qValues.set(3, newQValue);
@@ -172,6 +187,8 @@ public class QLPacMan extends Controller<MOVE>
 
             //Perform update
             qMap.put(lastState, qValues);
+            //Scale q values if needed (otherwise they approach infinity)
+            scaleQValues();
         }
     }
 
@@ -192,7 +209,7 @@ public class QLPacMan extends Controller<MOVE>
                 maxCurrentValue = integer;
             }
         }
-        float learningRate = (1.0f / numberOfRuns);
+        float learningRate = (1.0f / (numberOfRuns + 1));
         float gamma = 0.5f;
         float prediction = reward + gamma * maxCurrentValue - oldQValue;
         float newQValue = oldQValue + (learningRate * prediction);
@@ -209,22 +226,21 @@ public class QLPacMan extends Controller<MOVE>
      * @return the chosen action
      */
     private ActionType choseAction(QState currentState) {
-        float randomValue = rnd.nextFloat();
-        float probabilityToExplore = 0.1f;
-        if(numberOfRuns < 101) {
-            probabilityToExplore += 0.9f * (1.0f - numberOfRuns / 100.0f);
-        } else {
-            probabilityToExplore = 0.05f + 1.0f / numberOfRuns;
-        }
+        //float randomValue = rnd.nextFloat();
+        //float probabilityToExplore = 0.0f;
+        //if(numberOfRuns < 900) {
+        //    probabilityToExplore = 1.0f;
+        //}
         // Explore with probablilty = to probability to explore
         // While exploring:
-        // 70% of the time, keep last action so that you can actually see the affects over time
-        // 30% of time, choose a new action.
-        if(randomValue < probabilityToExplore) {
-            randomValue = rnd.nextFloat();
-            if(randomValue < 0.7 && lastAction != null) {
+        // keep last action for 15 moves so that you can actually see the affects over time
+        // after that choose a new action.
+        if(numberOfRuns < 900) {
+            if(lastAction != null && actionTakenCount < 15) {
+                actionTakenCount++;
                 return lastAction;
             } else {
+                actionTakenCount = 0;
                 float choice = rndChoice.nextFloat() * 4.0f;
                 int intChoice = (int) choice;
                 if(intChoice > 3) intChoice = 3;
@@ -244,6 +260,32 @@ public class QLPacMan extends Controller<MOVE>
             }
 
             return ActionType.values()[maxLocation];
+        }
+    }
+
+    private void scaleQValues() {
+        Set<Entry<QState, List<Integer>>> entries = qMap.entrySet();
+        int max = 100;
+        float scale = 1.0f;
+        List<Integer> integerList = new ArrayList<>();
+        for(Entry<QState, List<Integer>> entry : entries) {
+            for (Integer score : entry.getValue()) {
+                if(score > max) {
+                    max = score;
+                    scale = 100.f / score;
+                }
+            }
+        }
+        // If numbers need to be scaled, do it.
+        if(max > 100) {
+            for(Entry<QState, List<Integer>> entry : entries) {
+                integerList.clear();
+                for (int i = 0; i < 4; i++) {
+                    integerList.add((int) (scale * entry.getValue().get(i)));
+                }
+
+                qMap.put(entry.getKey(), integerList);
+            }
         }
     }
 }

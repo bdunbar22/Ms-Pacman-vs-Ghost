@@ -15,7 +15,7 @@ public class QState {
     private DistanceEnum closestPillDistance;
     private DistanceEnum closestPowerDistance;
 
-    private static int NEAR_THRESHOLD = 10;
+    private static int NEAR_THRESHOLD = 14;
     private static int MID_THRESHOLD = 40;
 
     /*
