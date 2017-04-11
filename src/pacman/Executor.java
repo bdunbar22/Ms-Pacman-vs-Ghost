@@ -110,10 +110,12 @@ public class Executor
 		System.out.println("Running Qlearning.");
 		exec.runGameTimed(new QLPacMan(qMapFile), new StarterGhosts(), visual);
 
-
 		// Q Learning Algorithm Training cycles
 		System.out.println("Running Q Learning training for file.");
-		exec.trainQLearning(qMapFile, new StarterGhosts(), 250);
+		exec.trainQLearning(qMapFile, new StarterGhosts(), 150, "Training");
+
+		System.out.println("Running Q Learning training for file.");
+		exec.trainQLearning(qMapFile, new StarterGhosts(), 25, "Testing");
 
 		System.out.println("Running Qlearning after training.");
 		exec.runGameTimed(new QLPacMan(qMapFile), new StarterGhosts(), visual);
@@ -255,7 +257,7 @@ public class Executor
 	}
 
 	public void trainQLearning(String qMapFile, Controller<EnumMap<GHOST,
-	  MOVE>> ghostController, int trials)
+	  MOVE>> ghostController, int trials, String testOrTrain)
 	{
 		double avgScore=0;
 		double minScore=Double.MAX_VALUE;
@@ -285,11 +287,13 @@ public class Executor
 				if(game.getScore() > maxScore) {
 					maxScore = game.getScore();
 				}
-				System.out.println("Run: " + i + "  Maze: " + j + "  Score: " + game.getScore());
+				System.out.println(testOrTrain + " Run: " + i + " on Maze: " + j + "  Score: " + game
+					.getScore
+					());
 			}
 		}
 
-		System.out.println("AVERAGE: " + avgScore/(trials*4) +
+		System.out.println(testOrTrain + " AVERAGE: " + avgScore/(trials*4) +
 			"  MIN: " + minScore +
 			"  MAX: " + maxScore);
 	}

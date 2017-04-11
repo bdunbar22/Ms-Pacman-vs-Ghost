@@ -5,15 +5,18 @@ learning algorithm in pacman.
 
 #New Sources
 --------------------------------------------------------------------------------------------------
+data/qLearning/q_values.txt
+data/qLearning/q_values_2.txt
+data/qLearning/q_values_trained.txt
+Assignment 4/Initial_Q_Data.xlsx
 
-#New tests
---------------------------------------------------------------------------------------------------
+src/pacman/entries/pacman/QLPacMan
 
+src/pacman/qLearning/DistanceEnum
+src/pacman/qLearning/QState
 
-
-#Running
---------------------------------------------------------------------------------------------------
-
+test/qLearning/QStateTest
+test/entries/pacman/QLPacManTest
 
 
 #Explanations
@@ -41,12 +44,38 @@ Our Q matrix will be created by adding scored Q values for each of the four poss
 
 Initially the Q matrix will be initialized to have 0s for each of the scored Q values.
 
-An example line would be: near;near;near;near;10;20;40;100
+An example line could be: near;near;near;near;0;5;0;0
 
 For our storage mechanism we have created a txt file at data/qLearning/q_values.txt
 The first line is the number of times the q map has been ran and updated.
 The rest of the lines follow the format as shown above.
 
+Secondly we created a reward system for pacman based on if the actions chosed met with success
+or not. To do this, at any time after the first action, we took a look at the last state and
+last action and decided on a reward. This reward was used with additional parameters to
+determine a new q value for the last action and the last state.
+
+Finally, we made the ability for QLPacMan to read in a qMap from a text file as described above
+ and save an updated qMap to a text file.
+
 
 #Conclusions
 --------------------------------------------------------------------------------------------------
+By implementing a way to summarize the game state and reward pacman for choosing effective
+actions based on the summarized game state, we have developed an effective qLearning
+algorithm. From testing we have concluded that our approach usually scores between 1500 and
+2500 before any learning and can reach a success of having scores averaging over 10000 after
+learning has been allowed over 600 games. This can be seen by our default run option for our
+assignment 4 submission as described in the readme. Tests were also created for the functions
+of QState and QLPacMan.
+
+The algorithm we have completed primarily uses offline learning. For the first 600 games it
+will focus on randomly exploring different actions from all of the states it encounters. (Note
+that once it chooses and option it will persist in that option for a little while to learn the
+full implications of the choise over some time). After 600 games it will focus on choosing the
+best options it has found, but will still update q values to fine tune the qMap. To keep the
+program running fast; the qMap file "q_values" is updated only at the end of the game by
+calling a saveQMap function.
+
+As a conclusion, the q learning algorithm developed was quite successful and an interesting
+challenge.

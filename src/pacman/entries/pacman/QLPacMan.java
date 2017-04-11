@@ -1,6 +1,5 @@
 package pacman.entries.pacman;
 
-import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 import pacman.controllers.Controller;
 import pacman.decisionMaking.ActionType;
 import pacman.decisionMaking.Util;
@@ -235,7 +234,7 @@ public class QLPacMan extends Controller<MOVE>
         // While exploring:
         // keep last action for 15 moves so that you can actually see the affects over time
         // after that choose a new action.
-        if(numberOfRuns < 900) {
+        if(numberOfRuns < 600) {
             if(lastAction != null && actionTakenCount < 15) {
                 actionTakenCount++;
                 return lastAction;
@@ -277,7 +276,9 @@ public class QLPacMan extends Controller<MOVE>
             }
         }
         // If numbers need to be scaled, do it.
-        if(max > 100) {
+        // Allow numbers to grow until 1000 then shrink back to 100.
+        // Not constraining to 100 every run will save time.
+        if(max > 400) {
             for(Entry<QState, List<Integer>> entry : entries) {
                 integerList.clear();
                 for (int i = 0; i < 4; i++) {
